@@ -8,7 +8,7 @@
 
         public string UserPass { get; set; }
 
-        public int StaffId { get; set; }
-        public Staff Staff { get; set; }
+        //public int StaffId { get; set; }
+        //public Staff Staff { get; set; }
     }
 }

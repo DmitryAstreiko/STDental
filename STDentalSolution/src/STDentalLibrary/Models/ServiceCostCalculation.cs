@@ -15,7 +15,7 @@
         public decimal Cost { get; set; }
 
 
-        public int ServiceId { get; set; }
+        //public int ServiceId { get; set; }
         public Service Service { get; set; }
     }
 }

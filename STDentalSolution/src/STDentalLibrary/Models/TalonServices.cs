@@ -18,7 +18,7 @@ namespace STDentalLibrary.Models
         public decimal Cost { get; set; }
 
 
-        public int ServiceId { get; set; }
+        //public int ServiceId { get; set; }
         public Service Service { get; set; }
 
         //public int TalonId { get; set; }

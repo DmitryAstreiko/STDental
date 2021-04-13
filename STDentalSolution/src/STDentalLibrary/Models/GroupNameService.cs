@@ -12,6 +12,6 @@ namespace STDentalLibrary.Models
 
         public string Name { get; set; }
 
-        public List<GroupService> GroupServices { get; set; }
+        //public List<GroupService> GroupServices { get; set; }
     }
 }

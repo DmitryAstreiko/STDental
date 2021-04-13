@@ -19,7 +19,7 @@ namespace STDentalLibrary.Models
         public DateTime EndDate { get; set; }
 
 
-        public List<Material> MaterialsList { get; set; }
+        //public List<Material> MaterialsList { get; set; }
         
     }
 }

@@ -11,7 +11,7 @@ namespace STDentalLibrary.Models
         public int GroupServiceId { get; set; }
 
 
-        public List<Service> Services { get; set; }
+        //public List<Service> Services { get; set; }
 
         //public int GroupNameServiceId { get; set; }
        // public GroupNameService GroupNameService { get; set; }

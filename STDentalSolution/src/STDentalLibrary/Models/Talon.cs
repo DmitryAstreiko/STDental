@@ -29,6 +29,6 @@ namespace STDentalLibrary.Models
         //public int StaffId { get; set; }
         //public Staff Staff { get; set; }
 
-        public List<TalonService> TalonServices { get; set; }
+       // public List<TalonService> TalonServices { get; set; }
     }
 }

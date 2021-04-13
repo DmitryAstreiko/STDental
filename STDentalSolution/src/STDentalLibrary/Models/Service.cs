@@ -18,7 +18,7 @@ namespace STDentalLibrary.Models
         public DateTime EndDate { get; set; }
 
 
-        public int ServiceCostCalculationlId { get; set; }
+        //public int ServiceCostCalculationlId { get; set; }
         public ServiceCostCalculation ServiceCostCalculation { get; set; }
     }
 }

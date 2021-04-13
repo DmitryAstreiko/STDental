@@ -18,10 +18,10 @@ namespace STDentalLibrary.Models
         public ReceptionStatus ReceptionStatus { get; set; }
 
 
-        public int StaffId { get; set; }
+       // public int StaffId { get; set; }
         public Staff Staff { get; set; }
 
-        public int PatientId { get; set; }
+       // public int PatientId { get; set; }
         public Patient Patient { get; set; }
     }
 }

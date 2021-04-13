@@ -12,8 +12,8 @@ namespace STDentalLibrary.Models
 
         public string Name { get; set; }
 
-        public List<Service> Services { get; set; }
+        //public List<Service> Services { get; set; }
 
-        public List<Material> Materials { get; set; }
+        //public List<Material> Materials { get; set; }
     }
 }
