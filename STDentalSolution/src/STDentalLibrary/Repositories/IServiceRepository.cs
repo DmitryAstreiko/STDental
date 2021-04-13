@@ -14,5 +14,13 @@ namespace STDentalLibrary.Repositories
 
         //Get all services (for example tree view)
         IEnumerable<Service> GetServices();
+
+        int AddService(Service service, ServiceMaterial serviceMaterial, ServiceCostCalculation serviceCostCalculation);
+
+        bool UpdateService(Service service, ServiceMaterial serviceMaterial, ServiceCostCalculation serviceCostCalculation);
+
+        bool DeleteService(int serviceId);
+
+        void ExportToExcelServices();
     }
 }

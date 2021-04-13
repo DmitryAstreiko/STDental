@@ -8,7 +8,7 @@ namespace STDentalLibrary.Models
 {
     public class GroupNameService
     {
-        public int GroupNameServiceId { get; set; }
+        //public int GroupNameServiceId { get; set; }
 
         public string Name { get; set; }
 

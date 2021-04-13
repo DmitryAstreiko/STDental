@@ -8,13 +8,17 @@ namespace STDentalLibrary.Models
 {
     public class ServiceMaterial
     {
-        public int ServiceMaterialId { get; set; }
+        //public int ServiceMaterialId { get; set; }
 
         public decimal Price { get; set; }
 
         public decimal Norm { get; set; }
 
         public decimal Cost { get; set; }
+
+        public int ServiceId { get; set; }
+
+        public int MaterialId { get; set; }
 
 
         //public List<Service> Services { get; set; }

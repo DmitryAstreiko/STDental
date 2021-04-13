@@ -15,7 +15,7 @@ namespace STDentalLibrary.Repositories
 
         int AddStaff(Staff staff);
 
-        int UpdateStaff(Staff staff);
+        bool UpdateStaff(Staff staff);
 
         bool FireStaff(int staffId);
     }

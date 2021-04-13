@@ -19,8 +19,12 @@ namespace STDentalLibrary.Repositories
 
         int AddTalon(int patientId, int staffId, List<ServiceMaterial> listServiceMaterials);
 
-        int UpdateTalon(int patientId, int staffId, List<ServiceMaterial> listServiceMaterials);
+        bool UpdateTalon(int talonId, int patientId, int staffId, List<ServiceMaterial> listServiceMaterials);
 
-        int DeleteTalon(int talonId);
+        bool DeleteTalon(int talonId);
+
+        void ExportToExcelTalon(int talonId);
+
+        int AddPayment(Payment payment);
     }
 }

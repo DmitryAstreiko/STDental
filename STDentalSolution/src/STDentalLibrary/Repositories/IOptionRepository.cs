@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using STDentalLibrary.Models.Enums;
+using STDentalLibrary.Models;
 
 namespace STDentalLibrary.Repositories
 {
-    public interface IRoleRepository
+    public interface IOptionRepository
     {
-        IEnumerable<Role> GetRoles();
+        IEnumerable<Option> GetOptions();
+
+        bool SaveOptions();
     }
 }

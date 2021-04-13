@@ -5,7 +5,7 @@ namespace STDentalLibrary.Models
 {
     public class Reception
     {
-        public int ReceptionId { get; set; }
+        //public int ReceptionId { get; set; }
 
         public DateTime VisitDay { get; set; }
 

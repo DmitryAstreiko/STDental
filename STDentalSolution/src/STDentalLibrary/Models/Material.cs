@@ -6,7 +6,7 @@ namespace STDentalLibrary.Models
 {
     public class Material
     {
-        public int MaterialId { get; set; }
+        //public int MaterialId { get; set; }
 
         public string Name { get; set; }
 

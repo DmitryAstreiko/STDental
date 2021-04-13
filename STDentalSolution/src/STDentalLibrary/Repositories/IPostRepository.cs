@@ -15,7 +15,7 @@ namespace STDentalLibrary.Repositories
 
         int AddPost(string postName);
 
-        int UpdatePost(string postName);
+        bool UpdatePost(int postId, string postName);
 
         bool DeletePost(int postId);
     }

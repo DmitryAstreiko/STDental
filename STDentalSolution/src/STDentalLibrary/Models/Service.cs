@@ -5,7 +5,7 @@ namespace STDentalLibrary.Models
 {
     public class Service
     {
-        public int ServiceId { get; set; }
+        //public int ServiceId { get; set; }
 
         public string Name { get; set; }
 
@@ -19,6 +19,6 @@ namespace STDentalLibrary.Models
 
 
         //public int ServiceCostCalculationlId { get; set; }
-        public ServiceCostCalculation ServiceCostCalculation { get; set; }
+        //public ServiceCostCalculation ServiceCostCalculation { get; set; }
     }
 }

@@ -17,7 +17,7 @@ namespace STDentalLibrary.Repositories
 
         int AddPatient(Patient patient);
 
-        int UpdatePatient(Patient patient);
+        bool UpdatePatient(Patient patient);
 
         bool DeletePatient(int patientId);
     }
