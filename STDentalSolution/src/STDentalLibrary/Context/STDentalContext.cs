@@ -3,11 +3,11 @@ using STDentalLibrary.Models;
 
 namespace STDentalLibrary.Context
 {
-    internal class STDentalContext : DbContext
+    public class STDentalContext : DbContext
     {
         private readonly string _connectionValue;
 
-        //public DbSet<Option> Options { get; set; }
+        public DbSet<Option> Options { get; set; }
 
         public STDentalContext(string connectionValue = null)
         {

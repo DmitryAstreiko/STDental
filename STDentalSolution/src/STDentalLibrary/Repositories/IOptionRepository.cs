@@ -11,6 +11,6 @@ namespace STDentalLibrary.Repositories
     {
         IEnumerable<Option> GetOptions();
 
-        bool SaveOptions();
+        void SaveOptions(List<Option> listOption);
     }
 }
