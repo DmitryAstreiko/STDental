@@ -21,6 +21,6 @@ namespace STDentalLibrary.Repositories
 
         bool DeleteMaterial(int materialId);
 
-        void ExportToExcelMaterials();
+        void ExportToExcelMaterials(IEnumerable<Material> materials);
     }
 }
