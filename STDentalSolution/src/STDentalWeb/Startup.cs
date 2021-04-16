@@ -54,7 +54,13 @@ namespace STDentalWeb
                     );
                     await context.Response.WriteAsync("End!");
                 });
-                
+
+                endpoints.MapGet("/json", async context =>
+                {
+                    var repository = context.RequestServices.GetService<IOptionRepository>();
+                    await context.Response.WriteAsync(await repository.GetOptionsJsonAsync());
+                });
+
             });
 
           
