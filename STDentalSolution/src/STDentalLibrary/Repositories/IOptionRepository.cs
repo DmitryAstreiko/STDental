@@ -9,7 +9,7 @@ namespace STDentalLibrary.Repositories
 {
     public interface IOptionRepository
     {
-        IEnumerable<Option> GetOptions();
+        Task<IEnumerable<Option>> GetOptionsAsync();
 
         void SaveOptions(List<Option> listOption);
     }

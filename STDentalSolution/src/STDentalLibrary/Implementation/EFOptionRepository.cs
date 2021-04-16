@@ -1,31 +1,36 @@
-﻿using System;
+﻿using STDentalLibrary.Context;
+using STDentalLibrary.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using STDentalLibrary.Context;
-using STDentalLibrary.Models;
+using Microsoft.Extensions.Configuration;
 using STDentalLibrary.Repositories;
 
-namespace STDentalLibrary.ImplementationTest
+namespace STDentalLibrary.Implementation
 {
-    public class ImplementationOption : IOptionRepository
+    public class EFOptionRepository : IOptionRepository
     {
-        private readonly STDentalContext _context;
+        private readonly IConfiguration _configuration;
 
-        public ImplementationOption(STDentalContext context)
+        public EFOptionRepository(IConfiguration configuration)
         {
-            this._context = context;
+            _configuration = configuration;
         }
 
-        public IEnumerable<Option> GetOptions()
+        public async Task<IEnumerable<Option>> GetOptionsAsync()
         {
-            return _context.Options;
+            await using var context = CreateContext(); 
+            return await context.Options.ToListAsync();
         }
 
         public void SaveOptions(List<Option> listOption)
         {
-            var curOption = _context.Options.ToList();
-
+            using var context = CreateContext();
+            var curOption = context.Options.ToList();
+            /*
             foreach (var row in curOption)
             {
                 switch (row.Name)
@@ -62,18 +67,28 @@ namespace STDentalLibrary.ImplementationTest
                         break;
                     // etc
                 }
-            }
+            */
+           
 
-
-            //foreach (var rowOption in listOption)
-            //{
-            //    _context.Entry(rowOption).State = EntityState.Modified;
-            //}
-
-
-            //_context.Entry(option).State = EntityState.Modified; 
-
-            _context.SaveChanges();
         }
+
+        private STDentalContext CreateContext()
+        {
+            return new STDentalContext(_configuration.GetConnectionString("STDentalDB"));
+        }
+
+
+        //foreach (var rowOption in listOption)
+        //{
+        //    _context.Entry(rowOption).State = EntityState.Modified;
+        //}
+
+
+        //_context.Entry(option).State = EntityState.Modified; 
+
+        //_context.SaveChanges();
+
+
+
     }
 }

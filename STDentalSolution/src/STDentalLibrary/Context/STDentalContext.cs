@@ -11,13 +11,17 @@ namespace STDentalLibrary.Context
 
         public STDentalContext(string connectionValue = null)
         {
-            this._connectionValue = connectionValue;
+            _connectionValue = connectionValue;
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(
-                _connectionValue ?? @"Data Source=.\SQLExpress;Initial Catalog=STDentalTest;Integrated Security=True");
+            /* optionsBuilder.UseSqlServer(
+                 _connectionValue ?? @"Data Source=.\SQLExpress;Initial Catalog=STDentalTest;Integrated Security=True");*/
+
+            optionsBuilder.UseSqlServer(@"Server = .\SQLEXPRESS; Database = STDentalTest; Trusted_Connection = True");
+
+            //optionsBuilder.UseSqlServer(_connectionValue);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
