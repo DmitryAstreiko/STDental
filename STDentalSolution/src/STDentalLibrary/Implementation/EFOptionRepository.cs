@@ -35,6 +35,8 @@ namespace STDentalLibrary.Implementation
         {
             await using var context = CreateContext();
 
+            //docs.microsoft.com/en-us/dotnet/standard/serialization/system-text-json-how-to?pivots=dotnet-5-0//
+
             var newOptions = await JsonSerializer.DeserializeAsync<List<Option>>(new MemoryStream(Encoding.UTF8.GetBytes(stringJson)), null);
 
             if (newOptions == null) return false;

@@ -9,6 +9,6 @@ namespace STDentalLibrary.Repositories
 {
     public interface IRoleRepository
     {
-        IEnumerable<Role> GetRoles();
+        Task<IEnumerable<Role>> GetRolesAsync();
     }
 }

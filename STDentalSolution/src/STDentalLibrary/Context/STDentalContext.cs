@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using STDentalLibrary.Models;
+using STDentalLibrary.Models.Enums;
 
 namespace STDentalLibrary.Context
 {
@@ -8,6 +9,7 @@ namespace STDentalLibrary.Context
         private readonly string _connectionValue;
 
         public DbSet<Option> Options { get; set; }
+        public DbSet<Role> Roles { get; set; }
 
         public STDentalContext(string connectionValue = null)
         {
