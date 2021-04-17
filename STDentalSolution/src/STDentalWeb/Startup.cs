@@ -6,8 +6,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using STDentalLibrary.Implementation;
 using STDentalLibrary.Repositories;
 
@@ -34,10 +37,7 @@ namespace STDentalWeb
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapGet("/", async context =>
-                {
-                    await context.Response.WriteAsync("Hello user!");
-                });
+                endpoints.MapGet("/", async context => { await context.Response.WriteAsync("Hello user!"); });
 
                 endpoints.MapGet("/cs", async context =>
                 {
@@ -45,7 +45,7 @@ namespace STDentalWeb
                     await context.Response.WriteAsync(config.GetConnectionString("STDentalDB"));
                 });
 
-                endpoints.MapGet("/options", async context =>
+             /*   endpoints.MapGet("/options", async context =>
                 {
                     await context.Response.WriteAsync("Start!");
                     var repository = context.RequestServices.GetService<IOptionRepository>();
@@ -54,11 +54,23 @@ namespace STDentalWeb
                     );
                     await context.Response.WriteAsync("End!");
                 });
+            */
 
-                endpoints.MapGet("/json", async context =>
+                endpoints.MapGet("/options", async context =>
                 {
                     var repository = context.RequestServices.GetService<IOptionRepository>();
-                    await context.Response.WriteAsync(await repository.GetOptionsJsonAsync());
+                    var optionsList = (await repository.GetOptionsAsync()).ToList();
+
+                    /*string json = string.Empty;
+                    await using (var stream = new MemoryStream())
+                    {
+                        await JsonSerializer.SerializeAsync(stream, optionsList, optionsList.GetType());
+                        stream.Position = 0;
+                        using var reader = new StreamReader(stream);
+                        json = await reader.ReadToEndAsync();
+                    }*/
+
+                    await context.Response.WriteAsync(JsonSerializer.Serialize(optionsList));
                 });
 
             });

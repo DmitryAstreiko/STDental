@@ -10,11 +10,7 @@ namespace STDentalLibrary.Repositories
     public interface IOptionRepository
     {
         Task<IEnumerable<Option>> GetOptionsAsync();
-
-        Task<string> GetOptionsJsonAsync();
-
-        Task<string> GetOptionsUtf8JsonAsync();
-
+        
         Task<bool> SaveOptionsAsync(string stringJson);
     }
 }

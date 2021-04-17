@@ -24,40 +24,6 @@ namespace STDentalLibrary.Implementation
             _configuration = configuration;
         }
 
-        public async Task<string> GetOptionsJsonAsync()
-        {
-            await using var context = CreateContext();
-
-            IList<Option> optionsList = await context.Options.ToListAsync();
-
-            string json = string.Empty;
-            await using (var stream = new MemoryStream())
-            {
-                await JsonSerializer.SerializeAsync(stream, optionsList, optionsList.GetType());
-                stream.Position = 0;
-                using var reader = new StreamReader(stream);
-                json = await reader.ReadToEndAsync();
-            }
-            return json;
-        }
-
-        public async Task<string> GetOptionsUtf8JsonAsync()
-        {
-            await using var context = CreateContext();
-
-            IList<Option> optionsList = await context.Options.ToListAsync();
-
-            string json = string.Empty;
-            await using (var stream = new MemoryStream())
-            {
-                await JsonSerializer.SerializeAsync(stream, optionsList, optionsList.GetType());
-                stream.Position = 0;
-                using var reader = new StreamReader(stream);
-                json = await reader.ReadToEndAsync();
-            }
-            return json;
-        }
-
         public async Task<IEnumerable<Option>> GetOptionsAsync()
         {
             await using var context = CreateContext();

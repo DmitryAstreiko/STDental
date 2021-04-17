@@ -2,30 +2,30 @@
 
 namespace STDentalLibrary.Migrations
 {
-    public partial class AddDefaultOptions : Migration
+    public partial class AddDefaultValueOptions : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.InsertData(
                 table: "Options",
-                columns: new[] { "OptionsId", "Name", "Value", "Description" },
+                columns: new[] { "OptionsId", "Description", "Name", "Value" },
                 values: new object[,]
                 {
-                    { 1, "FullNameOrganization", "Открытое закрытое общество Рога и копыта", "Полное наименование организации" },
-                    { 2, "NameOrganization", "ОЗА Рога и копыта", "Краткое наименование организации" },
-                    { 3, "UNP", "3223322", "УНП организации" },
-                    { 4, "LegalAdress", "г. Минск, ул. Победы, 122", "Юридический адрес организации" },
-                    { 5, "PhysicalAdress", "г. Минск, ул. Маркса и Федора, 654'", "Физический адрес организации" },
-                    { 6, "HeadFIO", "Усаче Длинный Васильевич", "ФИО руководителя" },
-                    { 7, "HeadPost", "Генеральный директор", "Должность руководителя" },
-                    { 8, "AccountantGeneral", "Жуков Гадя Петрович", "ФИО главного бухгалтера" },
-                    { 9, "BankName", "ОАО Самый главный банк", "Наименование обслуживающего банка" },
-                    { 10, "BankAccount", "3112315315465168463513", "Расчетный счет организации" },
-                    { 11, "BankAdress", "г. Минск, ул. Бядули, 33", "Адрес обслуживающего банка" },
-                    { 12, "BankSWIFT", "XXYYXXYY", "БИК обслуживающего банка" }
+                    { 1, "Полное наименование организации", "FullNameOrganization", "Открытое закрытое общество Рога и копыта" },
+                    { 2, "Краткое наименование организации", "NameOrganization", "ОЗА Рога и копыта" },
+                    { 3, "УНП организации", "UNP", "3223322" },
+                    { 4, "Юридический адрес организации", "LegalAdress", "г. Минск, ул. Победы, 122" },
+                    { 5, "Физический адрес организации", "PhysicalAdress", "г. Минск, ул. Маркса и Федора, 654'" },
+                    { 6, "ФИО руководителя", "HeadFIO", "Усаче Длинный Васильевич" },
+                    { 7, "Должность руководителя", "HeadPost", "Генеральный директор" },
+                    { 8, "ФИО главного бухгалтера", "AccountantGeneral", "Жуков Гадя Петрович" },
+                    { 9, "Наименование обслуживающего банка", "BankName", "ОАО Самый главный банк" },
+                    { 10, "Расчетный счет организации", "BankAccount", "3112315315465168463513" },
+                    { 11, "Адрес обслуживающего банка", "BankAdress", "г. Минск, ул. Бядули, 33" },
+                    { 12, "БИК обслуживающего банка", "BankSWIFT", "XXYYXXYY" }
                 });
         }
-        
+
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DeleteData(
@@ -87,7 +87,6 @@ namespace STDentalLibrary.Migrations
                 table: "Options",
                 keyColumn: "OptionsId",
                 keyValue: 12);
-
         }
     }
 }
