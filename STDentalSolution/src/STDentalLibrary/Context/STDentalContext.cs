@@ -9,7 +9,8 @@ namespace STDentalLibrary.Context
         private readonly string _connectionValue;
 
         public DbSet<Option> Options { get; set; }
-        public DbSet<Role> Roles { get; set; }
+        public DbSet<Staff> Staffs { get; set; }
+        public DbSet<Post> Posts { get; set; }
 
         public STDentalContext(string connectionValue = null)
         {
@@ -21,9 +22,9 @@ namespace STDentalLibrary.Context
             /* optionsBuilder.UseSqlServer(
                  _connectionValue ?? @"Data Source=.\SQLExpress;Initial Catalog=STDentalTest;Integrated Security=True");*/
 
-            optionsBuilder.UseSqlServer(@"Server = .\SQLEXPRESS; Database = STDentalTest; Trusted_Connection = True");
+            //optionsBuilder.UseSqlServer(@"Server = .\SQLEXPRESS; Database = STDentalTest; Trusted_Connection = True");
 
-            //optionsBuilder.UseSqlServer(_connectionValue);
+            optionsBuilder.UseSqlServer(_connectionValue);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -65,6 +66,30 @@ namespace STDentalLibrary.Context
                     new Option { OptionsId = 11, Name = "BankAdress", Value = "г. Минск, ул. Бядули, 33", Description = "Адрес обслуживающего банка" },
                     new Option { OptionsId = 12, Name = "BankSWIFT", Value = "XXYYXXYY", Description = "БИК обслуживающего банка" }
                 );
+            
+            modelBuilder.Entity<Post>(post =>
+            {
+                post.HasKey(o => o.PostId);
+
+                post.Property(p => p.Name)
+                    //.HasColumnName("Name")
+                    .HasColumnType("nvarchar(128)")
+                    .IsRequired();
+            });
+
+            modelBuilder.Entity<Staff>(staff =>
+            {
+                staff.HasKey(o => o.StaffId);
+
+                staff.Property(p => p.Name)
+                    //.HasColumnName("Name")
+                    .HasColumnType("nvarchar(250)")
+                    .IsRequired();
+
+                staff.OwnsOne(p => p.StaffCredential);
+
+
+            });
         }
     }
 }

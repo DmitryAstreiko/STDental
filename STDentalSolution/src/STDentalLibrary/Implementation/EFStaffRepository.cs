@@ -1,0 +1,71 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using STDentalLibrary.Context;
+using STDentalLibrary.Models;
+using STDentalLibrary.Models.Enums;
+using STDentalLibrary.Repositories;
+
+namespace STDentalLibrary.Implementation
+{
+    public class EFStaffRepository : IStaffRepository
+    {
+        private readonly IConfiguration _configuration;
+
+        public EFStaffRepository (IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
+
+        public async Task<int> AddStaffAsync(Staff staff)
+        {
+            await using (var context = CreateContext())
+            {
+                var res = await context.Staffs.AddAsync(staff);
+                return res.Entity.StaffId;
+            }
+        }
+
+        public Task<bool> FireStaffAsync(int staffId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<IEnumerable<Staff>> GetActualStaffsAsync()
+        {
+            await using (var context = CreateContext())
+            {
+                return await context.Staffs
+                    .Include(e => e.Post)
+                    .Where(q => q.StaffStatus == StaffStatus.Works)
+                    .OrderBy(s => s.StaffId)
+                    .ToListAsync();
+            }
+        }
+
+        public async Task<Staff> GetStaffAsync(int staffId)
+        {
+            await using (var context = CreateContext())
+            {
+                return await context.Staffs
+                    .Include(e => e.Post)
+                    .Where(w => w.StaffId == staffId)
+                    .FirstAsync();
+            }
+        }
+
+        public Task<bool> UpdateStaffAsync(Staff staff)
+        {
+            throw new NotImplementedException();
+        }
+
+        private STDentalContext CreateContext()
+        {
+            return new STDentalContext(_configuration.GetConnectionString("STDentalDB"));
+        }
+    }
+}
