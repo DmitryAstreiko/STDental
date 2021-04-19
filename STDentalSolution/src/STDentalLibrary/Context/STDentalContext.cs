@@ -11,6 +11,7 @@ namespace STDentalLibrary.Context
         public DbSet<Option> Options { get; set; }
         public DbSet<Staff> Staffs { get; set; }
         public DbSet<Post> Posts { get; set; }
+        public DbSet<Patient> Patients { get; set; }
 
         public STDentalContext(string connectionValue = null)
         {
@@ -22,13 +23,14 @@ namespace STDentalLibrary.Context
             /* optionsBuilder.UseSqlServer(
                  _connectionValue ?? @"Data Source=.\SQLExpress;Initial Catalog=STDentalTest;Integrated Security=True");*/
 
-            //optionsBuilder.UseSqlServer(@"Server = .\SQLEXPRESS; Database = STDentalTest; Trusted_Connection = True");
+            optionsBuilder.UseSqlServer("Server = .\\SQLEXPRESS; Database = STDentalTest; Trusted_Connection = True");
 
-            optionsBuilder.UseSqlServer(_connectionValue);
+            //optionsBuilder.UseSqlServer(_connectionValue);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            #region Options
             modelBuilder.Entity<Option>()
                 .ToTable("Options");
 
@@ -66,7 +68,9 @@ namespace STDentalLibrary.Context
                     new Option { OptionsId = 11, Name = "BankAdress", Value = "г. Минск, ул. Бядули, 33", Description = "Адрес обслуживающего банка" },
                     new Option { OptionsId = 12, Name = "BankSWIFT", Value = "XXYYXXYY", Description = "БИК обслуживающего банка" }
                 );
-            
+            #endregion
+
+            #region Posts
             modelBuilder.Entity<Post>(post =>
             {
                 post.HasKey(o => o.PostId);
@@ -76,7 +80,9 @@ namespace STDentalLibrary.Context
                     .HasColumnType("nvarchar(128)")
                     .IsRequired();
             });
+            #endregion
 
+            #region Staffs
             modelBuilder.Entity<Staff>(staff =>
             {
                 staff.HasKey(o => o.StaffId);
@@ -87,9 +93,35 @@ namespace STDentalLibrary.Context
                     .IsRequired();
 
                 staff.OwnsOne(p => p.StaffCredential);
-
-
             });
+            #endregion
+
+            #region Patients
+            modelBuilder.Entity<Patient>(patient =>
+            {
+                patient.HasKey(o => o.PatientId);
+
+                patient.Property(p => p.Name)
+                    .HasColumnType("nvarchar(256)")
+                    .IsRequired();
+
+                patient.Property(p => p.City)
+                    .HasColumnType("nvarchar(64)")
+                    .IsRequired();
+
+                patient.Property(p => p.Street)
+                    .HasColumnType("nvarchar(128)")
+                    .IsRequired();
+
+                patient.Property(p => p.Phone)
+                    .HasColumnType("nvarchar(16)")
+                    .IsRequired();
+
+                patient.Property(p => p.DateBorn)
+                    .HasColumnType("date")
+                    .IsRequired();
+            });
+            #endregion
         }
     }
 }
