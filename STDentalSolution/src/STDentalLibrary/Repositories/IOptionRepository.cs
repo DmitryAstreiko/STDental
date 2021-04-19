@@ -11,6 +11,6 @@ namespace STDentalLibrary.Repositories
     {
         Task<IEnumerable<Option>> GetOptionsAsync();
         
-        Task<bool> SaveOptionsAsync(string stringJson);
+        Task<bool> SaveOptionsAsync(List<Option> options);
     }
 }

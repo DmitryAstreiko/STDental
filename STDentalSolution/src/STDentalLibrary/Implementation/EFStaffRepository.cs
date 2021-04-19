@@ -30,9 +30,26 @@ namespace STDentalLibrary.Implementation
             }
         }
 
-        public Task<bool> FireStaffAsync(int staffId)
+        public async Task<bool> FireStaffAsync(int staffId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                await using (var context = CreateContext())
+                {
+                    var fireStaff = await context.Staffs.FindAsync(staffId);
+
+                    if (fireStaff == null) return false;
+
+                    context.Staffs.Remove(fireStaff);
+                    await context.SaveChangesAsync();
+                    return true;
+                }
+            }
+            catch
+            {
+                return false;
+            }
+           
         }
 
         public async Task<IEnumerable<Staff>> GetActualStaffsAsync()
@@ -58,9 +75,22 @@ namespace STDentalLibrary.Implementation
             }
         }
 
-        public Task<bool> UpdateStaffAsync(Staff staff)
+        public async Task<bool> UpdateStaffAsync(Staff staff)
         {
-            throw new NotImplementedException();
+            try
+            {
+                await using var context = CreateContext();
+
+                context.Staffs.Attach(staff);
+
+                await context.SaveChangesAsync();
+
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         private STDentalContext CreateContext()

@@ -31,115 +31,31 @@ namespace STDentalLibrary.Implementation
             return await context.Options.ToListAsync();
         }
 
-        public async Task<bool> SaveOptionsAsync(string stringJson)
+        public async Task<bool> SaveOptionsAsync(List<Option> options)
         {
-            await using var context = CreateContext();
-
-            //docs.microsoft.com/en-us/dotnet/standard/serialization/system-text-json-how-to?pivots=dotnet-5-0//
-
-            var newOptions = await JsonSerializer.DeserializeAsync<List<Option>>(new MemoryStream(Encoding.UTF8.GetBytes(stringJson)), null);
-
-            if (newOptions == null) return false;
-                
-            var curOption = await context.Options.ToListAsync();
-            
-            if (curOption == null) return false;
-
-            foreach (var row in curOption)
+            try
             {
-                switch (row.Name)
+                await using var context = CreateContext();
+
+                foreach (var option in options)
                 {
-                    case "FullNameOrganization":
-                        row.Value = newOptions
-                            .Where(s => s.Name == "FullNameOrganization")
-                            .Select(w => w.Value)
-                            .ToString()!;
-                        break;
-                    case "NameOrganization":
-                        row.Value = newOptions
-                            .Where(s => s.Name == "NameOrganization")
-                            .Select(w => w.Value)
-                            .ToString()!;
-                        break;
-                    case "UNP":
-                        row.Value = newOptions
-                            .Where(s => s.Name == "UNP")
-                            .Select(w => w.Value)
-                            .ToString()!;
-                        break;
-                    case "LegalAddress":
-                        row.Value = newOptions
-                            .Where(s => s.Name == "LegalAddress")
-                            .Select(w => w.Value)
-                            .ToString()!;
-                        break;
-                    case "HeadFIO":
-                        row.Value = newOptions
-                            .Where(s => s.Name == "HeadFIO")
-                            .Select(w => w.Value)
-                            .ToString()!;
-                        break;
-                    case "HeadPost":
-                        row.Value = newOptions
-                            .Where(s => s.Name == "HeadPost")
-                            .Select(w => w.Value)
-                            .ToString()!;
-                        break;
-                    case "AccountantGeneral":
-                        row.Value = newOptions
-                            .Where(s => s.Name == "AccountantGeneral")
-                            .Select(w => w.Value)
-                            .ToString()!;
-                        break;
-                    case "BankName":
-                        row.Value = newOptions
-                            .Where(s => s.Name == "BankName")
-                            .Select(w => w.Value)
-                            .ToString()!;
-                        break;
-                    case "BankAccount":
-                        row.Value = newOptions
-                            .Where(s => s.Name == "BankAccount")
-                            .Select(w => w.Value)
-                            .ToString()!;
-                        break;
-                    case "BankAdress":
-                        row.Value = newOptions
-                            .Where(s => s.Name == "BankAdress")
-                            .Select(w => w.Value)
-                            .ToString()!;
-                        break;
-                    case "BankSWIFT":
-                        row.Value = newOptions
-                            .Where(s => s.Name == "BankSWIFT")
-                            .Select(w => w.Value)
-                            .ToString()!;
-                        break;
+                    context.Options.Attach(option);
                 }
+
+                await context.SaveChangesAsync();
+
+                return true;
             }
-
-            await context.SaveChangesAsync();
-
-            return true;
+            catch 
+            {
+                return false;
+            }
         }
 
         private STDentalContext CreateContext()
         {
             return new STDentalContext(_configuration.GetConnectionString("STDentalDB"));
         }
-
-
-        //foreach (var rowOption in listOption)
-        //{
-        //    _context.Entry(rowOption).State = EntityState.Modified;
-        //}
-
-
-        //_context.Entry(option).State = EntityState.Modified; 
-
-        //_context.SaveChanges();
-
-
 
     }
 }
