@@ -9,12 +9,12 @@ namespace STDentalLibrary.Repositories
 {
     public interface IUnitRepository
     {
-        IEnumerable<Unit> GetUnits();
+        Task<IEnumerable<Unit>> GetUnitsAsync();
 
-        int AddUnit(string name);
+        Task<int> AddUnitAsync(Unit unit);
 
-        bool UpdateUnit(int unitId, string name);
+        Task<bool> UpdateUnitAsync(Unit unit);
 
-        bool DeleteUnit(int unitId);
+        Task<bool> DeleteUnitAsync(int unitId);
     }
 }

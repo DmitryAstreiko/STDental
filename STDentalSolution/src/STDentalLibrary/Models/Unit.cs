@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 namespace STDentalLibrary.Models
 {
     public class Unit
-    {
-        //public int UnitId { get; set; }
+    { 
+        public int UnitId { get; set; }
 
         public string Name { get; set; }
 

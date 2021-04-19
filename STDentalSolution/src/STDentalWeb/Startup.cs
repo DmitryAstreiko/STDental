@@ -27,6 +27,7 @@ namespace STDentalWeb
             services.AddTransient<IOptionRepository, EFOptionRepository>();
             services.AddTransient<IStaffRepository, EFStaffRepository>();
             services.AddTransient<IPatientRepository, EFPatientRepository>();
+            services.AddTransient<IUnitRepository, EFUnitRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -244,6 +245,7 @@ namespace STDentalWeb
                 #endregion
 
                 #region Patients
+
                 endpoints.MapGet("/patients", async context =>
                 {
                     var repository = context.RequestServices.GetService<IPatientRepository>();
@@ -306,6 +308,59 @@ namespace STDentalWeb
                     if (await repository.UpdatePatientAsync(updPatient)) await context.Response.WriteAsync($"True");
                     else await context.Response.WriteAsync("False");
                 });
+
+                #endregion
+
+                #region Unit
+
+                endpoints.MapGet("/units", async context =>
+                {
+                    var repository = context.RequestServices.GetService<IUnitRepository>();
+                    var unitList = await repository.GetUnitsAsync();
+
+                    await context.Response.WriteAsync(JsonSerializer.Serialize(unitList, null));
+                });
+                
+                endpoints.MapGet("/addunit", async context =>
+                {
+                    var repository = context.RequestServices.GetService<IUnitRepository>();
+
+                    var newUnit =
+                        await JsonSerializer.DeserializeAsync<Unit>(
+                            new MemoryStream(Encoding.UTF8.GetBytes(context.Request.Query["data"])), null);
+
+                    var resAdd = await repository.AddUnitAsync(newUnit);
+                    if (resAdd != 0) await context.Response.WriteAsync($"{resAdd}");
+                    else await context.Response.WriteAsync("0");
+                });
+
+                endpoints.MapGet("/delunit", async context =>
+                {
+                    if (int.TryParse(context.Request.Query["id"], out var unitId))
+                    {
+                        var repo = context.RequestServices.GetService<IUnitRepository>();
+
+                        if (await repo.DeleteUnitAsync(unitId)) await context.Response.WriteAsync("True");
+                        else await context.Response.WriteAsync("False");
+                    }
+                    else
+                    {
+                        await context.Response.WriteAsync("False");
+                    }
+                });
+
+                endpoints.MapGet("/updateunit", async context =>
+                {
+                    var repository = context.RequestServices.GetService<IUnitRepository>();
+
+                    var updUnit =
+                        await JsonSerializer.DeserializeAsync<Unit>(
+                            new MemoryStream(Encoding.UTF8.GetBytes(context.Request.Query["data"])), null);
+
+                    if (await repository.UpdateUnitAsync(updUnit)) await context.Response.WriteAsync($"True");
+                    else await context.Response.WriteAsync("False");
+                });
+
                 #endregion
             });
         }

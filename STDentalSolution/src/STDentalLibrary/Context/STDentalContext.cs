@@ -12,6 +12,8 @@ namespace STDentalLibrary.Context
         public DbSet<Staff> Staffs { get; set; }
         public DbSet<Post> Posts { get; set; }
         public DbSet<Patient> Patients { get; set; }
+        public DbSet<Unit> Units { get; set; }
+        //public DbSet<Material> Materials { get; set; }
 
         public STDentalContext(string connectionValue = null)
         {
@@ -31,6 +33,7 @@ namespace STDentalLibrary.Context
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             #region Options
+
             modelBuilder.Entity<Option>()
                 .ToTable("Options");
 
@@ -68,6 +71,7 @@ namespace STDentalLibrary.Context
                     new Option { OptionsId = 11, Name = "BankAdress", Value = "г. Минск, ул. Бядули, 33", Description = "Адрес обслуживающего банка" },
                     new Option { OptionsId = 12, Name = "BankSWIFT", Value = "XXYYXXYY", Description = "БИК обслуживающего банка" }
                 );
+
             #endregion
 
             #region Posts
@@ -97,6 +101,7 @@ namespace STDentalLibrary.Context
             #endregion
 
             #region Patients
+            
             modelBuilder.Entity<Patient>(patient =>
             {
                 patient.HasKey(o => o.PatientId);
@@ -121,6 +126,45 @@ namespace STDentalLibrary.Context
                     .HasColumnType("date")
                     .IsRequired();
             });
+
+            #endregion
+
+            #region Materials
+
+            /* modelBuilder.Entity<Material>(material =>
+             {
+                 material
+
+             });*/
+
+            #endregion
+
+            #region Units
+
+            modelBuilder.Entity<Unit>(unit =>
+            {
+                unit.HasKey(o => o.UnitId);
+
+                unit.Property(p => p.Name)
+                    .HasColumnType("nvarchar(32)")
+                    .IsRequired();
+            });
+
+            modelBuilder.Entity<Unit>().HasData(
+                new Unit { UnitId = 1, Name = "мл."},
+                new Unit { UnitId = 2, Name = "шт." },
+                new Unit { UnitId = 3, Name = "гр." },
+                new Unit { UnitId = 4, Name = "кг." },
+                new Unit { UnitId = 5, Name = "см." },
+                new Unit { UnitId = 6, Name = "карпула" },
+                new Unit { UnitId = 7, Name = "пар" },
+                new Unit { UnitId = 8, Name = "кв.см." },
+                new Unit { UnitId = 9, Name = "манипуляция" },
+                new Unit { UnitId = 10, Name = "процедура" },
+                new Unit { UnitId = 11, Name = "консультация" },
+                new Unit { UnitId = 12, Name = "обследование" }
+            );
+
             #endregion
         }
     }
