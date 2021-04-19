@@ -9,16 +9,16 @@ namespace STDentalLibrary.Repositories
 {
     public interface IPatientRepository
     {
-        IEnumerable<Patient> GetPatients();
+        Task<IEnumerable<Patient>> GetPatientsAsync();
 
-        Patient GetPatient(int patientId);
+        Task<Patient> GetPatientAsync(int patientId);
 
-        IEnumerable<Patient> SearchPatients(string nameValue);
+        //Task<IEnumerable<Patient>> SearchPatientsAsync(string nameValue);
 
-        int AddPatient(Patient patient);
+        Task<int> AddPatientAsync(Patient patient);
 
-        bool UpdatePatient(Patient patient);
+        Task<bool> UpdatePatientAsync(Patient patient);
 
-        bool DeletePatient(int patientId);
+        Task<bool> DeletePatientAsync(int patientId);
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using STDentalLibrary.Context;
 using STDentalLibrary.Models;
@@ -19,39 +20,77 @@ namespace STDentalLibrary.Implementation
             _configuration = configuration;
         }
 
-        public IEnumerable<Patient> GetPatients()
+        public async Task<int> AddPatientAsync(Patient patient)
         {
-            throw new NotImplementedException();
+            await using (var context = CreateContext())
+            {
+                var res = await context.Patients.AddAsync(patient);
+                return res.Entity.PatientId;
+            }
+        }
+        
+        public async Task<bool> DeletePatientAsync(int patientId)
+        {
+            try
+            {
+                await using (var context = CreateContext())
+                {
+                    var delPatient = await context.Patients.FindAsync(patientId);
+
+                    if (delPatient == null) return false;
+
+                    context.Patients.Remove(delPatient);
+                    await context.SaveChangesAsync();
+                    return true;
+                }
+            }
+            catch
+            {
+                return false;
+            }
         }
 
-        public Patient GetPatient(int patientId)
+        public async Task<Patient> GetPatientAsync(int patientId)
         {
-            throw new NotImplementedException();
+            await using (var context = CreateContext())
+            {
+                return await context.Patients
+                    .Where(w => w.PatientId == patientId)
+                    .FirstAsync();
+            }
         }
 
-        public IEnumerable<Patient> SearchPatients(string nameValue)
+        public async Task<IEnumerable<Patient>> GetPatientsAsync()
         {
-            throw new NotImplementedException();
+            await using (var context = CreateContext())
+            {
+                return await context.Patients
+                    .OrderBy(w => w.Name)
+                    .ToListAsync();
+            }
+        }
+        
+        public async Task<bool> UpdatePatientAsync(Patient patient)
+        {
+            try
+            {
+                await using var context = CreateContext();
+
+                context.Patients.Attach(patient);
+
+                await context.SaveChangesAsync();
+
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
-        public int AddPatient(Patient patient)
+        private STDentalContext CreateContext()
         {
-            throw new NotImplementedException();
-        }
-
-        public bool UpdatePatient(Patient patient)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool DeletePatient(int patientId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public STDentalContext CreateContext()
-        {
-            return new STDentalContext(_configuration.GetConnectionString("STDentalDB"));
+            return new STDentalContext(_configuration.GetConnectionString("STDental"));
         }
     }
 }
