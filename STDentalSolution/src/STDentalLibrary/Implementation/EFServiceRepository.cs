@@ -61,13 +61,26 @@ namespace STDentalLibrary.Implementation
             }
         }
 
-        public Task<IEnumerable<Service>> GetServicesAsync()
+        public async Task<IEnumerable<Service>> GetServicesAsync()
         {
-            throw new NotImplementedException();
+            await using (var context = CreateContext())
+            {
+                return await context.Services
+                    .Where(q => q.EndDate == null)
+                    .OrderBy(s => s.Shifr)
+                    .OrderBy(s => s.ServiceId)
+                    .ToListAsync();
+            }
         }
 
         public Task<bool> UpdateServiceAsync(Service service)
         {
+            //удалить записи из ServiceMaterial
+
+            //удалить записи из ServiceCostCalculation
+
+            //сохранить service в Service, ServiceMaterial, ServiceCostCalculation
+
             throw new NotImplementedException();
         }
 

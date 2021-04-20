@@ -433,6 +433,37 @@ namespace STDentalWeb
                 });
 
                 #endregion
+
+                #region Services
+
+
+
+                #endregion
+
+                #region Talons
+
+
+
+                #endregion
+
+                #region Payments
+
+
+
+                #endregion
+
+                #region GroupName
+
+
+
+                #endregion
+
+                #region Receptions
+
+                
+
+                #endregion
+
             });
         }
     }

@@ -268,7 +268,7 @@ namespace STDentalLibrary.Context
                 serviceCost.HasOne(m => m.Service)
                     .WithOne(u => u.ServiceCostCalculation)
                     .HasForeignKey<Service>(u => u.ServiceId)
-                    .OnDelete(DeleteBehavior.NoAction);
+                    .OnDelete(DeleteBehavior.Cascade);
             });
 
             #endregion
@@ -294,7 +294,7 @@ namespace STDentalLibrary.Context
                 serviceMaterial.HasOne(m => m.Service)
                     .WithMany(u => u.ServiceMaterials)
                     .HasForeignKey(u => u.ServiceId)
-                    .OnDelete(DeleteBehavior.NoAction);
+                    .OnDelete(DeleteBehavior.Cascade);
 
                 serviceMaterial.HasOne(m => m.Material)
                     .WithMany(s => s.ServiceMaterials)

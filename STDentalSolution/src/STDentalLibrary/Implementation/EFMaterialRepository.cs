@@ -90,8 +90,11 @@ namespace STDentalLibrary.Implementation
 
                 var res = await context.Materials.AddAsync(material);
                 //context.Materials.Attach(material);
-
+                
                 await context.SaveChangesAsync();
+
+                //var resReplace = EFHelperRepository
+
 
                 return res.Entity.MaterialId;
             }
