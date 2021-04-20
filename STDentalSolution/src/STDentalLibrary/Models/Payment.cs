@@ -8,7 +8,7 @@ namespace STDentalLibrary.Models
 {
     public class Payment
     {
-        public int paymentId { get; set; }
+        public int PaymentId { get; set; }
         
         public decimal AmountBefore { get; set; }
 
@@ -23,6 +23,6 @@ namespace STDentalLibrary.Models
         public DateTime CreateDate { get; set; }
 
         public int TalonId { get; set; }
-        public Talon talon { get; set; }
+        public Talon Talon { get; set; }
     }
 }

@@ -372,11 +372,11 @@ namespace STDentalLibrary.Context
 
             modelBuilder.Entity<Payment>(payment =>
             {
-                payment.HasKey(o => o.paymentId);
+                payment.HasKey(o => o.PaymentId);
 
-                payment.HasOne(u => u.talon)
+                payment.HasOne(u => u.Talon)
                     .WithMany(t => t.Payments)
-                    .HasForeignKey(u => u.paymentId)
+                    .HasForeignKey(u => u.PaymentId)
                     .OnDelete(DeleteBehavior.NoAction);
 
                 payment.Property(p => p.AmountBefore)
