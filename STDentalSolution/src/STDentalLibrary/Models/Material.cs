@@ -10,14 +10,16 @@ namespace STDentalLibrary.Models
 
         public string Name { get; set; }
 
+        public int UnitId { get; set; }
+
+        public Unit Unit { get; set; }
+
         public DateTime CreateDate { get; set; }
 
         public decimal Price { get; set; }
 
         public DateTime StartDate { get; set; }
 
-        public DateTime EndDate { get; set; }
-
-        //public List<Material> MaterialsList { get; set; }
+        public DateTime? EndDate { get; set; }
     }
 }

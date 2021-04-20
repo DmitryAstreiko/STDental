@@ -13,7 +13,7 @@ namespace STDentalLibrary.Context
         public DbSet<Post> Posts { get; set; }
         public DbSet<Patient> Patients { get; set; }
         public DbSet<Unit> Units { get; set; }
-        //public DbSet<Material> Materials { get; set; }
+        public DbSet<Material> Materials { get; set; }
 
         public STDentalContext(string connectionValue = null)
         {
@@ -131,11 +131,34 @@ namespace STDentalLibrary.Context
 
             #region Materials
 
-            /* modelBuilder.Entity<Material>(material =>
+            modelBuilder.Entity<Material>(material =>
              {
-                 material
+                 material.HasKey(o => o.MaterialId);
 
-             });*/
+                 material.Property(p => p.Name)
+                     .HasColumnType("nvarchar(128)")
+                     .IsRequired();
+
+                 material.HasOne(m => m.Unit)
+                     .WithMany(u => u.Materials)
+                     .HasForeignKey(u => u.UnitId)
+                     .OnDelete(DeleteBehavior.NoAction);
+
+                 material.Property(p => p.CreateDate)
+                     .HasColumnType("datetime")
+                     .IsRequired();
+
+                 material.Property(p => p.Price)
+                     .HasColumnType("decimal(18,3)")
+                     .IsRequired();
+
+                 material.Property(p => p.StartDate)
+                     .HasColumnType("date")
+                     .IsRequired();
+
+                 material.Property(p => p.EndDate)
+                     .HasColumnType("date");
+             });
 
             #endregion
 
@@ -151,21 +174,23 @@ namespace STDentalLibrary.Context
             });
 
             modelBuilder.Entity<Unit>().HasData(
-                new Unit { UnitId = 1, Name = "мл."},
-                new Unit { UnitId = 2, Name = "шт." },
-                new Unit { UnitId = 3, Name = "гр." },
-                new Unit { UnitId = 4, Name = "кг." },
-                new Unit { UnitId = 5, Name = "см." },
-                new Unit { UnitId = 6, Name = "карпула" },
-                new Unit { UnitId = 7, Name = "пар" },
-                new Unit { UnitId = 8, Name = "кв.см." },
-                new Unit { UnitId = 9, Name = "манипуляция" },
-                new Unit { UnitId = 10, Name = "процедура" },
-                new Unit { UnitId = 11, Name = "консультация" },
-                new Unit { UnitId = 12, Name = "обследование" }
+            new Unit { UnitId = 1, Name = "мл."},
+            new Unit { UnitId = 2, Name = "шт." },
+            new Unit { UnitId = 3, Name = "гр." },
+            new Unit { UnitId = 4, Name = "кг." },
+            new Unit { UnitId = 5, Name = "см." },
+            new Unit { UnitId = 6, Name = "карпула" },
+            new Unit { UnitId = 7, Name = "пар" },
+            new Unit { UnitId = 8, Name = "кв.см." },
+            new Unit { UnitId = 9, Name = "манипуляция" },
+            new Unit { UnitId = 10, Name = "процедура" },
+            new Unit { UnitId = 11, Name = "консультация" },
+            new Unit { UnitId = 12, Name = "обследование" }
             );
 
             #endregion
+
+
         }
     }
 }

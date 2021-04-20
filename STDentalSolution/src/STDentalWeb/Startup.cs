@@ -28,6 +28,7 @@ namespace STDentalWeb
             services.AddTransient<IStaffRepository, EFStaffRepository>();
             services.AddTransient<IPatientRepository, EFPatientRepository>();
             services.AddTransient<IUnitRepository, EFUnitRepository>();
+            services.AddTransient<IMaterialRepository, EFMaterialRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -358,6 +359,76 @@ namespace STDentalWeb
                             new MemoryStream(Encoding.UTF8.GetBytes(context.Request.Query["data"])), null);
 
                     if (await repository.UpdateUnitAsync(updUnit)) await context.Response.WriteAsync($"True");
+                    else await context.Response.WriteAsync("False");
+                });
+
+                #endregion
+
+                #region Materials
+
+                endpoints.MapGet("/materials", async context =>
+                {
+                    var repository = context.RequestServices.GetService<IMaterialRepository>();
+                    var materialList = await repository.GetActualMaterialsAsync();
+
+                    var options = new JsonSerializerOptions()
+                    {
+                        ReferenceHandler = ReferenceHandler.Preserve
+                    };
+
+                    await context.Response.WriteAsync(JsonSerializer.Serialize(materialList, options));
+                });
+
+                endpoints.MapGet("/allmaterials", async context =>
+                {
+                    var repository = context.RequestServices.GetService<IMaterialRepository>();
+                    var materialList = await repository.GetAllMaterialsAsync();
+
+                    var options = new JsonSerializerOptions()
+                    {
+                        ReferenceHandler = ReferenceHandler.Preserve
+                    };
+
+                    await context.Response.WriteAsync(JsonSerializer.Serialize(materialList, options));
+                });
+
+                endpoints.MapGet("/addmaterial", async context =>
+                {
+                    var repository = context.RequestServices.GetService<IMaterialRepository>();
+
+                    var newMaterial =
+                        await JsonSerializer.DeserializeAsync<Material>(
+                            new MemoryStream(Encoding.UTF8.GetBytes(context.Request.Query["data"])), null);
+
+                    var resAdd = await repository.AddMaterialAsync(newMaterial);
+                    if (resAdd != 0) await context.Response.WriteAsync($"{resAdd}");
+                    else await context.Response.WriteAsync("0");
+                });
+
+                endpoints.MapGet("/delmaterial", async context =>
+                {
+                    if (int.TryParse(context.Request.Query["id"], out var materialId))
+                    {
+                        var repo = context.RequestServices.GetService<IMaterialRepository>();
+
+                        if (await repo.DeleteMaterialAsync(materialId)) await context.Response.WriteAsync("True");
+                        else await context.Response.WriteAsync("False");
+                    }
+                    else
+                    {
+                        await context.Response.WriteAsync("False");
+                    }
+                });
+
+                endpoints.MapGet("/updatematerial", async context =>
+                {
+                    var repository = context.RequestServices.GetService<IMaterialRepository>();
+
+                    var updMaterial =
+                        await JsonSerializer.DeserializeAsync<Material>(
+                            new MemoryStream(Encoding.UTF8.GetBytes(context.Request.Query["data"])), null);
+
+                    if (await repository.UpdateMaterialAsync(updMaterial)) await context.Response.WriteAsync($"True");
                     else await context.Response.WriteAsync("False");
                 });
 

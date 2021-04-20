@@ -9,18 +9,16 @@ namespace STDentalLibrary.Repositories
 {
     public interface IMaterialRepository
     {
-        IEnumerable<Material> GetAllMaterials();
+        Task<IEnumerable<Material>> GetAllMaterialsAsync();
 
-        IEnumerable<Material> GetActualMaterials();
+        Task<IEnumerable<Material>> GetActualMaterialsAsync();
 
-        IEnumerable<Material> SearchMaterials(string materialValue);
+        //Task<IEnumerable<Material>> SearchMaterialsAsync(string materialValue);
 
-        int AddMaterial(Material material);
+        Task<int> AddMaterialAsync(Material material);
 
-        bool UpdateMaterial(int materialId, string name, decimal price, DateTime endDate);
+        Task<bool> UpdateMaterialAsync(Material material);
 
-        bool DeleteMaterial(int materialId);
-
-        void ExportToExcelMaterials(IEnumerable<Material> materials);
+        Task<bool> DeleteMaterialAsync(int materialId);
     }
 }
