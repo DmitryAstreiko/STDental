@@ -367,6 +367,44 @@ namespace STDentalLibrary.Context
             });
 
             #endregion
+
+            #region Payments
+
+            modelBuilder.Entity<Payment>(payment =>
+            {
+                payment.HasKey(o => o.paymentId);
+
+                payment.HasOne(u => u.talon)
+                    .WithMany(t => t.Payments)
+                    .HasForeignKey(u => u.paymentId)
+                    .OnDelete(DeleteBehavior.NoAction);
+
+                payment.Property(p => p.AmountBefore)
+                    .HasColumnType("decimal(18,2)")
+                    .IsRequired();
+
+                payment.Property(p => p.PaymentAmount)
+                    .HasColumnType("decimal(18,2)")
+                    .IsRequired();
+
+                payment.Property(p => p.Dept)
+                    .HasColumnType("decimal(18,2)")
+                    .IsRequired();
+
+                payment.Property(p => p.PaidTotal)
+                    .HasColumnType("decimal(18,2)")
+                    .IsRequired();
+
+                payment.Property(p => p.PaymentDate)
+                    .HasColumnType("date")
+                    .IsRequired();
+
+                payment.Property(p => p.CreateDate)
+                    .HasColumnType("datetime")
+                    .IsRequired();
+            });
+
+            #endregion
         }
     }
 }

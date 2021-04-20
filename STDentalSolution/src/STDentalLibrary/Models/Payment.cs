@@ -20,6 +20,8 @@ namespace STDentalLibrary.Models
 
         public DateTime PaymentDate { get; set; }
 
+        public DateTime CreateDate { get; set; }
+
         public int TalonId { get; set; }
         public Talon talon { get; set; }
     }
