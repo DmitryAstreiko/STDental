@@ -14,6 +14,9 @@ namespace STDentalLibrary.Context
         public DbSet<Patient> Patients { get; set; }
         public DbSet<Unit> Units { get; set; }
         public DbSet<Material> Materials { get; set; }
+        public DbSet<Service> Services { get; set; }
+        public DbSet<ServiceMaterial> ServiceMaterials { get; set; }
+        public DbSet<ServiceCostCalculation> ServiceCostCalculations { get; set; }
 
         public STDentalContext(string connectionValue = null)
         {
@@ -190,7 +193,116 @@ namespace STDentalLibrary.Context
 
             #endregion
 
+            #region Services
 
+            modelBuilder.Entity<Service>(service =>
+            {
+                service.HasKey(o => o.ServiceId);
+
+                service.Property(p => p.Name)
+                    .HasColumnType("nvarchar(512)")
+                    .IsRequired();
+
+                service.HasOne(m => m.Unit)
+                    .WithMany(u => u.Services)
+                    .HasForeignKey(u => u.UnitId)
+                    .OnDelete(DeleteBehavior.NoAction);
+
+                service.Property(p => p.Shifr)
+                    .HasColumnType("nvarchar(20)")
+                    .IsRequired();
+
+                service.Property(p => p.CreateDate)
+                    .HasColumnType("datetime")
+                    .IsRequired();
+
+                service.Property(p => p.StartDate)
+                    .HasColumnType("date")
+                    .IsRequired();
+
+                service.Property(p => p.EndDate)
+                    .HasColumnType("date");
+
+                /*service.HasOne(m => m.ServiceCostCalculation)
+                    .WithOne(u => u.Service)
+                    .HasForeignKey<ServiceCostCalculation>(u => u.ServiceId)
+                    .OnDelete(DeleteBehavior.NoAction);*/
+            });
+
+            #endregion
+
+            #region ServiceCostCalculation
+
+            modelBuilder.Entity<ServiceCostCalculation>(serviceCost =>
+            {
+                serviceCost.HasKey(s => s.ServiceCostId);
+                    
+                /*serviceCost.Property(o => o.ServiceId)
+                    .HasColumnType("int")
+                    .IsRequired();*/
+
+                serviceCost.Property(p => p.WorkCost)
+                    .HasColumnType("decimal(18,2)")
+                    .IsRequired();
+
+                serviceCost.Property(p => p.MaterialsCost)
+                    .HasColumnType("decimal(18,3)")
+                    .IsRequired();
+
+                serviceCost.Property(p => p.Summa)
+                    .HasColumnType("decimal(18,2)")
+                    .IsRequired();
+
+                serviceCost.Property(p => p.Sale)
+                    .HasColumnType("int")
+                    .IsRequired();
+
+                serviceCost.Property(p => p.SummaSales)
+                    .HasColumnType("decimal(18,2)")
+                    .IsRequired();
+
+                serviceCost.Property(p => p.Cost)
+                    .HasColumnType("decimal(18,2)")
+                    .IsRequired();
+
+                serviceCost.HasOne(m => m.Service)
+                    .WithOne(u => u.ServiceCostCalculation)
+                    .HasForeignKey<Service>(u => u.ServiceId)
+                    .OnDelete(DeleteBehavior.NoAction);
+            });
+
+            #endregion
+
+            #region ServiceMaterials
+
+            modelBuilder.Entity<ServiceMaterial>(serviceMaterial =>
+            {
+                serviceMaterial.HasKey(o => o.ServiceMaterialId);
+
+                serviceMaterial.Property(p => p.Price)
+                    .HasColumnType("decimal(18,3)")
+                    .IsRequired();
+
+                serviceMaterial.Property(p => p.Norm)
+                    .HasColumnType("decimal(18,2)")
+                    .IsRequired();
+
+                serviceMaterial.Property(p => p.Cost)
+                    .HasColumnType("decimal(18,3)")
+                    .IsRequired();
+
+                serviceMaterial.HasOne(m => m.Service)
+                    .WithMany(u => u.ServiceMaterials)
+                    .HasForeignKey(u => u.ServiceId)
+                    .OnDelete(DeleteBehavior.NoAction);
+
+                serviceMaterial.HasOne(m => m.Material)
+                    .WithMany(s => s.ServiceMaterials)
+                    .HasForeignKey(m => m.MaterialId)
+                    .OnDelete(DeleteBehavior.NoAction);
+            });
+
+            #endregion
         }
     }
 }

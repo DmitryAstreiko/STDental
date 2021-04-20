@@ -18,7 +18,7 @@ namespace STDentalLibrary.Migrations
                     CreateDate = table.Column<DateTime>(type: "datetime", nullable: false),
                     Price = table.Column<decimal>(type: "decimal(18,3)", nullable: false),
                     StartDate = table.Column<DateTime>(type: "date", nullable: false),
-                    EndDate = table.Column<DateTime>(type: "date", nullable: true)
+                    EndDate = table.Column<DateTime>(type: "date", nullable: false)
                 },
                 constraints: table =>
                 {

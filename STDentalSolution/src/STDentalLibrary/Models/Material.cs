@@ -21,5 +21,7 @@ namespace STDentalLibrary.Models
         public DateTime StartDate { get; set; }
 
         public DateTime? EndDate { get; set; }
+
+        public List<ServiceMaterial> ServiceMaterials { get; set; }
     }
 }

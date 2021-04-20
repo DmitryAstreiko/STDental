@@ -1,11 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using STDentalLibrary.Models.Enums;
 
 namespace STDentalLibrary.Models
 {
     public class Service
     {
-        //public int ServiceId { get; set; }
+        public int ServiceId { get; set; }
 
         public string Name { get; set; }
 
@@ -15,10 +16,15 @@ namespace STDentalLibrary.Models
 
         public DateTime StartDate { get; set; }
 
-        public DateTime EndDate { get; set; }
+        public DateTime? EndDate { get; set; }
 
+        public int UnitId { get; set; }
 
-        //public int ServiceCostCalculationlId { get; set; }
-        //public ServiceCostCalculation ServiceCostCalculation { get; set; }
+        public Unit Unit { get; set; }
+
+        //public int ServiceCostId { get; set; }
+        public ServiceCostCalculation ServiceCostCalculation { get; set; }
+
+        public List<ServiceMaterial> ServiceMaterials { get; set; }
     }
 }
