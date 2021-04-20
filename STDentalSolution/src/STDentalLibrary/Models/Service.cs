@@ -26,5 +26,7 @@ namespace STDentalLibrary.Models
         public ServiceCostCalculation ServiceCostCalculation { get; set; }
 
         public List<ServiceMaterial> ServiceMaterials { get; set; }
+
+        public List<TalonService> TalonServices { get; set; }
     }
 }

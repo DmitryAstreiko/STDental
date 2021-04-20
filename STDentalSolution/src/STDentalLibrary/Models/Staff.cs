@@ -21,8 +21,6 @@ namespace STDentalLibrary.Models
         
         public StaffCredential StaffCredential { get; set; }
 
-        //public IList<Post> Post { get; set; }
-
-        // public List<Talon> Talons { get; set; }
+        public List<Talon> Talons { get; set; }
     }
 }

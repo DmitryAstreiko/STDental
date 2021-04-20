@@ -222,11 +222,6 @@ namespace STDentalLibrary.Context
 
                 service.Property(p => p.EndDate)
                     .HasColumnType("date");
-
-                /*service.HasOne(m => m.ServiceCostCalculation)
-                    .WithOne(u => u.Service)
-                    .HasForeignKey<ServiceCostCalculation>(u => u.ServiceId)
-                    .OnDelete(DeleteBehavior.NoAction);*/
             });
 
             #endregion
@@ -236,11 +231,7 @@ namespace STDentalLibrary.Context
             modelBuilder.Entity<ServiceCostCalculation>(serviceCost =>
             {
                 serviceCost.HasKey(s => s.ServiceCostId);
-                    
-                /*serviceCost.Property(o => o.ServiceId)
-                    .HasColumnType("int")
-                    .IsRequired();*/
-
+                
                 serviceCost.Property(p => p.WorkCost)
                     .HasColumnType("decimal(18,2)")
                     .IsRequired();
@@ -300,6 +291,79 @@ namespace STDentalLibrary.Context
                     .WithMany(s => s.ServiceMaterials)
                     .HasForeignKey(m => m.MaterialId)
                     .OnDelete(DeleteBehavior.NoAction);
+            });
+
+            #endregion
+
+            #region Talons
+
+            modelBuilder.Entity<Talon>(talon =>
+            {
+                talon.HasKey(o => o.TalonId);
+
+                talon.HasOne(u => u.Patient)
+                    .WithMany(t => t.Talons)
+                    .HasForeignKey(u => u.PatientId)
+                    .OnDelete(DeleteBehavior.NoAction);
+
+                talon.HasOne(s => s.Staff)
+                    .WithMany(t => t.Talons)
+                    .HasForeignKey(s => s.StaffId)
+                    .OnDelete(DeleteBehavior.NoAction);
+
+                talon.Property(p => p.Summa)
+                    .HasColumnType("decimal(18,2)")
+                    .IsRequired();
+
+                talon.Property(p => p.Sale)
+                    .HasColumnType("int")
+                    .IsRequired();
+
+                talon.Property(p => p.SummaSale)
+                    .HasColumnType("decimal(18,2)")
+                    .IsRequired();
+
+                talon.Property(p => p.Cost)
+                    .HasColumnType("decimal(18,2)")
+                    .IsRequired();
+
+                talon.Property(p => p.CreateDate)
+                    .HasColumnType("datetime")
+                    .IsRequired();
+
+                talon.Property(p => p.ChangeDate)
+                    .HasColumnType("datetime");
+            });
+
+            #endregion
+
+            #region TalonServices
+
+            modelBuilder.Entity<TalonService>(talonService =>
+            {
+                talonService.HasKey(o => o.TalonServiceId);
+
+                talonService.HasOne(u => u.Service)
+                    .WithMany(t => t.TalonServices)
+                    .HasForeignKey(u => u.ServiceId)
+                    .OnDelete(DeleteBehavior.NoAction);
+
+                talonService.HasOne(s => s.Talon)
+                    .WithMany(t => t.TalonServices)
+                    .HasForeignKey(s => s.TalonId)
+                    .OnDelete(DeleteBehavior.NoAction);
+
+                talonService.Property(p => p.Price)
+                    .HasColumnType("decimal(18,2)")
+                    .IsRequired();
+
+                talonService.Property(p => p.Amount)
+                    .HasColumnType("int")
+                    .IsRequired();
+
+                talonService.Property(p => p.Cost)
+                    .HasColumnType("decimal(18,2)")
+                    .IsRequired();
             });
 
             #endregion

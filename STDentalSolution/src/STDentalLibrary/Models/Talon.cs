@@ -10,7 +10,7 @@ namespace STDentalLibrary.Models
         
         public DateTime CreateDate { get; set; }
 
-        public DateTime ChangeDate { get; set; }
+        public DateTime? ChangeDate { get; set; }
 
         public double Summa { get; set; }
 
@@ -23,12 +23,14 @@ namespace STDentalLibrary.Models
         public PaymentStatus PaymentStatus { get; set; }
 
 
-        //public int PatientId { get; set; }
-        //public Patient Patient { get; set; }
+        public int PatientId { get; set; }
+        public Patient Patient { get; set; }
 
-        //public int StaffId { get; set; }
-        //public Staff Staff { get; set; }
+        public int StaffId { get; set; }
+        public Staff Staff { get; set; }
 
-       // public List<TalonService> TalonServices { get; set; }
+        public List<TalonService> TalonServices { get; set; }
+
+        public List<Payment> Payments { get; set; }
     }
 }
