@@ -17,7 +17,7 @@ namespace STDentalLibrary.Repositories
 
         Task<int> AddMaterialAsync(Material material);
 
-        Task<bool> UpdateMaterialAsync(Material material);
+        Task<int> UpdateMaterialAsync(Material material);
 
         Task<bool> DeleteMaterialAsync(int materialId);
     }

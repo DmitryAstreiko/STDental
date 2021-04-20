@@ -49,7 +49,6 @@ namespace STDentalLibrary.Implementation
             {
                 return false;
             }
-           
         }
 
         public async Task<IEnumerable<Staff>> GetActualStaffsAsync()

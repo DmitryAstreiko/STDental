@@ -26,6 +26,7 @@ namespace STDentalLibrary.Implementation
             await using (var context = CreateContext())
             {
                 var res = await context.Materials.AddAsync(material);
+                await context.SaveChangesAsync();
                 return res.Entity.MaterialId;
             }
         }
@@ -73,21 +74,30 @@ namespace STDentalLibrary.Implementation
             }
         }
 
-        public async Task<bool> UpdateMaterialAsync(Material material)
+        public async Task<int> UpdateMaterialAsync(Material material)
         {
             try
             {
                 await using var context = CreateContext();
 
-                context.Materials.Attach(material);
+                var oldMaterial = await context.Materials
+                    .Where(s => s.ParentId == material.ParentId)
+                    .OrderBy(w => w.MaterialId)
+                    .TakeLast(1)
+                    .ToListAsync();
+
+                oldMaterial[0].EndDate = material.StartDate.AddDays(-1);
+
+                var res = await context.Materials.AddAsync(material);
+                //context.Materials.Attach(material);
 
                 await context.SaveChangesAsync();
 
-                return true;
+                return res.Entity.MaterialId;
             }
             catch
             {
-                return false;
+                return 0;
             }
         }
 

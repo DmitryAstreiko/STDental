@@ -17,6 +17,12 @@ namespace STDentalLibrary.Context
         public DbSet<Service> Services { get; set; }
         public DbSet<ServiceMaterial> ServiceMaterials { get; set; }
         public DbSet<ServiceCostCalculation> ServiceCostCalculations { get; set; }
+        public DbSet<Talon> Talons { get; set; }
+        public DbSet<TalonService> TalonServices { get; set; }
+        public DbSet<Payment> Payments { get; set; }
+        public DbSet<GroupNameService> GroupNameServices { get; set; }
+        public DbSet<GroupService> GroupServices { get; set; }
+        public DbSet<Reception> Receptions { get; set; }
 
         public STDentalContext(string connectionValue = null)
         {
@@ -161,6 +167,9 @@ namespace STDentalLibrary.Context
 
                  material.Property(p => p.EndDate)
                      .HasColumnType("date");
+
+                 material.Property(p => p.ParentId)
+                     .HasColumnType("int");
              });
 
             #endregion
@@ -434,6 +443,41 @@ namespace STDentalLibrary.Context
                     .WithMany(t => t.GroupServices)
                     .HasForeignKey(u => u.GroupServiceId)
                     .OnDelete(DeleteBehavior.NoAction);
+            });
+
+            #endregion
+
+            #region Receptions
+
+            modelBuilder.Entity<Reception>(reception =>
+            {
+                reception.HasKey(o => o.ReceptionId);
+
+                reception.HasOne(u => u.Staff)
+                    .WithMany(t => t.Receptions)
+                    .HasForeignKey(u => u.StaffId)
+                    .OnDelete(DeleteBehavior.NoAction);
+
+                reception.HasOne(u => u.Patient)
+                    .WithMany(t => t.Receptions)
+                    .HasForeignKey(u => u.PatientId)
+                    .OnDelete(DeleteBehavior.NoAction);
+
+                reception.Property(p => p.VisitDay)
+                    .HasColumnType("date")
+                    .IsRequired();
+
+                reception.Property(p => p.StartTime)
+                    .HasColumnType("datetime")
+                    .IsRequired();
+
+                reception.Property(p => p.EndTime)
+                    .HasColumnType("datetime")
+                    .IsRequired();
+
+                reception.Property(p => p.Comment)
+                    .HasColumnType("nvarchar(512)")
+                    .IsRequired();
             });
 
             #endregion

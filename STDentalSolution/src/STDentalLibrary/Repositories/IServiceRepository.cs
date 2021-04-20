@@ -10,17 +10,15 @@ namespace STDentalLibrary.Repositories
     public interface IServiceRepository
     {
         //Get actual services (for example combobox)
-        IEnumerable<Service> GetActualServices();
+        Task<IEnumerable<Service>> GetActualServicesAsync();
 
         //Get all services (for example tree view)
-        IEnumerable<Service> GetServices();
+        Task<IEnumerable<Service>> GetServicesAsync();
 
-        int AddService(Service service, ServiceMaterial serviceMaterial, ServiceCostCalculation serviceCostCalculation);
+        Task<int> AddServiceAsync(Service service);
 
-        bool UpdateService(Service service, ServiceMaterial serviceMaterial, ServiceCostCalculation serviceCostCalculation);
+        Task<bool> UpdateServiceAsync(Service service);
 
-        bool DeleteService(int serviceId);
-
-        void ExportToExcelServices();
+        Task<bool> DeleteServiceAsync(int serviceId);
     }
 }

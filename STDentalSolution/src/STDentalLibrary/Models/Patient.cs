@@ -21,5 +21,7 @@ namespace STDentalLibrary.Models
         public Nationality NationalityId { get; set; }
 
         public List<Talon> Talons { get; set; }
+
+        public List<Reception> Receptions { get; set; }
     }
 }

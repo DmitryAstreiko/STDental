@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using STDentalLibrary.Context;
 
 namespace STDentalLibrary.Migrations
 {
     [DbContext(typeof(STDentalContext))]
-    partial class STDentalContextModelSnapshot : ModelSnapshot
+    [Migration("20210420212727_AddReceptions")]
+    partial class AddReceptions
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -32,7 +34,7 @@ namespace STDentalLibrary.Migrations
 
                     b.HasKey("GroupNameId");
 
-                    b.ToTable("GroupNameServices");
+                    b.ToTable("GroupNameService");
                 });
 
             modelBuilder.Entity("STDentalLibrary.Models.GroupService", b =>
@@ -50,7 +52,7 @@ namespace STDentalLibrary.Migrations
 
                     b.HasIndex("GroupNameId");
 
-                    b.ToTable("GroupServices");
+                    b.ToTable("GroupService");
                 });
 
             modelBuilder.Entity("STDentalLibrary.Models.Material", b =>
@@ -69,9 +71,6 @@ namespace STDentalLibrary.Migrations
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(128)");
-
-                    b.Property<int?>("ParentId")
-                        .HasColumnType("int");
 
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,3)");
@@ -264,7 +263,7 @@ namespace STDentalLibrary.Migrations
 
                     b.HasKey("PaymentId");
 
-                    b.ToTable("Payments");
+                    b.ToTable("Payment");
                 });
 
             modelBuilder.Entity("STDentalLibrary.Models.Post", b =>
@@ -318,7 +317,7 @@ namespace STDentalLibrary.Migrations
 
                     b.HasIndex("StaffId");
 
-                    b.ToTable("Receptions");
+                    b.ToTable("Reception");
                 });
 
             modelBuilder.Entity("STDentalLibrary.Models.Service", b =>
@@ -487,7 +486,7 @@ namespace STDentalLibrary.Migrations
 
                     b.HasIndex("StaffId");
 
-                    b.ToTable("Talons");
+                    b.ToTable("Talon");
                 });
 
             modelBuilder.Entity("STDentalLibrary.Models.TalonService", b =>
@@ -518,7 +517,7 @@ namespace STDentalLibrary.Migrations
 
                     b.HasIndex("TalonId");
 
-                    b.ToTable("TalonServices");
+                    b.ToTable("TalonService");
                 });
 
             modelBuilder.Entity("STDentalLibrary.Models.Unit", b =>

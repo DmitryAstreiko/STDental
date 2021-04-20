@@ -428,7 +428,7 @@ namespace STDentalWeb
                         await JsonSerializer.DeserializeAsync<Material>(
                             new MemoryStream(Encoding.UTF8.GetBytes(context.Request.Query["data"])), null);
 
-                    if (await repository.UpdateMaterialAsync(updMaterial)) await context.Response.WriteAsync($"True");
+                    if ((await repository.UpdateMaterialAsync(updMaterial)) == 1) await context.Response.WriteAsync($"True");
                     else await context.Response.WriteAsync("False");
                 });
 
