@@ -405,6 +405,38 @@ namespace STDentalLibrary.Context
             });
 
             #endregion
+
+            #region GroupNameService
+
+            modelBuilder.Entity<GroupNameService>(groupName =>
+            {
+                groupName.HasKey(o => o.GroupNameId);
+
+                groupName.Property(p => p.Name)
+                    .HasColumnType("nvarchar(150)")
+                    .IsRequired();
+            });
+
+            #endregion
+
+            #region GroupService
+
+            modelBuilder.Entity<GroupService>(groupService =>
+            {
+                groupService.HasKey(o => o.GroupServiceId);
+
+                groupService.HasOne(u => u.GroupName)
+                    .WithMany(t => t.GroupServices)
+                    .HasForeignKey(u => u.GroupNameId)
+                    .OnDelete(DeleteBehavior.NoAction);
+
+                groupService.HasOne(u => u.Service)
+                    .WithMany(t => t.GroupServices)
+                    .HasForeignKey(u => u.GroupServiceId)
+                    .OnDelete(DeleteBehavior.NoAction);
+            });
+
+            #endregion
         }
     }
 }

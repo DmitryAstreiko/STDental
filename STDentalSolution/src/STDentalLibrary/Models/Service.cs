@@ -28,5 +28,7 @@ namespace STDentalLibrary.Models
         public List<ServiceMaterial> ServiceMaterials { get; set; }
 
         public List<TalonService> TalonServices { get; set; }
+
+        public List<GroupService> GroupServices { get; set; }
     }
 }
