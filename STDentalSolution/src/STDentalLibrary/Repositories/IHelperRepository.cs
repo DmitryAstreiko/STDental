@@ -14,5 +14,9 @@ namespace STDentalLibrary.Repositories
 
         //пересчет определенных прейскурантов
         Task<ResultOperation> RecountServices(List<int> listServiceId);
+
+        Task<bool> UpdateEndDateServices(int serviceId, DateTime endDate);
+
+        Task<bool> CheckContainServiceInTalons(int serviceId);
     }
 }

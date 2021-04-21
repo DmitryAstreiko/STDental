@@ -29,6 +29,7 @@ namespace STDentalWeb
             services.AddTransient<IPatientRepository, EFPatientRepository>();
             services.AddTransient<IUnitRepository, EFUnitRepository>();
             services.AddTransient<IMaterialRepository, EFMaterialRepository>();
+            services.AddTransient<IServiceRepository, EFServiceRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -436,7 +437,114 @@ namespace STDentalWeb
 
                 #region Services
 
+                endpoints.MapGet("/services", async context =>
+                {
+                    var repository = context.RequestServices.GetService<IServiceRepository>();
+                    var serviceList = await repository.GetActualServicesAsync();
 
+                    var options = new JsonSerializerOptions()
+                    {
+                        ReferenceHandler = ReferenceHandler.Preserve
+                    };
+
+                    await context.Response.WriteAsync(JsonSerializer.Serialize(serviceList, options));
+                });
+
+                endpoints.MapGet("/servicesmaterials", async context =>
+                {
+                    if (int.TryParse(context.Request.Query["id"], out var serviceId))
+                    {
+                        var repository = context.RequestServices.GetService<IServiceRepository>();
+                        var serviceList = await repository.GetServiceMaterialsAsync(serviceId);
+
+                        var options = new JsonSerializerOptions()
+                        {
+                            ReferenceHandler = ReferenceHandler.Preserve
+                        };
+
+                        await context.Response.WriteAsync(JsonSerializer.Serialize(serviceList, options));
+                    }
+                    else
+                    {
+                        await context.Response.WriteAsync("False");
+                    }
+                });
+
+                endpoints.MapGet("/servicecost", async context =>
+                {
+                    if (int.TryParse(context.Request.Query["id"], out var serviceId))
+                    {
+                        var repository = context.RequestServices.GetService<IServiceRepository>();
+                        var serviceCost = await repository.GetServiceCalculation(serviceId);
+
+                        var options = new JsonSerializerOptions()
+                        {
+                            ReferenceHandler = ReferenceHandler.Preserve
+                        };
+
+                        await context.Response.WriteAsync(JsonSerializer.Serialize(serviceCost, options));
+                    }
+                    else
+                    {
+                        await context.Response.WriteAsync("False");
+                    }
+                });
+
+                endpoints.MapGet("/allservices", async context =>
+                {
+                    var repository = context.RequestServices.GetService<IServiceRepository>();
+                    var serviceList = await repository.GetServicesAsync();
+
+                    var options = new JsonSerializerOptions()
+                    {
+                        ReferenceHandler = ReferenceHandler.Preserve
+                    };
+
+                    await context.Response.WriteAsync(JsonSerializer.Serialize(serviceList, options));
+                });
+
+                endpoints.MapGet("/addservice", async context =>
+                {
+                    var repository = context.RequestServices.GetService<IServiceRepository>();
+
+                    var newService =
+                        await JsonSerializer.DeserializeAsync<Service>(
+                            new MemoryStream(Encoding.UTF8.GetBytes(context.Request.Query["data"])), null);
+
+                    var resAdd = await repository.AddServiceAsync(newService);
+                    if (resAdd != 0) await context.Response.WriteAsync($"{resAdd}");
+                    else await context.Response.WriteAsync("0");
+                });
+
+                endpoints.MapGet("/delservice", async context =>
+                {
+                    if (int.TryParse(context.Request.Query["id"], out var serviceId))
+                    {
+                        var repo = context.RequestServices.GetService<IServiceRepository>();
+
+                        if (await repo.DeleteServiceAsync(serviceId)) await context.Response.WriteAsync("True");
+                        else await context.Response.WriteAsync("False");
+                    }
+                    else
+                    {
+                        await context.Response.WriteAsync("False");
+                    }
+                });
+
+                endpoints.MapGet("/updaservice", async context =>
+                {
+                    var repository = context.RequestServices.GetService<IServiceRepository>();
+
+                    var updService =
+                        await JsonSerializer.DeserializeAsync<Service>(
+                            new MemoryStream(Encoding.UTF8.GetBytes(context.Request.Query["data"])), null);
+
+                    if (int.TryParse(context.Request.Query["id"], out var serviceId))
+                    {
+                        if (await repository.UpdateServiceAsync(serviceId, updService)) await context.Response.WriteAsync($"True");
+                        else await context.Response.WriteAsync("False");
+                    } ;
+                });
 
                 #endregion
 
@@ -460,7 +568,7 @@ namespace STDentalWeb
 
                 #region Receptions
 
-                
+
 
                 #endregion
 

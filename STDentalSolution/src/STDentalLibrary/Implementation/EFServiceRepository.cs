@@ -35,6 +35,10 @@ namespace STDentalLibrary.Implementation
             {
                 await using (var context = CreateContext())
                 {
+                    var helper = new EFHelperRepository(context);
+
+                    if ((await helper.CheckContainServiceInTalons(serviceId)) == false) return false;
+
                     var delServ = await context.Services.FindAsync(serviceId);
 
                     if (delServ == null) return false;
@@ -73,15 +77,49 @@ namespace STDentalLibrary.Implementation
             }
         }
 
-        public Task<bool> UpdateServiceAsync(Service service)
+        public async Task<bool> UpdateServiceAsync(int oldServiceId, Service service)
         {
-            //удалить записи из ServiceMaterial
+            try
+            {
+                await using (var context = new STDentalContext())
+                {
+                    var helper = new EFHelperRepository(context);
 
-            //удалить записи из ServiceCostCalculation
+                    //обновить поле EndDate в таблице Services
+                    if (!await helper.UpdateEndDateServices(oldServiceId, service.StartDate.AddDays(-1))) return false;
 
-            //сохранить service в Service, ServiceMaterial, ServiceCostCalculation
+                    //сохранить service в Service, ServiceMaterial, ServiceCostCalculation
+                    await context.Services.AddAsync(service);
+                    await context.SaveChangesAsync();
 
-            throw new NotImplementedException();
+                    return true;
+                }
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public async Task<IEnumerable<ServiceMaterial>> GetServiceMaterialsAsync(int serviceId)
+        {
+            await using (var context = CreateContext())
+            {
+                return await context.ServiceMaterials
+                    .Where(q => q.ServiceId == serviceId)
+                    .OrderBy(s => s.Service.Name)
+                    .ToListAsync();
+            }
+        }
+
+        public async Task<IEnumerable<ServiceCostCalculation>> GetServiceCalculation(int serviceId)
+        {
+            await using (var context = CreateContext())
+            {
+                return await context.ServiceCostCalculations
+                    .Where(q => q.ServiceId == serviceId)
+                    .ToListAsync();
+            }
         }
 
         private STDentalContext CreateContext()

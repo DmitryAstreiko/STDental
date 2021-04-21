@@ -12,11 +12,11 @@ namespace STDentalLibrary.Implementation
 {
     public class EFHelperRepository : IHelperRepository
     {
-        private readonly IConfiguration _configuration;
+        private readonly STDentalContext _context;
 
-        public EFHelperRepository(IConfiguration configuration)
+        public EFHelperRepository(STDentalContext context)
         {
-            _configuration = configuration;
+            _context = context;
         }
 
         public Task<ResultOperation> RecountServices(List<int> listServiceId)
@@ -29,9 +29,15 @@ namespace STDentalLibrary.Implementation
             throw new NotImplementedException();
         }
 
-        private STDentalContext CreateContext()
+        public Task<bool> UpdateEndDateServices(int serviceId, DateTime endDate)
         {
-            return new STDentalContext(_configuration.GetConnectionString("STDentalDB"));
+            throw new NotImplementedException();
         }
+
+        public Task<bool> CheckContainServiceInTalons(int serviceId)
+        {
+            throw new NotImplementedException();
+        }
+
     }
 }
