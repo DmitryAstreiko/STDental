@@ -437,12 +437,12 @@ namespace STDentalLibrary.Context
                 groupService.HasOne(u => u.GroupName)
                     .WithMany(t => t.GroupServices)
                     .HasForeignKey(u => u.GroupNameId)
-                    .OnDelete(DeleteBehavior.NoAction);
+                    .OnDelete(DeleteBehavior.Cascade);
 
                 groupService.HasOne(u => u.Service)
                     .WithMany(t => t.GroupServices)
                     .HasForeignKey(u => u.GroupServiceId)
-                    .OnDelete(DeleteBehavior.NoAction);
+                    .OnDelete(DeleteBehavior.Cascade);
             });
 
             #endregion

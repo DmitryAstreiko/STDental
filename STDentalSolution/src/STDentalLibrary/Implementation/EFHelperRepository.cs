@@ -48,5 +48,10 @@ namespace STDentalLibrary.Implementation
         {
             throw new NotImplementedException();
         }
+
+        public Task<bool> DeleteGroupServices(int groupNameId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -9,14 +9,14 @@ namespace STDentalLibrary.Repositories
 {
     public interface IGroupNameServiceRepository
     {
-        IEnumerable<GroupNameService> GetGroupNameServices();
+        Task<IEnumerable<GroupNameService>> GetGroupAsync();
 
-        IEnumerable<GroupService> GetGroupServices(int groupNameId);
+        Task<IEnumerable<GroupService>> GetGroupServicesAsync(int groupNameId);
 
-        int AddGrouppingNameService(string groupNameValue, GroupService groupService);
+        Task<int> AddGroupAsync(GroupNameService groupName);
 
-        bool UpdateGrouppingNameService(int groupNameId, string groupNameValue, GroupService groupService);
+        Task<bool> DelGroupAsync(int groupNameId);
 
-        bool DeleteGrouppingNameService(int groupNameId);
+        Task<bool> UpdateGroupAsync(GroupNameService groupService);
     }
 }

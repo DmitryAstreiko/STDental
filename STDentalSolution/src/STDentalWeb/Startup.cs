@@ -31,6 +31,7 @@ namespace STDentalWeb
             services.AddTransient<IMaterialRepository, EFMaterialRepository>();
             services.AddTransient<IServiceRepository, EFServiceRepository>();
             services.AddTransient<ITalonRepository, EFTalonRepository>();
+            services.AddTransient<IGroupNameServiceRepository, EFGroupNameServiceRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -665,7 +666,73 @@ namespace STDentalWeb
 
                 #region GroupName
 
+                endpoints.MapGet("/groups", async context =>
+                {
+                    var repository = context.RequestServices.GetService<IGroupNameServiceRepository>();
+                    var groupList = await repository.GetGroupAsync();
+                    
+                    await context.Response.WriteAsync(JsonSerializer.Serialize(groupList, null));
+                });
 
+                endpoints.MapGet("/groupservices", async context =>
+                {
+                    if (int.TryParse(context.Request.Query["id"], out var groupId))
+                    {
+                        var repository = context.RequestServices.GetService<IGroupNameServiceRepository>();
+                        var groupList = await repository.GetGroupServicesAsync(groupId);
+
+                        var options = new JsonSerializerOptions()
+                        {
+                            ReferenceHandler = ReferenceHandler.Preserve
+                        };
+
+                        await context.Response.WriteAsync(JsonSerializer.Serialize(groupList, options));
+                    }
+                    else
+                    {
+                        await context.Response.WriteAsync("False");
+                    }
+                });
+
+                endpoints.MapGet("/addgroup", async context =>
+                {
+                    var repository = context.RequestServices.GetService<IGroupNameServiceRepository>();
+
+                    var newGroup =
+                        await JsonSerializer.DeserializeAsync<GroupNameService>(
+                            new MemoryStream(Encoding.UTF8.GetBytes(context.Request.Query["data"])), null);
+
+                    var resAdd = await repository.AddGroupAsync(newGroup);
+                    if (resAdd != 0) await context.Response.WriteAsync($"{resAdd}");
+                    else await context.Response.WriteAsync("0");
+                });
+
+                endpoints.MapGet("/delgroup", async context =>
+                {
+                    if (int.TryParse(context.Request.Query["id"], out var groupId))
+                    {
+                        var repo = context.RequestServices.GetService<IGroupNameServiceRepository>();
+
+                        if (await repo.DelGroupAsync(groupId)) await context.Response.WriteAsync("True");
+                        else await context.Response.WriteAsync("False");
+                    }
+                    else
+                    {
+                        await context.Response.WriteAsync("False");
+                    }
+                });
+
+                endpoints.MapGet("/updgroup", async context =>
+                {
+                    var repository = context.RequestServices.GetService<IGroupNameServiceRepository>();
+
+                    var newGroup =
+                        await JsonSerializer.DeserializeAsync<GroupNameService>(
+                            new MemoryStream(Encoding.UTF8.GetBytes(context.Request.Query["data"])), null);
+
+                    if (await repository.UpdateGroupAsync(newGroup)) await context.Response.WriteAsync($"True");
+                    else await context.Response.WriteAsync("False");
+                });
 
                 #endregion
 

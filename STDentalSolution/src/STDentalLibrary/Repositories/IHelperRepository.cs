@@ -22,5 +22,7 @@ namespace STDentalLibrary.Repositories
         Task<bool> CheckContainTalonInPayment(int talonId);
 
         Task<bool> DeleteTalonServices(int talonId);
+
+        Task<bool> DeleteGroupServices(int groupNameId);
     }
 }
