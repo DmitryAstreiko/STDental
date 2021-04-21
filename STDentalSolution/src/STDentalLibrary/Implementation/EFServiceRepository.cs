@@ -77,6 +77,17 @@ namespace STDentalLibrary.Implementation
             }
         }
 
+        public async Task<Service> GetServiceAsync(int serviceId)
+        {
+            await using (var context = CreateContext())
+            {
+                return (Service)context.Services
+                    .Include(d => d.ServiceMaterials)
+                    .Include(r => r.ServiceCostCalculation)
+                    .Where(w => w.ServiceId == serviceId);
+            }
+        }
+
         public async Task<bool> UpdateServiceAsync(int oldServiceId, Service service)
         {
             try

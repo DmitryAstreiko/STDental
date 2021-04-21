@@ -30,6 +30,7 @@ namespace STDentalWeb
             services.AddTransient<IUnitRepository, EFUnitRepository>();
             services.AddTransient<IMaterialRepository, EFMaterialRepository>();
             services.AddTransient<IServiceRepository, EFServiceRepository>();
+            services.AddTransient<ITalonRepository, EFTalonRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -450,6 +451,26 @@ namespace STDentalWeb
                     await context.Response.WriteAsync(JsonSerializer.Serialize(serviceList, options));
                 });
 
+                endpoints.MapGet("/service", async context =>
+                {
+                    if (int.TryParse(context.Request.Query["id"], out var serviceId))
+                    {
+                        var repository = context.RequestServices.GetService<IServiceRepository>();
+                        var serviceList = await repository.GetServiceAsync(serviceId);
+
+                        var options = new JsonSerializerOptions()
+                        {
+                            ReferenceHandler = ReferenceHandler.Preserve
+                        };
+
+                        await context.Response.WriteAsync(JsonSerializer.Serialize(serviceList, options));
+                    }
+                    else
+                    {
+                        await context.Response.WriteAsync("False");
+                    }
+                });
+
                 endpoints.MapGet("/servicesmaterials", async context =>
                 {
                     if (int.TryParse(context.Request.Query["id"], out var serviceId))
@@ -550,13 +571,95 @@ namespace STDentalWeb
 
                 #region Talons
 
+                endpoints.MapGet("/talons", async context =>
+                {
+                    var repository = context.RequestServices.GetService<ITalonRepository>();
+                    var talonList = await repository.GeTalonsAsync();
 
+                    var options = new JsonSerializerOptions()
+                    {
+                        ReferenceHandler = ReferenceHandler.Preserve
+                    };
+
+                    await context.Response.WriteAsync(JsonSerializer.Serialize(talonList, options));
+                });
+
+                endpoints.MapGet("/talon", async context =>
+                {
+                    if (int.TryParse(context.Request.Query["id"], out var talonId))
+                    {
+                        var repository = context.RequestServices.GetService<ITalonRepository>();
+                        var talonList = await repository.GetTalonAsync(talonId);
+
+                        var options = new JsonSerializerOptions()
+                        {
+                            ReferenceHandler = ReferenceHandler.Preserve
+                        };
+
+                        await context.Response.WriteAsync(JsonSerializer.Serialize(talonList, options));
+                    }
+                    else
+                    {
+                        await context.Response.WriteAsync("False");
+                    }
+                });
+
+                endpoints.MapGet("/addtalon", async context =>
+                {
+                    var repository = context.RequestServices.GetService<ITalonRepository>();
+
+                    var newTalon =
+                        await JsonSerializer.DeserializeAsync<Talon>(
+                            new MemoryStream(Encoding.UTF8.GetBytes(context.Request.Query["data"])), null);
+
+                    var resAdd = await repository.AddTalonAsync(newTalon);
+                    if (resAdd != 0) await context.Response.WriteAsync($"{resAdd}");
+                    else await context.Response.WriteAsync("0");
+                });
+                
+                endpoints.MapGet("/deltalon", async context =>
+                {
+                    if (int.TryParse(context.Request.Query["id"], out var serviceId))
+                    {
+                        var repo = context.RequestServices.GetService<ITalonRepository>();
+                        
+                        if (await repo.DeleteTalonAsync(serviceId)) await context.Response.WriteAsync("True");
+                        else await context.Response.WriteAsync("False");
+                    }
+                    else
+                    {
+                        await context.Response.WriteAsync("False");
+                    }
+                });
+
+                endpoints.MapGet("/updtalon", async context =>
+                {
+                    var repository = context.RequestServices.GetService<ITalonRepository>();
+
+                    var updTalon =
+                        await JsonSerializer.DeserializeAsync<Talon>(
+                            new MemoryStream(Encoding.UTF8.GetBytes(context.Request.Query["data"])), null);
+
+                    if (await repository.UpdateTalonAsync(updTalon)) await context.Response.WriteAsync($"True");
+                    else await context.Response.WriteAsync("False");
+                });
 
                 #endregion
 
                 #region Payments
 
+                endpoints.MapGet("/addpayment", async context =>
+                {
+                    var repository = context.RequestServices.GetService<ITalonRepository>();
 
+                    var newPayment =
+                        await JsonSerializer.DeserializeAsync<Payment>(
+                            new MemoryStream(Encoding.UTF8.GetBytes(context.Request.Query["data"])), null);
+
+                    var resAdd = await repository.AddPaymentAsync(newPayment);
+                    if (resAdd != 0) await context.Response.WriteAsync($"{resAdd}");
+                    else await context.Response.WriteAsync("0");
+                });
 
                 #endregion
 

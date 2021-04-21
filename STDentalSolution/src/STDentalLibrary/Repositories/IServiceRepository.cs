@@ -15,6 +15,8 @@ namespace STDentalLibrary.Repositories
         //Get all services (for example tree view)
         Task<IEnumerable<Service>> GetServicesAsync();
 
+        Task<Service> GetServiceAsync(int serviceId);
+
         Task<IEnumerable<ServiceMaterial>> GetServiceMaterialsAsync(int serviceId);
 
         Task<IEnumerable<ServiceCostCalculation>> GetServiceCalculation(int serviceId);

@@ -10,21 +10,19 @@ namespace STDentalLibrary.Repositories
     public interface ITalonRepository
     {
         //Get all talons
-        IEnumerable<Talon> GeTalons();
+        Task<IEnumerable<Talon>> GeTalonsAsync();
 
         //Get the services included in the selected talon 
-        IEnumerable<TalonService> GetTalonServices(int talonId);
+        Task<IEnumerable<TalonService>> GetTalonServicesAsync(int talonId);
 
-        Talon GetTalon(int talonId);
+        Task<Talon> GetTalonAsync(int talonId);
 
-        int AddTalon(int patientId, int staffId, List<ServiceMaterial> listServiceMaterials);
+        Task<int> AddTalonAsync(Talon talon);
 
-        bool UpdateTalon(int talonId, int patientId, int staffId, List<ServiceMaterial> listServiceMaterials);
+        Task<bool> UpdateTalonAsync(Talon talon);
 
-        bool DeleteTalon(int talonId);
-
-        void ExportToExcelTalon(int talonId);
-
-        int AddPayment(Payment payment);
+        Task<bool> DeleteTalonAsync(int talonId);
+        
+        Task<int> AddPaymentAsync(Payment payment);
     }
 }

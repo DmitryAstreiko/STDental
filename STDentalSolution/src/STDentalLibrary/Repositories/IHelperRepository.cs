@@ -18,5 +18,9 @@ namespace STDentalLibrary.Repositories
         Task<bool> UpdateEndDateServices(int serviceId, DateTime endDate);
 
         Task<bool> CheckContainServiceInTalons(int serviceId);
+
+        Task<bool> CheckContainTalonInPayment(int talonId);
+
+        Task<bool> DeleteTalonServices(int talonId);
     }
 }

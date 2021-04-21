@@ -39,5 +39,14 @@ namespace STDentalLibrary.Implementation
             throw new NotImplementedException();
         }
 
+        public Task<bool> CheckContainTalonInPayment(int talonId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> DeleteTalonServices(int talonId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
