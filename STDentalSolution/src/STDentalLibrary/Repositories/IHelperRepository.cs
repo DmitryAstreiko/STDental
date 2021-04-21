@@ -13,7 +13,9 @@ namespace STDentalLibrary.Repositories
         Task<ResultOperation> ReplaceMaterial(int oldMaterialId, int newMaterialId);
 
         //пересчет определенных прейскурантов
-        Task<ResultOperation> RecountServices(List<int> listServiceId);
+        Task<ResultOperation> RecountService(int serviceId);
+
+        Task<IEnumerable<int>> GetListServicesContainMaterial(int materialId);
 
         Task<bool> UpdateEndDateServices(int serviceId, DateTime endDate);
 
@@ -21,8 +23,16 @@ namespace STDentalLibrary.Repositories
 
         Task<bool> CheckContainTalonInPayment(int talonId);
 
+        Task<bool> CheckContainPatientInTalons(int patientId);
+
+        Task<bool> CheckContainUnitInMaterialsServices(int unitId);
+
+        Task<bool> CheckContainMaterialsInServices(int materialId);
+
         Task<bool> DeleteTalonServices(int talonId);
 
         Task<bool> DeleteGroupServices(int groupNameId);
+
+
     }
 }

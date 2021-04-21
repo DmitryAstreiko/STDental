@@ -30,13 +30,16 @@ namespace STDentalLibrary.Implementation
                 return res.Entity.MaterialId;
             }
         }
-
         public async Task<bool> DeleteMaterialAsync(int materialId)
         {
             try
             {
                 await using (var context = CreateContext())
                 {
+                    var helper = new EFHelperRepository(context);
+
+                    if (await helper.CheckContainMaterialsInServices(materialId)) return false;
+
                     var delMaterial = await context.Materials.FindAsync(materialId);
 
                     if (delMaterial == null) return false;
@@ -80,22 +83,29 @@ namespace STDentalLibrary.Implementation
             {
                 await using var context = CreateContext();
 
+                var helper = new EFHelperRepository(context);
+
                 var oldMaterial = await context.Materials
                     .Where(s => s.ParentId == material.ParentId)
                     .OrderBy(w => w.MaterialId)
                     .TakeLast(1)
                     .ToListAsync();
 
+                var listServicesId = await helper.GetListServicesContainMaterial(oldMaterial[0].MaterialId);
+
                 oldMaterial[0].EndDate = material.StartDate.AddDays(-1);
 
                 var res = await context.Materials.AddAsync(material);
-                //context.Materials.Attach(material);
-                
+
+                await helper.ReplaceMaterial(oldMaterial[0].MaterialId, res.Entity.MaterialId);
+
+                foreach (var serviceId in listServicesId)
+                {
+                    await helper.RecountService(serviceId);
+                }
+
                 await context.SaveChangesAsync();
-
-                //var resReplace = EFHelperRepository
-
-
+                
                 return res.Entity.MaterialId;
             }
             catch

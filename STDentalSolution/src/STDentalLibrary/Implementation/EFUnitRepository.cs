@@ -35,6 +35,10 @@ namespace STDentalLibrary.Implementation
             {
                 await using (var context = CreateContext())
                 {
+                    var helper = new EFHelperRepository(context);
+
+                    if (await helper.CheckContainUnitInMaterialsServices(unitId)) return false;
+
                     var delUnit = await context.Units.FindAsync(unitId);
 
                     if (delUnit == null) return false;

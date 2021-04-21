@@ -19,7 +19,7 @@ namespace STDentalLibrary.Implementation
             _context = context;
         }
 
-        public Task<ResultOperation> RecountServices(List<int> listServiceId)
+        public Task<ResultOperation> RecountService(int serviceId)
         {
             throw new NotImplementedException();
         }
@@ -50,6 +50,26 @@ namespace STDentalLibrary.Implementation
         }
 
         public Task<bool> DeleteGroupServices(int groupNameId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> CheckContainPatientInTalons(int patientId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> CheckContainUnitInMaterialsServices(int unitId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> CheckContainMaterialsInServices(int materialId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IEnumerable<int>> GetListServicesContainMaterial(int materialId)
         {
             throw new NotImplementedException();
         }

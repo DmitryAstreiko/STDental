@@ -35,6 +35,10 @@ namespace STDentalLibrary.Implementation
             {
                 await using (var context = CreateContext())
                 {
+                    var helper = new EFHelperRepository(context);
+
+                    if (await helper.CheckContainPatientInTalons(patientId)) return false;
+
                     var delPatient = await context.Patients.FindAsync(patientId);
 
                     if (delPatient == null) return false;

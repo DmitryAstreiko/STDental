@@ -95,12 +95,13 @@ namespace STDentalLibrary.Implementation
                 await using (var context = new STDentalContext())
                 {
                     var helper = new EFHelperRepository(context);
-
+                    
                     //обновить поле EndDate в таблице Services
                     if (!await helper.UpdateEndDateServices(oldServiceId, service.StartDate.AddDays(-1))) return false;
 
                     //сохранить service в Service, ServiceMaterial, ServiceCostCalculation
-                    await context.Services.AddAsync(service);
+                    var res = await context.Services.AddAsync(service);
+
                     await context.SaveChangesAsync();
 
                     return true;
