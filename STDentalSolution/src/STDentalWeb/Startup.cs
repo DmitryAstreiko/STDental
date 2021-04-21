@@ -32,6 +32,7 @@ namespace STDentalWeb
             services.AddTransient<IServiceRepository, EFServiceRepository>();
             services.AddTransient<ITalonRepository, EFTalonRepository>();
             services.AddTransient<IGroupNameServiceRepository, EFGroupNameServiceRepository>();
+            services.AddTransient<IReceptionRepository, EFReceptionRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -738,7 +739,100 @@ namespace STDentalWeb
 
                 #region Receptions
 
+                endpoints.MapGet("/receptions1", async context =>
+                {
+                    if(DateTime.TryParse(context.Request.Query["startdate"], out var startdate)) await context.Response.WriteAsync("False");
 
+                    if (DateTime.TryParse(context.Request.Query["enddate"], out var enddate)) await context.Response.WriteAsync("False");
+
+                    var repository = context.RequestServices.GetService<IReceptionRepository>();
+                    var receptionList = await repository.GetReceptionsAsync(startdate, enddate);
+
+                    var options = new JsonSerializerOptions()
+                    {
+                        ReferenceHandler = ReferenceHandler.Preserve
+                    };
+
+                    await context.Response.WriteAsync(JsonSerializer.Serialize(receptionList, options));
+                });
+
+                endpoints.MapGet("/receptions2", async context =>
+                {
+                    if (DateTime.TryParse(context.Request.Query["startdate"], out var startdate)) await context.Response.WriteAsync("False");
+
+                    if (DateTime.TryParse(context.Request.Query["enddate"], out var enddate)) await context.Response.WriteAsync("False");
+
+                    if (int.TryParse(context.Request.Query["staffid"], out var staffid)) await context.Response.WriteAsync("False");
+
+                    var repository = context.RequestServices.GetService<IReceptionRepository>();
+                    var receptionList = await repository.GetReceptionsAsync(startdate, enddate, staffid);
+
+                    var options = new JsonSerializerOptions()
+                    {
+                        ReferenceHandler = ReferenceHandler.Preserve
+                    };
+
+                    await context.Response.WriteAsync(JsonSerializer.Serialize(receptionList, options));
+                });
+
+                endpoints.MapGet("/receptions3", async context =>
+                {
+                    if (DateTime.TryParse(context.Request.Query["startdate"], out var startdate)) await context.Response.WriteAsync("False");
+
+                    if (DateTime.TryParse(context.Request.Query["enddate"], out var enddate)) await context.Response.WriteAsync("False");
+
+                    if (int.TryParse(context.Request.Query["status"], out var staffid)) await context.Response.WriteAsync("False");
+                    
+                    var repository = context.RequestServices.GetService<IReceptionRepository>();
+                    var receptionList = await repository.GetReceptionsAsync(startdate, enddate, staffid);
+
+                    var options = new JsonSerializerOptions()
+                    {
+                        ReferenceHandler = ReferenceHandler.Preserve
+                    };
+
+                    await context.Response.WriteAsync(JsonSerializer.Serialize(receptionList, options));
+                });
+
+                endpoints.MapGet("/receptions4", async context =>
+                {
+                    if (DateTime.TryParse(context.Request.Query["visitdate"], out var visitdate)) await context.Response.WriteAsync("False");
+
+                    var repository = context.RequestServices.GetService<IReceptionRepository>();
+                    var receptionList = await repository.GetReceptionsAsync(visitdate);
+
+                    var options = new JsonSerializerOptions()
+                    {
+                        ReferenceHandler = ReferenceHandler.Preserve
+                    };
+
+                    await context.Response.WriteAsync(JsonSerializer.Serialize(receptionList, options));
+                });
+
+                endpoints.MapGet("/addreception", async context =>
+                {
+                    var repository = context.RequestServices.GetService<IReceptionRepository>();
+
+                    var newReception =
+                        await JsonSerializer.DeserializeAsync<Reception>(
+                            new MemoryStream(Encoding.UTF8.GetBytes(context.Request.Query["data"])), null);
+
+                    var resAdd = await repository.AddReceptionAsync(newReception);
+                    if (resAdd != 0) await context.Response.WriteAsync($"{resAdd}");
+                    else await context.Response.WriteAsync("0");
+                });
+
+                endpoints.MapGet("/updreception", async context =>
+                {
+                    var repository = context.RequestServices.GetService<IReceptionRepository>();
+
+                    var newReception =
+                        await JsonSerializer.DeserializeAsync<Reception>(
+                            new MemoryStream(Encoding.UTF8.GetBytes(context.Request.Query["data"])), null);
+
+                    if (await repository.UpdReceptionAsync(newReception)) await context.Response.WriteAsync($"True");
+                    else await context.Response.WriteAsync("False");
+                });
 
                 #endregion
 

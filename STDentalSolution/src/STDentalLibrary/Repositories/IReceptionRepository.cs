@@ -10,12 +10,16 @@ namespace STDentalLibrary.Repositories
 {
     public interface IReceptionRepository
     {
-        IEnumerable<Reception> GetReceptions(DateTime startDate, DateTime endDate);
+        Task<IEnumerable<Reception>> GetReceptionsAsync(DateTime startDate, DateTime endDate);
 
-        IEnumerable<Reception> GetReceptions(DateTime startDate, DateTime endDate, int staffId);
+        Task<IEnumerable<Reception>> GetReceptionsAsync(DateTime startDate, DateTime endDate, int staffId);
 
-        IEnumerable<Reception> GetReceptions(DateTime startDate, DateTime endDate, Models.Enums.ReceptionStatus status);
+        Task<IEnumerable<Reception>> GetReceptionsAsync(DateTime startDate, DateTime endDate, Models.Enums.ReceptionStatus status);
 
-        IEnumerable<Reception> GetReceptions(DateTime visitedDate);
+        Task<IEnumerable<Reception>> GetReceptionsAsync(DateTime visitedDate);
+
+        Task<int> AddReceptionAsync(Reception reception);
+
+        Task<bool> UpdReceptionAsync(Reception reception);
     }
 }
