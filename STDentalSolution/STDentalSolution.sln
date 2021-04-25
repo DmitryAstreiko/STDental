@@ -5,9 +5,9 @@ VisualStudioVersion = 16.0.30717.126
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "STDentalLibrary", "src\STDentalLibrary\STDentalLibrary.csproj", "{C4578D19-C790-4716-BF2A-4C941F8EA480}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "STDentalWeb", "src\STDentalWeb\STDentalWeb.csproj", "{2B16A850-FFF2-4EC6-82D5-C5FB2866F318}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "STDentalWebEmpty", "src\STDentalWeb\STDentalWebEmpty.csproj", "{2B16A850-FFF2-4EC6-82D5-C5FB2866F318}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "STDentalReact", "src\STDentalReact\STDentalReact.csproj", "{DABCA67C-7D78-48E8-A878-422D6689D415}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "STDentalReact", "src\STDentalReact\STDentalReact.csproj", "{DABCA67C-7D78-48E8-A878-422D6689D415}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
