@@ -15,7 +15,7 @@ using STDentalLibrary.Implementation;
 using STDentalLibrary.Models;
 using STDentalLibrary.Repositories;
 
-namespace STDentalWebEmpty
+namespace STDentalWeb
 {
     public class Startup
     {
