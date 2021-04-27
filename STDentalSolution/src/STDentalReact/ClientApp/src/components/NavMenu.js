@@ -10,6 +10,7 @@ export class NavMenu extends Component {
     super(props);
 
     this.toggleNavbar = this.toggleNavbar.bind(this);
+
     this.state = {
       collapsed: true
     };
@@ -23,7 +24,7 @@ export class NavMenu extends Component {
 
   render () {
     return (
-      <header>
+      //<header>
         <Navbar className="navbar-expand-sm navbar-toggleable-sm ng-white border-bottom box-shadow mb-3" light>
           <Container>
             {/*<NavbarBrand tag={Link} to="/">STDentalReact</NavbarBrand>*/}
@@ -58,7 +59,7 @@ export class NavMenu extends Component {
             </Collapse>
           </Container>
         </Navbar>
-      </header>
+      //</header>
     );
   }
 }

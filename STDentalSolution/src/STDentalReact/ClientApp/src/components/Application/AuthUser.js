@@ -34,7 +34,7 @@ export class AuthUser extends Component{
           <input type="password" class="form-control" id="password" name="password" placeholder="Введите пароль"/>
         </div>
         <div>
-        <button type="submit" class="btn btn-primary">Войти</button>
+        <button type="submit" class="btn btn-primary" onClick={this.setRedirect}>Войти</button>
         {this.renderRedirect()}
         <button type="button" class="btn btn-primary" onClick={this.setRedirect}>Назад</button>
         </div>           
