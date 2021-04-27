@@ -63,8 +63,8 @@ namespace STDentalReact
 
                 if (env.IsDevelopment())
                 {
-                    //spa.UseReactDevelopmentServer(npmScript: "start");
-                    spa.UseProxyToSpaDevelopmentServer("http:/localhost:5555");
+                    spa.UseReactDevelopmentServer(npmScript: "start");
+                    //spa.UseProxyToSpaDevelopmentServer("http:/localhost:5001");
                 }
             });
         }
