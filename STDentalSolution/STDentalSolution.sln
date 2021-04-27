@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "STDentalReact", "src\STDent
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "STDentalMVCNotUse", "src\STDentalMVC\STDentalMVCNotUse.csproj", "{60E5080B-0DB7-438B-A173-AF6866807AB5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "STDentalReactRedux", "src\STDentalReactRedux\STDentalReactRedux.csproj", "{2E519EAA-7B8A-466C-8E03-FF9AEA0A6B36}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "STDentalReactReduxNotUse", "src\STDentalReactRedux\STDentalReactReduxNotUse.csproj", "{2E519EAA-7B8A-466C-8E03-FF9AEA0A6B36}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
