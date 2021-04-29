@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Container } from 'reactstrap';
+import { Container, Row, Col } from 'reactstrap';
 import { NavMenu } from './NavMenu';
 import { MainHeader } from './MainHeader';
 
@@ -12,7 +12,7 @@ export class Layout extends Component {
         <MainHeader/>
         <NavMenu />
         <Container>
-          {this.props.children}
+              {this.props.children}
         </Container>
       </div>
     );
