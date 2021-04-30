@@ -34,9 +34,9 @@ namespace STDentalLibrary.Context
             /* optionsBuilder.UseSqlServer(
                  _connectionValue ?? @"Data Source=.\SQLExpress;Initial Catalog=STDentalTest;Integrated Security=True");*/
 
-            //optionsBuilder.UseSqlServer("Server = .\\SQLEXPRESS; Database = STDentalTest; Trusted_Connection = True");
+            optionsBuilder.UseSqlServer("Server = .\\SQLEXPRESS; Database = STDentalTest; Trusted_Connection = True");
 
-            optionsBuilder.UseSqlServer(_connectionValue);
+            //optionsBuilder.UseSqlServer(_connectionValue);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

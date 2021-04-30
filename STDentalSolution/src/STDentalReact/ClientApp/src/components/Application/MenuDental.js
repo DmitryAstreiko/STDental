@@ -18,7 +18,7 @@ import Container from 'reactstrap/lib/Container';
 import { Link } from 'react-router-dom';
 
 
-export class AppDental extends Component{
+export class MenuDental extends Component{
 
     render() {
         return(

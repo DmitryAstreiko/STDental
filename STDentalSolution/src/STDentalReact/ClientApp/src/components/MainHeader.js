@@ -13,7 +13,7 @@ export class MainHeader extends Component{
     render() {
         return(
             <Container>
-                <Row>
+                <Row class="row align-items-center">
                     <Col>
                         <Row>
                             <Col>

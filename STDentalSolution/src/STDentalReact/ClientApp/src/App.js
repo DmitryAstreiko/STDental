@@ -6,7 +6,6 @@ import { FetchData } from './components/FetchData';
 import { Counter } from './components/Counter';
 import {Services} from './components/Services';
 import {AuthUser} from './components/Application/AuthUser';
-import {AppDental} from './components/Application/AppDental';
 import {Talons} from './components/Application/Talons';
 import {Contacts} from './components/Application/Contacts';
 
@@ -23,9 +22,10 @@ export default class App extends Component {
         <Route path='/counter' component={Counter} />
         <Route path='/fetch-data' component={FetchData} />
         <Route path='/authUser' component={AuthUser} />
-        <Route path='/appdental' component={AppDental} />
+        
         <Route path='/appdental/talons' component={Talons} />
         <Route path='/contacts' component={Contacts} />
+        <Route path='/talons' Component={Talons} />
       </Layout>
     );
   }
