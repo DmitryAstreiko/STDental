@@ -3,9 +3,12 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using STDentalLibrary.Models;
+using STDentalLibrary.Models.ModelsResponse;
 using STDentalLibrary.Repositories;
 
 namespace STDentalReact.Controllers
@@ -24,9 +27,28 @@ namespace STDentalReact.Controllers
         }
 
         [HttpGet]
-        public Task<IEnumerable<Talon>> GetAsync()
+        public async Task<IEnumerable<TalonView>> GetAsync()
         {
-            return _talonRepository.GeTalonsAsync();
+            var talons = await _talonRepository.GeTalonsAsync();
+
+            List<TalonView> newTalon = new List<TalonView>();
+
+            foreach (var talon in talons)
+            {
+                var recordTalon = new TalonView()
+                {
+                    TalonId = talon.TalonId.ToString(),
+                    PatientName = talon.Patient.Name,
+                    StaffName = talon.Staff.Name,
+                    Summa = talon.Summa.ToString(),
+                    Cost = talon.Cost.ToString(),
+                    CreateDate = talon.CreateDate.ToString("dd.MM.yyyy")
+                };
+
+                newTalon.Add(recordTalon);
+            }
+
+            return newTalon;
         }
     }
 }

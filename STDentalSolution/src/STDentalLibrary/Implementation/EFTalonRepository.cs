@@ -70,6 +70,8 @@ namespace STDentalLibrary.Implementation
             await using (var context = CreateContext())
             {
                 return await context.Talons
+                    .Include(s => s.Staff)
+                    .Include(p => p.Patient)
                     .Where(q => q.CreateDate > DateTime.UtcNow.AddDays(-180))
                     .OrderBy(s => s.TalonId)
                     .ToListAsync();

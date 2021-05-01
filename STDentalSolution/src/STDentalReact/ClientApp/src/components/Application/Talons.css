@@ -1,3 +1,19 @@
 .conteiner1{
     width: 100% !important;
 }
+
+.table{
+    width: none;
+    border-collapse: collapse;
+    text-indent: initial;
+    border-spacing: 2px;
+    border-color: grey;
+    border: 1px solid #dee2e6;
+}
+
+.table th, .table td {
+    padding: 0rem; 
+    vertical-align: middle;
+    border-top: 1px solid #dee2e6;
+    text-align: center;    
+}
