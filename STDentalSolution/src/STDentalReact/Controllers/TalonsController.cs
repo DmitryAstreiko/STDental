@@ -31,24 +31,17 @@ namespace STDentalReact.Controllers
         {
             var talons = await _talonRepository.GeTalonsAsync();
 
-            List<TalonView> newTalon = new List<TalonView>();
-
-            foreach (var talon in talons)
-            {
-                var recordTalon = new TalonView()
+            return talons.Select(talon => new TalonView()
                 {
                     TalonId = talon.TalonId.ToString(),
                     PatientName = talon.Patient.Name,
                     StaffName = talon.Staff.Name,
                     Summa = talon.Summa.ToString(),
                     Cost = talon.Cost.ToString(),
-                    CreateDate = talon.CreateDate.ToString("dd.MM.yyyy")
-                };
-
-                newTalon.Add(recordTalon);
-            }
-
-            return newTalon;
+                    CreateDate = talon.CreateDate.ToString("dd.MM.yyyy"),
+                    TalonStatus = talon.PaymentStatus.ToString()
+                })
+                .ToArray();
         }
     }
 }

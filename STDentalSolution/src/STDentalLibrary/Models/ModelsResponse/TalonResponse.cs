@@ -18,5 +18,7 @@ namespace STDentalLibrary.Models.ModelsResponse
 
         public string StaffName { get; set; }
 
+        public string TalonStatus { get; set; }
+
     }
 }

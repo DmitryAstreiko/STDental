@@ -25,7 +25,6 @@ export default class App extends Component {
         
         <Route path='/appdental/talons' component={Talons} />
         <Route path='/contacts' component={Contacts} />
-        <Route path='/talons' Component={Talons} />
       </Layout>
     );
   }
