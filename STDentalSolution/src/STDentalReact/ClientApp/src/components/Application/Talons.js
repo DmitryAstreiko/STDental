@@ -4,6 +4,7 @@ import './Talons.css';
 
 import Loader from './Loader';
 import DetailRowView from './DetailRowView';
+import TalonServices from './TalonServices';
 
 export class Talons extends Component{
 
@@ -15,6 +16,8 @@ export class Talons extends Component{
             talons: [],
             selectedTalon: null,
         }
+
+        this.onRowSelect = this.onRowSelect.bind(this);
     }
 
     componentDidMount() {
@@ -25,50 +28,52 @@ export class Talons extends Component{
         this.setState({selectedTalon: row})
     )
 
+
     static renderTalonsTable(talons, onRowSelect) {
         return (
-            <Table striped className='table' aria-labelledby="tabelLabel">
+            <Table className='table' aria-labelledby="tabelLabel">
                 <thead>
                     <tr>
-                    <th>№ талона</th>
-                    <th>ФИО пациента</th>
-                    <th>ФИО врача</th>
-                    <th>Стоимость</th>
-                    <th>Со скидкой</th>
-                    <th>Дата талона</th>
-                    <th>Cтатус талона</th>
+                        <th>№ талона</th>
+                        <th>ФИО пациента</th>
+                        <th>ФИО врача</th>
+                        <th>Стоимость</th>
+                        <th>Со скидкой</th>
+                        <th>Дата талона</th>
+                        <th>Cтатус талона</th>
                     </tr>
                 </thead>
                 <tbody>
                     {talons.map(talon =>
-                        <tr key={talon.talonId} onClick={onRowSelect.bind(null, talon)}>
-                        <td>{talon.talonId}</td>
-                        <td>{talon.patientName}</td>
-                        <td>{talon.staffName}</td> 
-                        <td>{talon.summa}</td>   
-                        <td>{talon.cost}</td>
-                        <td>{talon.createDate}</td>
-                        <td>{talon.talonStatus}</td>
+                        <tr key={talon.talonId} className="talonnotpaid" onClick={onRowSelect.bind(null, talon)}>
+                            <td>{talon.talonId}</td>
+                            <td>{talon.patientName}</td>
+                            <td>{talon.staffName}</td> 
+                            <td>{talon.summa}</td>   
+                            <td>{talon.cost}</td>
+                            <td>{talon.createDate}</td>
+                            <td>{talon.talonStatus}</td>
                         </tr>
                     )}
                 </tbody>
             </Table>
         );
-        }
+    }
 
     render(){   
         let contents = this.state.loading
         ? <Loader />
-        : Talons.renderTalonsTable(this.state.talons, this.onRowSelect);
+        : Talons.renderTalonsTable(this.state.talons, this.onRowSelect, this.getClassName);
 
         return (
         <div>
         {
             contents
+            //<TalonServices talonid={this.selectedTalon.talonId}/>
         }   
         {
         //this.state.row ? <DetailRowView person={this.state.row} /> : null
-            <DetailRowView />
+        //    <DetailRowView />
         }     
         </div>
         )
