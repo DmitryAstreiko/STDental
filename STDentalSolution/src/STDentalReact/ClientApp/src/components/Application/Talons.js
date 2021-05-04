@@ -24,10 +24,13 @@ export class Talons extends Component{
         this.populateTalons();
     } 
 
-    onRowSelect = row => (
-        this.setState({selectedTalon: row})
+    onRowSelect = row => ( 
+        (row !== null) && (
+            this.setState({selectedTalon: row}),
+            <TalonServices talonId="1" />
+        )       
+        
     )
-
 
     static renderTalonsTable(talons, onRowSelect) {
         return (
@@ -84,5 +87,4 @@ export class Talons extends Component{
         const data = await response.json();   
         this.setState({ talons: data, loading: false });
     }
-
 }

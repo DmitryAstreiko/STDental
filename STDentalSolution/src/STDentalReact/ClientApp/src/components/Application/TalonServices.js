@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import Loader from './Loader';
 import { Container, Row, Col, Table } from 'reactstrap';
 
-export class TalonServices extends Component{
+export default class TalonServices extends Component{
 
     constructor(props){
         super(props);
@@ -10,7 +10,9 @@ export class TalonServices extends Component{
         this.state = {
             loading: true,
             talonServices: []
-        }        
+        }     
+        
+        this.populateTalonServices = this.populateTalonServices.bind(this);
     }
 
     static renderTalonServicesTable(talonServices) {
@@ -41,6 +43,7 @@ export class TalonServices extends Component{
     }
 
     render(){   
+        console.log("asdsd");
         let contents = this.state.loading
         ? <Loader />
         : TalonServices.renderTalonServicesTable(this.state.talonServices);
@@ -52,8 +55,9 @@ export class TalonServices extends Component{
     }
 
     async populateTalonServices() {   
-        //let url = 'talonservices?talonid=' + {props.talonid};     
-        const response = await fetch('talonservices');
+        let url = String.join('talonservices?talonid=', this.props.talonId);   
+        //const response = await fetch('talonservices');
+        const response = await fetch(url);
         const data = await response.json();   
         this.setState({ talonServices: data, loading: false });
     }

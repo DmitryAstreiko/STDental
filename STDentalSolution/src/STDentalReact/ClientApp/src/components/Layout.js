@@ -3,6 +3,7 @@ import { Container, Row, Col } from 'reactstrap';
 import { NavMenu } from './NavMenu';
 import { MainHeader } from './MainHeader';
 import { MenuDental } from './Application/MenuDental';
+import {MainFooter} from './MainFooter';
 
 export class Layout extends Component {
   /*static displayName = Layout.name;*/
@@ -10,12 +11,11 @@ export class Layout extends Component {
   render () {
     return (
       <div>
-        <MainHeader/>
-        <NavMenu />
-        <MenuDental />
+        <MainHeader/>        
         <Container>
               {this.props.children}
         </Container>
+        <MainFooter />
       </div>
     );
   }
