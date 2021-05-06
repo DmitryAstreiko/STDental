@@ -1,17 +1,4 @@
-import React, { Component } from 'react';
-/*import { Route } from 'react-router';*/
-import { Layout } from './components/Layout';
-import { Home } from './components/Home';
-import { FetchData } from './components/FetchData';
-import { Counter } from './components/Counter';
-import {Services} from './components/Services';
-import {AuthUser} from './components/Application/AuthUser';
-import { Talons } from './components/Application/Talons';
-import {Contacts} from './components/Application/Contacts';
-import { NavMenu } from './components/NavMenu';
-import { MenuDental } from './components/Application/MenuDental';
-import { MainHeader } from './components/MainHeader';
-
+import React, { Component } from "react";
 import { Switch, Route, Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
@@ -20,16 +7,13 @@ import AuthService from "./services/auth.service";
 
 import Login from "./components/login.component";
 import Register from "./components/register.component";
-/*import Home from "./components/home.component";*/
+import Home from "./components/home.component";
 import Profile from "./components/profile.component";
 import BoardUser from "./components/board-user.component";
 import BoardModerator from "./components/board-moderator.component";
 import BoardAdmin from "./components/board-admin.component";
 
-import './custom.css'
-import { MainFooter } from './components/MainFooter';
-
-export default class App extends Component {
+class App extends Component {
   constructor(props) {
     super(props);
     this.logOut = this.logOut.bind(this);
@@ -57,62 +41,19 @@ export default class App extends Component {
     AuthService.logout();
   }
 
-
-  render () {
+  render() {
     const { currentUser, showModeratorBoard, showAdminBoard } = this.state;
+
     return (
       <div>
-        <MainHeader/>  
-        {/*<NavMenu />*/}
-        {/*<MenuDental />*/}
-
         <nav className="navbar navbar-expand navbar-dark bg-dark">
+          <Link to={"/"} className="navbar-brand">
+            bezKoder
+          </Link>
           <div className="navbar-nav mr-auto">
             <li className="nav-item">
               <Link to={"/home"} className="nav-link">
                 Home
-              </Link>
-            </li>
-
-            <li className="nav-item">
-              <Link to={"/services"} className="nav-link">
-                _Наши услуги
-              </Link>
-            </li>
-
-            <li className="nav-item">
-              <Link to={"/whyme"} className="nav-link">
-                _Почему мы
-              </Link>
-            </li>
-
-            <li className="nav-item">
-              <Link to={"/doctors"} className="nav-link">
-                _Наши врачи
-              </Link>
-            </li>
-
-            <li className="nav-item">
-              <Link to={"/licenses"} className="nav-link">
-                _Лицензии
-              </Link>
-            </li>
-
-            <li className="nav-item">
-              <Link to={"/contacts"} className="nav-link">
-                _Контакты
-              </Link>
-            </li>
-
-            <li className="nav-item">
-              <Link to={"/appdental/talons"} className="nav-link">
-                -Талоны
-              </Link>
-            </li>
-
-            <li className="nav-item">
-              <Link to={"/appdental/createtalon"} className="nav-link">
-                -Выписка талонов
               </Link>
             </li>
 
@@ -158,24 +99,18 @@ export default class App extends Component {
             <div className="navbar-nav ml-auto">
               <li className="nav-item">
                 <Link to={"/login"} className="nav-link">
-                  Записаться на прием
-                </Link>
-              </li>
-              
-              <li className="nav-item">
-                <Link to={"/login"} className="nav-link">
-                  Войти
+                  Login
                 </Link>
               </li>
 
               <li className="nav-item">
                 <Link to={"/register"} className="nav-link">
-                  Регистрация
+                  Sign Up
                 </Link>
               </li>
             </div>
           )}
-        </nav>        
+        </nav>
 
         <div className="container mt-3">
           <Switch>
@@ -183,30 +118,14 @@ export default class App extends Component {
             <Route exact path="/login" component={Login} />
             <Route exact path="/register" component={Register} />
             <Route exact path="/profile" component={Profile} />
-            <Route exact path='/services' Component={Services}/>
-            <Route exact path='/whyme' component={Counter} />
-            <Route exact path='/appdental/talons' component={Talons} />
             <Route path="/user" component={BoardUser} />
             <Route path="/mod" component={BoardModerator} />
             <Route path="/admin" component={BoardAdmin} />
           </Switch>
         </div>
-
-        <MainFooter />
       </div>
-        /*<Layout>
-          <MenuDental />
-          <Route path='/appdental/talons' component={Talons} />      
-
-          <NavMenu />
-          <Route exact path='/' component={Home} />
-          <Route path='/services' Component={Services}/>
-          <Route path='/counter' component={Counter} />
-          <Route path='/fetch-data' component={FetchData} />
-          <Route path='/authUser' component={AuthUser} />
-          <Route path='/contacts' component={Contacts} /> 
-        
-      </Layout>*/
     );
   }
 }
+
+export default App;
