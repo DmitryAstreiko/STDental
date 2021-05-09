@@ -12,9 +12,10 @@ export class MainHeader extends Component{
 
     render() {
         return(
+            /*<Container >*/
             <Container>
-                <Row class="row align-items-center">
-                    <Col>
+                <Row class="row justify-content-center">
+                    <Col class="col-4">
                         <Row>
                             <Col>
                                 <a href="/">                    
@@ -32,7 +33,7 @@ export class MainHeader extends Component{
                             </Col>
                         </Row>                                               
                     </Col>
-                    <Col>
+                    <Col class="col-4">
                         <Row>
                             <img src={phoneblue} width="20" height="15" /> 
                             <a href="/contacts">+375 17 322 33 22 </a>
@@ -53,14 +54,14 @@ export class MainHeader extends Component{
                             <a href="/contacts">+375 29 322 33 22 </a>
                             <span>&nbsp;- A1</span>
                         </Row>
-                        </Col>
-                    <Col>                        
+                    </Col>
+                    <Col class="col-4">                        
                         <img src={geolocation} width="90" height="58" /> 
                         <a href="/contacts">
                             <span>  г. Минск, ул. Повстанцев, 66</span>
                         </a>
                     </Col>
-                </Row>           
+                </Row>        
             </Container>
         );
     }

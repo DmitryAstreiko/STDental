@@ -25,9 +25,9 @@ import Profile from "./components/profile.component";
 import BoardUser from "./components/board-user.component";
 import BoardModerator from "./components/board-moderator.component";
 import BoardAdmin from "./components/board-admin.component";
+import Administrator from "./components/Application/Administrator";
 
 import './custom.css'
-import { MainFooter } from './components/MainFooter';
 
 export default class App extends Component {
   constructor(props) {
@@ -69,6 +69,31 @@ export default class App extends Component {
         <nav className="navbar navbar-expand navbar-dark bg-dark">
           <div className="navbar-nav mr-auto">
             <li className="nav-item">
+              <Link to={"/appdental/administrator"} className="nav-link">
+                Администратор
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link to={"/register"} className="nav-link">
+                Врач
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link to={"/login"} className="nav-link">
+                Бухгалтер
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link to={"/appdental/head"} className="nav-link">
+                Руководитель
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link to={"/appdental/guest"} className="nav-link">
+                Пациент
+              </Link>
+            </li>
+            {/*<li className="nav-item">
               <Link to={"/home"} className="nav-link">
                 Home
               </Link>
@@ -138,10 +163,10 @@ export default class App extends Component {
                   User
                 </Link>
               </li>
-            )}
+            )}*/}
           </div>
 
-          {currentUser ? (
+          {/*{currentUser ? (
             <div className="navbar-nav ml-auto">
               <li className="nav-item">
                 <Link to={"/profile"} className="nav-link">
@@ -174,7 +199,7 @@ export default class App extends Component {
                 </Link>
               </li>
             </div>
-          )}
+          )}*/}
         </nav>        
 
         <div className="container mt-3">
@@ -185,14 +210,13 @@ export default class App extends Component {
             <Route exact path="/profile" component={Profile} />
             <Route exact path='/services' Component={Services}/>
             <Route exact path='/whyme' component={Counter} />
-            <Route exact path='/appdental/talons' component={Talons} />
+            <Route exact path='/appdental/administrator/talons' component={Talons} />
+            <Route exact path='/appdental/administrator' component={Administrator} />
             <Route path="/user" component={BoardUser} />
             <Route path="/mod" component={BoardModerator} />
             <Route path="/admin" component={BoardAdmin} />
           </Switch>
         </div>
-
-        <MainFooter />
       </div>
         /*<Layout>
           <MenuDental />

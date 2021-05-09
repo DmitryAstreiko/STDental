@@ -5,6 +5,7 @@ import './Talons.css';
 import Loader from './Loader';
 import DetailRowView from './DetailRowView';
 import TalonServices from './TalonServices';
+import { MenuAdministrator } from './MenuAdministrator';
 
 export class Talons extends Component{
 
@@ -34,6 +35,23 @@ export class Talons extends Component{
 
     static renderTalonsTable(talons, onRowSelect) {
         return (
+            <div>
+            <MenuAdministrator />
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="">Выбран талон: </span>
+                </div>
+                <input type="text" value="№ 56695"/>
+                <input type="text" value="Пациент - Астаповчик ю.А."/>
+                <input type="text" value="Врач - Алибегов А.А"/>
+                <input type="text" value="Дата талона - 25.25.2020"/>
+                <input type="text" value="Итого по талону - 52336,36"/>
+            </div>
+            
+            <div>
+                Search
+            </div>
+            <div>
             <Table className='table' aria-labelledby="tabelLabel">
                 <thead>
                     <tr>
@@ -60,6 +78,8 @@ export class Talons extends Component{
                     )}
                 </tbody>
             </Table>
+            </div>
+            </div>
         );
     }
 
