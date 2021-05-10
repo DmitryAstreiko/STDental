@@ -39,7 +39,8 @@ namespace STDentalReact.Controllers
                     Summa = talon.Summa.ToString(),
                     Cost = talon.Cost.ToString(),
                     CreateDate = talon.CreateDate.ToString("dd.MM.yyyy"),
-                    TalonStatus = talon.PaymentStatus.ToString()
+                    TalonStatus = talon.PaymentStatus.ToString(),
+                    Description = talon.Description
                 })
                 .ToArray();
         }

@@ -18,6 +18,14 @@
     text-align: center;    
 }
 
-.talonnotpaid {
+.NotPaid {
+    background-color: white;
+}
+
+.Paid {
+    background-color: greenyellow;
+}
+
+.PartiallyPaid {
     background-color: yellow;
 }

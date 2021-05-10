@@ -12,7 +12,6 @@ export class MainHeader extends Component{
 
     render() {
         return(
-            /*<Container >*/
             <Container>
                 <Row class="row justify-content-center">
                     <Col class="col-4">

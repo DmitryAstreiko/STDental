@@ -342,6 +342,9 @@ namespace STDentalLibrary.Context
 
                 talon.Property(p => p.ChangeDate)
                     .HasColumnType("datetime");
+
+                talon.Property(p => p.Description)
+                    .HasColumnType("nvarchar(512)");
             });
 
             #endregion

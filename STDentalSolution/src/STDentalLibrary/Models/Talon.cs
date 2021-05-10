@@ -22,6 +22,8 @@ namespace STDentalLibrary.Models
 
         public PaymentStatus PaymentStatus { get; set; }
 
+        public string Description { get; set; }
+
 
         public int PatientId { get; set; }
         public Patient Patient { get; set; }

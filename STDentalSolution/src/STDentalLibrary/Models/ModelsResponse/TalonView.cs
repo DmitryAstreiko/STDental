@@ -20,5 +20,6 @@ namespace STDentalLibrary.Models.ModelsResponse
 
         public string TalonStatus { get; set; }
 
+        public string Description { get; set; }
     }
 }
