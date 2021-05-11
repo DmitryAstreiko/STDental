@@ -20,7 +20,7 @@ export class Talons extends Component{
             selectedTalon: null,
             patients: [],
             doctors: [],
-            selectedPatient: [],
+            selectedPatientId: null,
             selectedDoctor: [],
             selectedStartDate: null,
             selectedEndDate: null
@@ -28,6 +28,7 @@ export class Talons extends Component{
 
         this.onRowSelect = this.onRowSelect.bind(this);
         this.onClickPatient = this.onClickPatient.bind(this);
+        this.onPatientSelect = this.onPatientSelect.bind(this);
     }
 
     componentDidMount() {
@@ -43,9 +44,8 @@ export class Talons extends Component{
         )              
     )
 
-    onPatientSelect = row => ( 
-            this.setState({selectPatient: row}),
-        )              
+    onPatientSelect = value => ( 
+            this.setState({selectPatientId: value.id})           
     )
 
     onClickPatient = row => (
@@ -54,10 +54,13 @@ export class Talons extends Component{
         )
     )
 
-    static renderTalonsTable(talons, onRowSelect, fioPatients, fioDoctors, onPatientSelect) {      
+    static renderTalonsTable(talons, onRowSelect, fioPatients, fioDoctors, onPatientSelect, selectPatientId) {      
         return (
             <div>
             <MenuAdministrator />
+            <div>
+                {`value: ${this.selectPatientId !== null ? `'${this.selectPatientId}'` : 'null'}`}
+            </div>
             <div class="input-group">
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="">Выбран талон: </span>
@@ -73,7 +76,8 @@ export class Talons extends Component{
             <div class="container">
                 <div class="row">
                     <div class="col-sm">
-                        <ComboBoxT labelvalue={"Выберите пациента"} fios={fioPatients} onClick={onPatientSelect.bind(null, talon)}/>
+                        <ComboBoxT labelvalue={"Выберите пациента"} fios={fioPatients} 
+                            onPatientSelect={ onPatientSelect }/>
                     </div>
                     <div class="col-sm">
                         <ComboBoxT labelvalue={"Выберите врача"} fios={fioDoctors} />
@@ -123,7 +127,7 @@ export class Talons extends Component{
     render(){   
         let contents = this.state.loading
         ? <Loader />
-        : Talons.renderTalonsTable(this.state.talons, this.onRowSelect, this.state.patients, this.state.doctors);
+        : Talons.renderTalonsTable(this.state.talons, this.onRowSelect, this.state.patients, this.state.doctors, this.selectPatientId);
 
         return (
         <div>
