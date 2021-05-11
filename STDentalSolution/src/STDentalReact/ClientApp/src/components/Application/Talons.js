@@ -8,6 +8,7 @@ import Loader from './Loader';
 import DetailRowView from './DetailRowView';
 import TalonServices from './TalonServices';
 import { MenuAdministrator } from './MenuAdministrator';
+import Pagination from './Pagination';
 
 export class Talons extends Component{
 
@@ -23,7 +24,9 @@ export class Talons extends Component{
             selectedPatientId: null,
             selectedDoctor: [],
             selectedStartDate: null,
-            selectedEndDate: null
+            selectedEndDate: null,
+            currentPage: 1,
+            talonsPerPage: 15
         }
 
         this.onRowSelect = this.onRowSelect.bind(this);
@@ -54,7 +57,19 @@ export class Talons extends Component{
         )
     )
 
-    static renderTalonsTable(talons, onRowSelect, fioPatients, fioDoctors, onPatientSelect, selectPatientId) {      
+    static renderTalonsTable(talons, onRowSelect, fioPatients, fioDoctors, onPatientSelect, 
+            selectPatientId, currentPage, talonsPerPage) {      
+
+        const indexOfLastTalon = currentPage * talonsPerPage;
+        const indexOfFirstTalon = indexOfLastTalon - talonsPerPage;
+        const currentTalons = talons.slice(indexOfFirstTalon, indexOfLastTalon);
+
+        const paginate = pageNum => this.setState({currentPage: pageNum});
+
+        const nextPage = () => this.setState({currentPage: currentPage + 1});
+
+        const prevPage = () => this.setState({currentPage: currentPage - 1});
+
         return (
             <div>
             <MenuAdministrator />
@@ -106,7 +121,7 @@ export class Talons extends Component{
                     </tr>
                 </thead>
                 <tbody>
-                    {talons.map(talon =>
+                    {currentTalons.map(talon =>
                         <tr key={talon.talonId} className={talon.talonStatus} onClick={onRowSelect.bind(null, talon)}>
                             <td>{talon.talonId}</td>
                             <td>{talon.patientName}</td>
@@ -119,6 +134,8 @@ export class Talons extends Component{
                     )}
                 </tbody>
             </Table>
+            <Pagination talonsPerPage={talonsPerPage} totalTalons={talons.length} paginate={paginate} 
+                nextPage={nextPage} prevPage={prevPage}/>
             </div>
             </div>
         );
@@ -127,7 +144,8 @@ export class Talons extends Component{
     render(){   
         let contents = this.state.loading
         ? <Loader />
-        : Talons.renderTalonsTable(this.state.talons, this.onRowSelect, this.state.patients, this.state.doctors, this.selectPatientId);
+        : Talons.renderTalonsTable(this.state.talons, this.onRowSelect, this.state.patients, this.state.doctors, 
+                this.onPatientSelect, this.selectPatientId, this.state.currentPage, this.state.talonsPerPage);
 
         return (
         <div>
