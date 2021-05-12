@@ -13,8 +13,8 @@ export class MainHeader extends Component{
     render() {
         return(
             <Container>
-                <Row class="row justify-content-center">
-                    <Col class="col-4">
+                <Row className="row justify-content-center">
+                    <Col className="col-4">
                         <Row>
                             <Col>
                                 <a href="/">                    
@@ -32,7 +32,7 @@ export class MainHeader extends Component{
                             </Col>
                         </Row>                                               
                     </Col>
-                    <Col class="col-4">
+                    <Col className="col-4">
                         <Row>
                             <img src={phoneblue} width="20" height="15" /> 
                             <a href="/contacts">+375 17 322 33 22 </a>
@@ -54,7 +54,7 @@ export class MainHeader extends Component{
                             <span>&nbsp;- A1</span>
                         </Row>
                     </Col>
-                    <Col class="col-4">                        
+                    <Col className="col-4">                        
                         <img src={geolocation} width="90" height="58" /> 
                         <a href="/contacts">
                             <span>  г. Минск, ул. Повстанцев, 66</span>

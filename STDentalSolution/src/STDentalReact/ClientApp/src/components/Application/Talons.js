@@ -47,9 +47,11 @@ export class Talons extends Component{
         )              
     )
 
-    onPatientSelect = value => ( 
-            this.setState({selectPatientId: value.id})           
-    )
+    onPatientSelect = value => {
+        console.log('patient selected:');
+        console.log(value);
+        this.setState({ selectPatientId: value.id })
+    }
 
     onClickPatient = row => (
         (row !== null) && (
@@ -57,18 +59,17 @@ export class Talons extends Component{
         )
     )
 
-    static renderTalonsTable(talons, onRowSelect, fioPatients, fioDoctors, onPatientSelect, 
-            selectPatientId, currentPage, talonsPerPage) {      
+    renderTalonsTable() {      
 
-        const indexOfLastTalon = currentPage * talonsPerPage;
-        const indexOfFirstTalon = indexOfLastTalon - talonsPerPage;
-        const currentTalons = talons.slice(indexOfFirstTalon, indexOfLastTalon);
+        const indexOfLastTalon = this.state.currentPage * this.state.talonsPerPage;
+        const indexOfFirstTalon = indexOfLastTalon - this.state.talonsPerPage;
+        const currentTalons = this.state.talons.slice(indexOfFirstTalon, indexOfLastTalon);
 
         const paginate = pageNum => this.setState({currentPage: pageNum});
 
-        const nextPage = () => this.setState({currentPage: currentPage + 1});
+        const nextPage = () => this.setState({ currentPage: this.state.currentPage + 1});
 
-        const prevPage = () => this.setState({currentPage: currentPage - 1});
+        const prevPage = () => this.setState({ currentPage: this.state.currentPage - 1});
 
         return (
             <div>
@@ -76,31 +77,31 @@ export class Talons extends Component{
             <div>
                 {`value: ${this.selectPatientId !== null ? `'${this.selectPatientId}'` : 'null'}`}
             </div>
-            <div class="input-group">
-                <div class="input-group-prepend">
-                    <span class="input-group-text" id="">Выбран талон: </span>
+            <div className="input-group">
+                <div className="input-group-prepend">
+                    <span className="input-group-text" id="">Выбран талон: </span>
                 </div>
-                <input type="text" value="№ 56944" style={{width: "110px", textAlign: "center"}}/>
-                <input type="text" value="Пациент - Астаповчик ю.А." style={{width: "250px", textAlign: "center"}}/>
-                <input type="text" value="Врач - Алибегов А.А" style={{width: "250px", textAlign: "center"}}/>
-                <input type="text" value="Дата талона - 25.25.2020" style={{width: "250px", textAlign: "center"}}/>
-                <input type="text" value="Итого по талону - 52336,36" style={{width: "250px", textAlign: "center"}}/>
+                    <input type="text" value="№ 56944" style={{ width: "110px", textAlign: "center" }} readOnly />
+                    <input type="text" value="Пациент - Астаповчик ю.А." style={{ width: "250px", textAlign: "center" }} readOnly />
+                    <input type="text" value="Врач - Алибегов А.А" style={{ width: "250px", textAlign: "center" }} readOnly />
+                    <input type="text" value="Дата талона - 25.25.2020" style={{ width: "250px", textAlign: "center" }} readOnly />
+                    <input type="text" value="Итого по талону - 52336,36" style={{ width: "250px", textAlign: "center" }} readOnly />
             </div> 
             <div style={{height: "20px"}}>
                 </div>           
-            <div class="container">
-                <div class="row">
-                    <div class="col-sm">
-                        <ComboBoxT labelvalue={"Выберите пациента"} fios={fioPatients} 
-                            onPatientSelect={ onPatientSelect }/>
+            <div className="container">
+                <div className="row">
+                    <div className="col-sm">
+                            <ComboBoxT labelvalue={"Выберите пациента"} fios={this.state.patients} 
+                            onPatientSelect={ (value) => this.onPatientSelect(value) }/>
                     </div>
-                    <div class="col-sm">
-                        <ComboBoxT labelvalue={"Выберите врача"} fios={fioDoctors} />
+                    <div className="col-sm">
+                            <ComboBoxT labelvalue={"Выберите врача"} fios={this.state.doctors} />
                     </div>
-                    <div class="col-sm">
+                    <div className="col-sm">
                         <DateTimeT labelvalue={"Начало периода"}/>
                     </div>
-                    <div class="col-sm">
+                    <div className="col-sm">
                         <DateTimeT labelvalue={"Окончание периода"}/>
                     </div>
                 </div>
@@ -122,7 +123,7 @@ export class Talons extends Component{
                 </thead>
                 <tbody>
                     {currentTalons.map(talon =>
-                        <tr key={talon.talonId} className={talon.talonStatus} onClick={onRowSelect.bind(null, talon)}>
+                        <tr key={talon.talonId} className={talon.talonStatus} onClick={() => this.onRowSelect(talon)}>
                             <td>{talon.talonId}</td>
                             <td>{talon.patientName}</td>
                             <td>{talon.staffName}</td> 
@@ -134,7 +135,7 @@ export class Talons extends Component{
                     )}
                 </tbody>
             </Table>
-            <Pagination talonsPerPage={talonsPerPage} totalTalons={talons.length} paginate={paginate} 
+                <Pagination talonsPerPage={this.state.talonsPerPage} totalTalons={this.state.talons.length} paginate={paginate} 
                 nextPage={nextPage} prevPage={prevPage}/>
             </div>
             </div>
@@ -144,8 +145,7 @@ export class Talons extends Component{
     render(){   
         let contents = this.state.loading
         ? <Loader />
-        : Talons.renderTalonsTable(this.state.talons, this.onRowSelect, this.state.patients, this.state.doctors, 
-                this.onPatientSelect, this.selectPatientId, this.state.currentPage, this.state.talonsPerPage);
+        : this.renderTalonsTable();
 
         return (
         <div>
