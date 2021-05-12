@@ -9,6 +9,9 @@ import DetailRowView from './DetailRowView';
 import TalonServices from './TalonServices';
 import { MenuAdministrator } from './MenuAdministrator';
 import Pagination from './Pagination';
+import DatePicker from './Picker.component';
+import { maskedDateFormatter } from '@material-ui/pickers/_helpers/text-field-helper';
+import * as moment  from 'moment';
 
 export class Talons extends Component{
 
@@ -21,8 +24,8 @@ export class Talons extends Component{
             selectedTalon: [],
             patients: [],
             doctors: [],
-            selectedPatientId: 0,
-            selectedDoctorId: 0,
+            selectedPatientId: null,
+            selectedDoctorId: null,
             selectedStartDate: null,
             selectedEndDate: null,
             currentPage: 1,
@@ -56,6 +59,18 @@ export class Talons extends Component{
         this.setState({ selectedDoctorId: value.id })
     }
 
+    onDateStartSelect = value => {
+        //console.log(value);
+
+        //const result = new Date(value);
+        //let res = Date.parse(value)
+        let res = moment(value).format('DD.MM.YYYY')
+        //console.log(www)
+        //console.log(res)
+        //console.log(result.getUTCDate())
+        this.setState({ selectedStartDate: res })
+    }
+
     onClickPatient = row => (
         (row !== null) && (
             this.setState({selectedPatient: row})
@@ -86,6 +101,9 @@ export class Talons extends Component{
             <div>
                 {`selectedTalon: ${this.state.selectedTalon.talonId}`}
             </div>
+            <div>
+                {`selectedStartDate: ${this.state.selectedStartDate}`}
+            </div>
             <div className="input-group">
                 <div className="input-group-prepend">
                     <span className="input-group-text" id="">Выбран талон: </span>
@@ -97,19 +115,23 @@ export class Talons extends Component{
                     <input type="text" value={`Итого по талону - ${this.state.selectedTalon.cost}`} style={{ width: "250px", textAlign: "center" }} readOnly />
             </div> 
             <div style={{height: "20px"}}>
-                </div>           
+                </div>
             <div className="container">
                 <div className="row">
                     <div className="col-sm">
                             <ComboBoxT labelvalue={"Выберите пациента"} fios={this.state.patients} 
-                            onSelected={ (value) => this.onPatientSelect(value) }/>
+                                onSelected={ (value) => this.onPatientSelect(value) }/>
                     </div>
                     <div className="col-sm">
                             <ComboBoxT labelvalue={"Выберите врача"} fios={this.state.doctors} 
-                            onSelected={ (value) => this.onDoctorSelect(value) }/>
+                                onSelected={ (value) => this.onDoctorSelect(value) }/>
                     </div>
                     <div className="col-sm">
-                        <DateTimeT labelvalue={"Начало периода"}/>
+                        <DateTimeT labelvalue={"Начало периода"} 
+                            onSelected={ (value) => this.onDateStartSelect(value) } />
+                    </div>
+                    <div className="col-sm">
+                        <DatePicker labelvalue={"Начало периода"} onSelected={ (value) => this.onDateStartSelect(value) } />
                     </div>
                     <div className="col-sm">
                         <DateTimeT labelvalue={"Окончание периода"}/>

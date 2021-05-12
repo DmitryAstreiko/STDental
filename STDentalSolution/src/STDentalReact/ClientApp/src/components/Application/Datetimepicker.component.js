@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState  } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 
@@ -17,14 +17,17 @@ const useStyles = makeStyles((theme) => ({
 
 export default function DatePickers(props) {
   const classes = useStyles();
+  //const [selectedDate, handleDateChange] = useState(new Date());
+
 
   return (
     <form className={classes.container} noValidate>
       <TextField
+        
         id="date"
         label={props.labelvalue}
         type="date"
-        defaultValue="2000-01-01"
+        //defaultValue="2000-01-01"
         className={classes.textField}
         InputLabelProps={{
           shrink: true,
