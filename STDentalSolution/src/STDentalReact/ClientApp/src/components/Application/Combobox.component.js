@@ -19,7 +19,7 @@ export default function ComboBoxM(props) {
   <br />*/}
     <Autocomplete
     //onChange={(event, value) => props.patientid = value.id}
-    onChange={(event, value) => props.onPatientSelect(value)}
+    onChange={(event, value) => props.onSelected(value)}
 
         /*value={value}
         onChange={(event, value) => {

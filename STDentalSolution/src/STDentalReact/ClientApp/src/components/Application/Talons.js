@@ -21,8 +21,8 @@ export class Talons extends Component{
             selectedTalon: null,
             patients: [],
             doctors: [],
-            selectedPatientId: null,
-            selectedDoctor: [],
+            selectedPatientId: 0,
+            selectedDoctorId: 0,
             selectedStartDate: null,
             selectedEndDate: null,
             currentPage: 1,
@@ -48,9 +48,11 @@ export class Talons extends Component{
     )
 
     onPatientSelect = value => {
-        console.log('patient selected:');
-        console.log(value);
         this.setState({ selectPatientId: value.id })
+    }
+
+    onDoctorSelect = value => {
+        this.setState({ selectedDoctorId: value.id })
     }
 
     onClickPatient = row => (
@@ -75,7 +77,8 @@ export class Talons extends Component{
             <div>
             <MenuAdministrator />
             <div>
-                {`value: ${this.selectPatientId !== null ? `'${this.selectPatientId}'` : 'null'}`}
+                {`selectPatientId: ${this.state.selectPatientId}`}
+                {`selectedDoctorId: ${this.state.selectedDoctorId}`}
             </div>
             <div className="input-group">
                 <div className="input-group-prepend">
@@ -93,10 +96,11 @@ export class Talons extends Component{
                 <div className="row">
                     <div className="col-sm">
                             <ComboBoxT labelvalue={"Выберите пациента"} fios={this.state.patients} 
-                            onPatientSelect={ (value) => this.onPatientSelect(value) }/>
+                            onSelected={ (value) => this.onPatientSelect(value) }/>
                     </div>
                     <div className="col-sm">
-                            <ComboBoxT labelvalue={"Выберите врача"} fios={this.state.doctors} />
+                            <ComboBoxT labelvalue={"Выберите врача"} fios={this.state.doctors} 
+                            onSelected={ (value) => this.onDoctorSelect(value) }/>
                     </div>
                     <div className="col-sm">
                         <DateTimeT labelvalue={"Начало периода"}/>
@@ -135,8 +139,8 @@ export class Talons extends Component{
                     )}
                 </tbody>
             </Table>
-                <Pagination talonsPerPage={this.state.talonsPerPage} totalTalons={this.state.talons.length} paginate={paginate} 
-                nextPage={nextPage} prevPage={prevPage}/>
+                <Pagination talonsPerPage={this.state.talonsPerPage} totalTalons={this.state.talons.length} 
+                paginate={paginate} nextPage={nextPage} prevPage={prevPage}/>
             </div>
             </div>
         );
