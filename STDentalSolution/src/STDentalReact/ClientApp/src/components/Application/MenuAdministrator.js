@@ -36,7 +36,15 @@ export class MenuAdministrator extends Component{
                   <NavLink tag={Link} className="text-dark" to="/">Выписка талона</NavLink>
                 </NavItem>
                 <NavItem>
-                  <NavLink tag={Link} className="text-dark" to="/">Выписка талона</NavLink>
+                <div class="dropdown">
+                  <button class="btn dropdown-toggle" type="button" id="dropdownMenuVocabulary" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Работа с талоном
+                  </button>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuVocabulary" x-placement="bottom-start" style={{position: "absolute", transform: "translate3d(0px, 38px, 0px)", top: "0px", left: "0px", willchange: "transform"}}>
+                    <a class="dropdown-item" href="/">Редактировать</a>
+                    <a class="dropdown-item" href="/">Уалить</a>
+                  </div>
+                </div>
                 </NavItem>
                 <NavItem>
                 <div class="dropdown">
