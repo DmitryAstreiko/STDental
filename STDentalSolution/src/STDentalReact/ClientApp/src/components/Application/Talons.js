@@ -18,7 +18,7 @@ export class Talons extends Component{
         this.state = {
             loading: true,
             talons: [],
-            selectedTalon: null,
+            selectedTalon: [],
             patients: [],
             doctors: [],
             selectedPatientId: 0,
@@ -40,10 +40,11 @@ export class Talons extends Component{
         this.populateDoctors();
     } 
 
-    onRowSelect = row => ( 
+    onRowSelect = row => (
+        //console.log(row) 
         (row !== null) && (
-            this.setState({selectedTalon: row}),
-            <TalonServices talonId="1" />
+            this.setState({selectedTalon: row})
+            /*<TalonServices talonId="1" />*/
         )              
     )
 
@@ -77,18 +78,23 @@ export class Talons extends Component{
             <div>
             <MenuAdministrator />
             <div>
-                {`selectPatientId: ${this.state.selectPatientId}`}
+                {`selectPatientId: ${this.state.selectPatientId}`}                
+            </div>
+            <div>
                 {`selectedDoctorId: ${this.state.selectedDoctorId}`}
+            </div>
+            <div>
+                {`selectedTalon: ${this.state.selectedTalon.talonId}`}
             </div>
             <div className="input-group">
                 <div className="input-group-prepend">
                     <span className="input-group-text" id="">Выбран талон: </span>
                 </div>
-                    <input type="text" value="№ 56944" style={{ width: "110px", textAlign: "center" }} readOnly />
-                    <input type="text" value="Пациент - Астаповчик ю.А." style={{ width: "250px", textAlign: "center" }} readOnly />
-                    <input type="text" value="Врач - Алибегов А.А" style={{ width: "250px", textAlign: "center" }} readOnly />
-                    <input type="text" value="Дата талона - 25.25.2020" style={{ width: "250px", textAlign: "center" }} readOnly />
-                    <input type="text" value="Итого по талону - 52336,36" style={{ width: "250px", textAlign: "center" }} readOnly />
+                    <input type="text" value={`№ ${this.state.selectedTalon.talonId}`} style={{ width: "110px", textAlign: "center" }} readOnly />
+                    <input type="text" value={`Пациент - ${this.state.selectedTalon.patientName}`} style={{ width: "250px", textAlign: "center" }} readOnly />
+                    <input type="text" value={`Врач - ${this.state.selectedTalon.staffName}`} style={{ width: "250px", textAlign: "center" }} readOnly />
+                    <input type="text" value={`Дата талона - ${this.state.selectedTalon.createDate}`} style={{ width: "250px", textAlign: "center" }} readOnly />
+                    <input type="text" value={`Итого по талону - ${this.state.selectedTalon.cost}`} style={{ width: "250px", textAlign: "center" }} readOnly />
             </div> 
             <div style={{height: "20px"}}>
                 </div>           
