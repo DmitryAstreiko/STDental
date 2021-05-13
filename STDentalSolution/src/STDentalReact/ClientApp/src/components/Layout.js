@@ -11,9 +11,11 @@ export class Layout extends Component {
     return (
       <div>
         <MainHeader/>        
-        <Container>
-              {this.props.children}
-        </Container>
+        {/*<Container>*/}
+        <div>
+          {this.props.children}
+        </div>
+        {/*</Container>*/}
       </div>
     );
   }

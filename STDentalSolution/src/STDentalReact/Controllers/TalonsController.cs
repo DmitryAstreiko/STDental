@@ -27,11 +27,11 @@ namespace STDentalReact.Controllers
         }
 
         [HttpGet]
-        public async Task<IEnumerable<TalonView>> GetAsync()
+        public async Task<IEnumerable<TalonInfo>> GetAsync()
         {
             var talons = await _talonRepository.GeTalonsAsync();
 
-            return talons.Select(talon => new TalonView()
+            return talons.Select(talon => new TalonInfo()
                 {
                     TalonId = talon.TalonId.ToString(),
                     PatientName = talon.Patient.Name,

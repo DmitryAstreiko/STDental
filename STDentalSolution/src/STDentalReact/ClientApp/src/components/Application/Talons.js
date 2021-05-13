@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import { Container, Row, Col, Table } from 'reactstrap';
 import './Talons.css';
-import ComboBoxT from './Combobox.component';
-import DateTimeT from './Datetimepicker.component';
+import ComboBox from './Combobox.component';
+import DateTime from './Datetimepicker.component';
 
 import Loader from './Loader';
 import DetailRowView from './DetailRowView';
@@ -19,7 +19,7 @@ export class Talons extends Component{
         super(props);
 
         this.state = {
-            loading: true,
+            loadingTalons: true,
             talons: [],
             selectedTalon: [],
             patients: [],
@@ -37,26 +37,26 @@ export class Talons extends Component{
         this.onPatientSelect = this.onPatientSelect.bind(this);
     }
 
-    componentDidMount() {
-        this.populateTalons();
+    componentDidMount() {        
         this.populatePatients();
         this.populateDoctors();
+        this.populateTalons();
     } 
 
     onRowSelect = row => (
         //console.log(row) 
-        (row !== null) && (
-            this.setState({selectedTalon: row})
+        //(row !== null) && (
+            this.setState({selectedTalon: row && row})
             /*<TalonServices talonId="1" />*/
-        )              
+             
     )
 
     onPatientSelect = value => {
-        this.setState({ selectPatientId: value.id })
+        this.setState({ selectPatientId: value && value.id })
     }
 
     onDoctorSelect = value => {
-        this.setState({ selectedDoctorId: value.id })
+        this.setState({ selectedDoctorId: value && value.id })
     }
 
     onDateStartSelect = value => {
@@ -69,6 +69,11 @@ export class Talons extends Component{
         //console.log(res)
         //console.log(result.getUTCDate())
         this.setState({ selectedStartDate: res })
+    }
+
+    onDateEndSelect = value => {
+        let res = moment(value).format('DD.MM.YYYY')
+        this.setState({ selectedEndDate: res })
     }
 
     onClickPatient = row => (
@@ -91,7 +96,7 @@ export class Talons extends Component{
 
         return (
             <div>
-            <MenuAdministrator />
+                <MenuAdministrator />
             <div>
                 {`selectPatientId: ${this.state.selectPatientId}`}                
             </div>
@@ -119,22 +124,21 @@ export class Talons extends Component{
             <div className="container">
                 <div className="row">
                     <div className="col-sm">
-                            <ComboBoxT labelvalue={"Выберите пациента"} fios={this.state.patients} 
-                                onSelected={ (value) => this.onPatientSelect(value) }/>
+                        <ComboBox labelvalue={"Выберите пациента"} fios={this.state.patients} 
+                            onSelected={ (value) => this.onPatientSelect(value) }/>
                     </div>
                     <div className="col-sm">
-                            <ComboBoxT labelvalue={"Выберите врача"} fios={this.state.doctors} 
-                                onSelected={ (value) => this.onDoctorSelect(value) }/>
-                    </div>
-                    <div className="col-sm">
-                        <DateTimeT labelvalue={"Начало периода"} 
-                            onSelected={ (value) => this.onDateStartSelect(value) } />
+                        <ComboBox labelvalue={"Выберите врача"} fios={this.state.doctors} 
+                            onSelected={ (value) => this.onDoctorSelect(value) }/>
                     </div>
                     <div className="col-sm">
                         <DatePicker labelvalue={"Начало периода"} onSelected={ (value) => this.onDateStartSelect(value) } />
                     </div>
                     <div className="col-sm">
-                        <DateTimeT labelvalue={"Окончание периода"}/>
+                        <DatePicker labelvalue={"Окончание периода"} onSelected={ (value) => this.onDateEndSelect(value) } />
+                    </div>
+                    <div className="col-sm">
+                        <button>Поиск onClick={}</button>
                     </div>
                 </div>
                 </div>
@@ -153,6 +157,8 @@ export class Talons extends Component{
                         <th>Комментарий</th>
                     </tr>
                 </thead>
+                { this.state.loadingTalons ? (
+                <Loader /> ) : ( 
                 <tbody>
                     {currentTalons.map(talon =>
                         <tr key={talon.talonId} className={talon.talonStatus} onClick={() => this.onRowSelect(talon)}>
@@ -166,23 +172,26 @@ export class Talons extends Component{
                         </tr>
                     )}
                 </tbody>
+                )}
+
             </Table>
-                <Pagination talonsPerPage={this.state.talonsPerPage} totalTalons={this.state.talons.length} 
-                paginate={paginate} nextPage={nextPage} prevPage={prevPage}/>
+                {this.state.loadingTalons && (<Pagination talonsPerPage={this.state.talonsPerPage} totalTalons={this.state.talons.length} 
+                paginate={paginate} nextPage={nextPage} prevPage={prevPage}/>)}
             </div>
             </div>
         );
     }
 
     render(){   
-        let contents = this.state.loading
+        /*let contents = this.state.loadingTalons
         ? <Loader />
-        : this.renderTalonsTable();
+        : this.renderTalonsTable();*/
 
         return (
         <div>
         {
-            contents
+            ////contents
+            this.renderTalonsTable()
             //<TalonServices talonid={this.selectedTalon.talonId}/>
         }   
         {
@@ -202,12 +211,12 @@ export class Talons extends Component{
     async populatePatients() {        
         const response = await fetch('patients');
         const data = await response.json();   
-        this.setState({ patients: data, loading: false });
+        this.setState({ patients: data });
     }
     
     async populateDoctors() {        
         const response = await fetch('staffs');
         const data = await response.json();   
-        this.setState({ doctors: data, loading: false });
+        this.setState({ doctors: data });
     }
 }

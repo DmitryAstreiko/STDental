@@ -71,9 +71,9 @@ function DateFnsLocalizationExample(props) {
     <MuiPickersUtilsProvider utils={localeUtilsMap[locale]} locale={localeMap[locale]}>
       <DatePicker
         value={selectedDate}
-        onChange={handleDateChange}
+        //onChange={handleDateChange}
         
-        //onChange={(value) => props.onSelected(value)}
+        onChange={(value) => {props.onSelected(value); handleDateChange(value)}}
 
         format={localeFormatMap[locale]}
         cancelLabel={localeCancelLabelMap[locale]}
