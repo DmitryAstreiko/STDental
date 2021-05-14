@@ -63,6 +63,33 @@ namespace STDentalLibrary.Implementation
             }
         }
 
+        public async Task<IEnumerable<Staff>> GetFoundedStaffsInTalonsAsync()
+        {
+            await using (var context = CreateContext())
+            {
+                return await context.Staffs
+                    .Include(e => e.Post)
+                    .OrderBy(s => s.StaffId)
+                    .ToListAsync();
+            
+
+            /*return await context.Staffs
+                    .Include(e => e.Post)
+                    .Join(context.Talons,
+                        st => st.StaffId,
+                        t => t.StaffId,
+                        (st, t) => new
+                        {
+                            StaffId = st.StaffId
+                        })
+                    .OrderBy(r => r.StaffId)
+                    .Select(o => o.StaffId)
+                    .ToListAsync();
+            */
+            }
+            
+        }
+
         public async Task<Staff> GetStaffAsync(int staffId)
         {
             await using (var context = CreateContext())

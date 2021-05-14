@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
 /*import { Route } from 'react-router';*/
-import { Layout } from './components/Layout';
+//import { Layout } from './components/Layout';
 import { Home } from './components/Home';
-import { FetchData } from './components/FetchData';
+//import { FetchData } from './components/FetchData';
 import { Counter } from './components/Counter';
 import {Services} from './components/Services';
-import {AuthUser} from './components/Application/AuthUser';
+//import {AuthUser} from './components/Application/AuthUser';
 import { Talons } from './components/Application/Talons';
-import {Contacts} from './components/Application/Contacts';
-import { NavMenu } from './components/NavMenu';
-import { MenuDental } from './components/Application/MenuDental';
+//import {Contacts} from './components/Application/Contacts';
+//import { NavMenu } from './components/NavMenu';
+//import { MenuDental } from './components/Application/MenuDental';
 import { MainHeader } from './components/MainHeader';
 
 import { Switch, Route, Link } from "react-router-dom";
@@ -59,7 +59,7 @@ export default class App extends Component {
 
 
   render () {
-    const { currentUser, showModeratorBoard, showAdminBoard } = this.state;
+    //const { currentUser, showModeratorBoard, showAdminBoard } = this.state;
     return (
       <div>
         <MainHeader/>  
@@ -202,7 +202,8 @@ export default class App extends Component {
           )}*/}
         </nav>        
 
-        <div className="container mt-3">
+        {/*<div className="container mt-3">*/}
+        <div>
           <Switch>
             <Route exact path={["/", "/home"]} component={Home} />
             <Route exact path="/login" component={Login} />

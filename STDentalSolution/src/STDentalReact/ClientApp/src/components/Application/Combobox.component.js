@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 
@@ -32,7 +32,7 @@ export default function ComboBoxM(props) {
         }}*/
 
 
-      id="combo-box"
+      id={props.nameid}
       options={props.fios}
       getOptionLabel={(option) => option.name}
       style={{ width: 300 }}

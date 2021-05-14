@@ -11,6 +11,8 @@ namespace STDentalLibrary.Repositories
     {
         Task<IEnumerable<Staff>> GetActualStaffsAsync();
 
+        Task<IEnumerable<Staff>> GetFoundedStaffsInTalonsAsync();
+
         Task<Staff> GetStaffAsync(int staffId);
 
         Task<int> AddStaffAsync(Staff staff);

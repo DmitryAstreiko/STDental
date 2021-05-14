@@ -1,19 +1,21 @@
 import React, { Component } from 'react';
-import { Container } from 'reactstrap';
+//import { Container } from 'reactstrap';
 import { MenuAdministrator } from './MenuAdministrator';
 
 export default class Administrator extends Component {
-    constructor(props) {
+    /*constructor(props) {
         super(props);
-    }
+    }*/
 
     render() {
         return(
         <div>
             <MenuAdministrator />
-            <Container>
+            {/*<Container>*/}
+            <div>
                 {this.props.children}
-            </Container>            
+            </div>
+            {/*</Container>*/}            
         </div>
         );
     }

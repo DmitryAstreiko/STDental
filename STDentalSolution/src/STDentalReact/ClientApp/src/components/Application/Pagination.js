@@ -15,20 +15,17 @@ export default class Pagination extends Component {
         return (
             <nav>
                 <ul className="pagination justify-content-center">
-                    <li>
-                        <button onClick={() => prevPage()}>987987</button>
-                    </li>
                     <li className="page-item">
-                        <a className="page-link" onClick={() => prevPage()} href="#">Previous</a>
+                        <a className="page-link" onClick={() => prevPage()} href="/">Previous</a>
                         <button className="page-link" onClick={() => prevPage()} >Previous</button>
                     </li>
                     {pageNumbers.map(num => (
                         <li className="page-item" key={num}>
-                            <a onClick={() => paginate(num)} href="#" className="page-link">{num}</a>    
+                            <a onClick={() => paginate(num)} href="/" className="page-link">{num}</a>    
                         </li>
                     ))}
                     <li className="page-item">
-                        <a className="page-link" onClick={() => nextPage()} href="#">Next</a>
+                        <a className="page-link" onClick={() => nextPage()} href="/">Next</a>
                     </li>
                 </ul>    
             </nav>

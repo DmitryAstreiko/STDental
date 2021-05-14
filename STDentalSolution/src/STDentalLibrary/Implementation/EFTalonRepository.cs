@@ -73,7 +73,9 @@ namespace STDentalLibrary.Implementation
                     .Include(s => s.Staff)
                     .Include(p => p.Patient)
                     .Where(q => q.CreateDate > DateTime.UtcNow.AddDays(-180))
-                    .OrderByDescending(s => s.TalonId)
+                    .OrderBy(a => a.PaymentStatus)
+                    .ThenByDescending(s => s.CreateDate)
+                    .ThenByDescending(s => s.TalonId)
                     .ToListAsync();
             }
         }

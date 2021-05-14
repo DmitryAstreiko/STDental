@@ -1,20 +1,20 @@
 import React, { Component } from 'react';
 import {
-  Collapse,
+  //Collapse,
   Navbar,
-  NavbarToggler,
-  NavbarBrand,
-  Nav,
+  //NavbarToggler,
+  //NavbarBrand,
+  //Nav,
   NavItem,
   NavLink,
-  UncontrolledDropdown,
-  Dropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem,
-  NavbarText
+  //UncontrolledDropdown,
+  //Dropdown,
+  //DropdownToggle,
+  //DropdownMenu,
+  //DropdownItem,
+  //NavbarText
 } from 'reactstrap';
-import Container from 'reactstrap/lib/Container';
+//import Container from 'reactstrap/lib/Container';
 import { Link } from 'react-router-dom';
 import "bootstrap/dist/css/bootstrap.min.css";
 import 'bootstrap/dist/css/bootstrap.css';
@@ -25,7 +25,8 @@ export class MenuAdministrator extends Component{
     render() {
         return(
             <Navbar className="navbar-expand-lg navbar-toggleable-lg ng-white border-bottom box-shadow mb-3" light>
-            <Container>           
+            {/*<Container>*/}
+            <div>
                 <ul className="navbar-nav flex-grow">
                 <NavItem>
                 <NavLink tag={Link} className="text-dark" to="/appdental/administrator/talons">Талоны</NavLink>
@@ -90,7 +91,8 @@ export class MenuAdministrator extends Component{
                   <NavLink tag={Link} className="text-dark" to="/">Прием пациентов</NavLink>
                 </NavItem>
               </ul>
-            </Container>
+              </div>           
+            {/*</Container>*/}
             </Navbar>
         );
     }

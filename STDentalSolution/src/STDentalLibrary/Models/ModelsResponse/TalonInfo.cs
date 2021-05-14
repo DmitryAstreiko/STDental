@@ -4,7 +4,7 @@ using STDentalLibrary.Models.Enums;
 
 namespace STDentalLibrary.Models.ModelsResponse
 {
-    public class TalonView
+    public class TalonInfo
     {
         public string TalonId { get; set; }
         
