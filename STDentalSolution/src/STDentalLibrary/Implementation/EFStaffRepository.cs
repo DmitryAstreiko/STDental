@@ -63,14 +63,14 @@ namespace STDentalLibrary.Implementation
             }
         }
 
-        public async Task<IEnumerable<Staff>> GetFoundedStaffsInTalonsAsync()
+        public async Task<IEnumerable<DoctorCombobox>> GetFoundedStaffsInTalonsAsync()
         {
             await using (var context = CreateContext())
             {
-                return await context.Staffs
+                /*return await context.Staffs
                     .Include(e => e.Post)
                     .OrderBy(s => s.StaffId)
-                    .ToListAsync();
+                    .ToListAsync();*/
             
 
             /*return await context.Staffs
@@ -86,6 +86,12 @@ namespace STDentalLibrary.Implementation
                     .Select(o => o.StaffId)
                     .ToListAsync();
             */
+
+                return await context.Talons
+                    .Include(e => e.Staff)
+                    .Select(x => new DoctorCombobox { Id = x.StaffId, Name = x.Staff.Name })
+                    .Distinct()
+                    .ToListAsync();
             }
             
         }

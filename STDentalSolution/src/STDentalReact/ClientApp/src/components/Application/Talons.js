@@ -83,8 +83,7 @@ export class Talons extends Component{
         )
     )
 
-    onGenerateFilter() {
-        
+    onGenerateFilter() {       
 
         /*{this.state.selectedPatientId && filter.join(filter, `patientid=${this.state.selectedPatientId}`)}
         {this.state.selectedDoctorId && filter.join(filter, `&staffid=${this.state.selectedDoctorId}`)}

@@ -2,6 +2,15 @@ import React, { Component } from 'react';
 
 export default class Pagination extends Component {
     
+    /*constructor(props){
+        super(props);
+    }*/
+
+    handleClick(e) {    
+        e.preventDefault();   
+        console.log('По ссылке кликнули.');  
+    }
+
     render() {
         
         const { talonsPerPage, totalTalons, paginate, nextPage, prevPage } = this.props;
@@ -10,7 +19,7 @@ export default class Pagination extends Component {
 
         for(let i = 1; i <= Math.ceil(totalTalons / talonsPerPage); i++) {
             pageNumbers.push(i);
-        }        
+        }      
         
         return (
             <nav>
@@ -25,7 +34,8 @@ export default class Pagination extends Component {
                         </li>
                     ))}
                     <li className="page-item">
-                        <a className="page-link" onClick={() => nextPage()} href="/">Next</a>
+                        {/*<a className="page-link" onClick={() => nextPage()} href="/">Next</a>*/}
+                        <a className="page-link" onClick={() => {handleClick; nextPage()}} href="/">Next</a>
                     </li>
                 </ul>    
             </nav>
