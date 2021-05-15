@@ -29,7 +29,48 @@ namespace STDentalReact.Controllers
         [HttpGet]
         public async Task<IEnumerable<TalonInfo>> GetAsync()
         {
-            var talons = await _talonRepository.GeTalonsAsync();
+            var talons = await _talonRepository.GetTalonsAsync();
+
+            return talons.Select(talon => new TalonInfo()
+                {
+                    TalonId = talon.TalonId.ToString(),
+                    PatientName = talon.Patient.Name,
+                    StaffName = talon.Staff.Name,
+                    Summa = talon.Summa.ToString(),
+                    Cost = talon.Cost.ToString(),
+                    CreateDate = talon.CreateDate.ToString("dd.MM.yyyy"),
+                    TalonStatus = talon.PaymentStatus.ToString(),
+                    Description = talon.Description
+                })
+                .ToArray();
+        }
+
+        [HttpGet]
+        [ActionName("filters")]
+        public async Task<IEnumerable<TalonInfo>> GetTalonsFilterAsync(int patientid, int doctorid, DateTime startdata, DateTime enddata)
+        {
+            Console.WriteLine("go to GeTalonsFilterAsync");
+            
+            /*
+             if (int.TryParse(context.Request.Query["id"], out var serviceId))
+                    {
+                        var repository = context.RequestServices.GetService<IServiceRepository>();
+                        var serviceList = await repository.GetServiceMaterialsAsync(serviceId);
+
+                        var options = new JsonSerializerOptions()
+                        {
+                            ReferenceHandler = ReferenceHandler.Preserve
+                        };
+
+                        await context.Response.WriteAsync(JsonSerializer.Serialize(serviceList, options));
+                    }
+                    else
+                    {
+                        await context.Response.WriteAsync("False");
+                    }
+             */
+
+            var talons = await _talonRepository.GetTalonsFilterAsync(patientid, doctorid, startdata, enddata);
 
             return talons.Select(talon => new TalonInfo()
                 {

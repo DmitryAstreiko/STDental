@@ -90,16 +90,18 @@ export class Talons extends Component{
         {this.state.selectedStartDate && filter.join(filter, `&startdate=${this.state.selectedStartDate}`)}
         {this.state.selectedEndDate && filter.join(filter, `&enddate=${this.state.selectedEndDate}`)}*/
 
-        let filterPatient = this.state.selectedPatientId && `patientid=${this.state.selectedPatientId}`;
+        //let filterPatient = this.state.selectedPatientId && `patientid=${this.state.selectedPatientId}`;
         //let filterDoctor = this.state.selectedDoctorId && `&staffid=${this.state.selectedDoctorId}`;
         //let filterStartDate = this.state.selectedStartDate && `&startdate=${this.state.selectedStartDate}`;
         //let filterEndDate = this.state.selectedEndDate && `&enddate=${this.state.selectedEndDate}`;
-        console.log(filterPatient);
+        //console.log(filterPatient);
 
-        let filter = filterPatient;
-        this.setState({ generatedFilter: {filter} });
+        let filterTalons = `patientid=1&doctorid=1&startdata=01.05.2021&enddata=01.06.2021`;
+        this.setState({ generatedFilter: {filterTalons} });
+
+        this.state.generatedFilter && this.populateFilterTalons(filterTalons)
         
-        console.log(this.state.generatedFilter);
+        console.log(`generatedFilter ${this.state.generatedFilter}`);
     }
 
     renderTalonsTable() {      
@@ -221,6 +223,14 @@ export class Talons extends Component{
 
     async populateTalons() {        
         const response = await fetch('talons');
+        const data = await response.json();   
+        this.setState({ talons: data, loadingTalons: false });
+    }
+
+    async populateFilterTalons(filterForTalons) {   
+        console.log(`Goto populateFilterTalons`);     
+
+        const response = await fetch(`talons/filters?${filterForTalons}`);
         const data = await response.json();   
         this.setState({ talons: data, loadingTalons: false });
     }

@@ -65,14 +65,32 @@ namespace STDentalLibrary.Implementation
             } 
         }
 
-        public async Task<IEnumerable<Talon>> GeTalonsAsync()
+        public async Task<IEnumerable<Talon>> GetTalonsAsync()
         {
             await using (var context = CreateContext())
             {
                 return await context.Talons
                     .Include(s => s.Staff)
                     .Include(p => p.Patient)
-                    .Where(q => q.CreateDate > DateTime.UtcNow.AddDays(-180))
+                    .Where(q => q.CreateDate > DateTime.UtcNow.AddDays(-360))
+                    .OrderBy(a => a.PaymentStatus)
+                    .ThenByDescending(s => s.CreateDate)
+                    .ThenByDescending(s => s.TalonId)
+                    .ToListAsync();
+            }
+        }
+
+        public async Task<IEnumerable<Talon>> GetTalonsFilterAsync(int patientId, int doctorId, DateTime startDate, DateTime endDate)
+        {
+            await using (var context = CreateContext())
+            {
+                return await context.Talons
+                    .Include(s => s.Staff)
+                    .Include(p => p.Patient)
+                    .Where(p => p.PatientId == patientId)
+                    .Where(s => s.StaffId == doctorId)
+                    .Where(e => e.CreateDate >= startDate)
+                    .Where(q => q.CreateDate <= endDate)
                     .OrderBy(a => a.PaymentStatus)
                     .ThenByDescending(s => s.CreateDate)
                     .ThenByDescending(s => s.TalonId)

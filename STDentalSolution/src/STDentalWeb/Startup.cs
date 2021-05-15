@@ -575,7 +575,7 @@ namespace STDentalWeb
                 endpoints.MapGet("/talons", async context =>
                 {
                     var repository = context.RequestServices.GetService<ITalonRepository>();
-                    var talonList = await repository.GeTalonsAsync();
+                    var talonList = await repository.GetTalonsAsync();
 
                     var options = new JsonSerializerOptions()
                     {

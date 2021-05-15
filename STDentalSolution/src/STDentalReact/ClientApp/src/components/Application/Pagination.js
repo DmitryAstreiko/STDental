@@ -6,13 +6,17 @@ export default class Pagination extends Component {
         super(props);
     }*/
 
-    handleClick(e) {    
+    /*handleClick(e) {    
         e.preventDefault();   
         console.log('По ссылке кликнули.');  
-    }
+    }*/
 
     render() {
         
+
+        /*const handleClick = (e) => {e.preventDefault();   
+            console.log('По ссылке кликнули.');*/
+
         const { talonsPerPage, totalTalons, paginate, nextPage, prevPage } = this.props;
 
         const pageNumbers = [];
@@ -35,7 +39,7 @@ export default class Pagination extends Component {
                     ))}
                     <li className="page-item">
                         {/*<a className="page-link" onClick={() => nextPage()} href="/">Next</a>*/}
-                        <a className="page-link" onClick={() => {handleClick; nextPage()}} href="/">Next</a>
+                        <a className="page-link" onClick={() => nextPage()} href="/">Next</a>
                     </li>
                 </ul>    
             </nav>
