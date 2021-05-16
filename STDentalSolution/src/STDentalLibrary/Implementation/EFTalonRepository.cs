@@ -80,7 +80,7 @@ namespace STDentalLibrary.Implementation
             }
         }
 
-        public async Task<IEnumerable<Talon>> GetTalonsFilterAsync(int patientId, int doctorId, DateTime startDate, DateTime endDate)
+        public async Task<IEnumerable<Talon>> GetTalonsFilterAsync(int? patientId, int? doctorId, DateTime? startDate, DateTime? endDate)
         {
             await using (var context = CreateContext())
             {

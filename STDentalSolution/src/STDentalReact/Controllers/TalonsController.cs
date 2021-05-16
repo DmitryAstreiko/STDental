@@ -27,8 +27,11 @@ namespace STDentalReact.Controllers
         }
 
         [HttpGet]
+        [ActionName("get")]
         public async Task<IEnumerable<TalonInfo>> GetAsync()
         {
+            Console.WriteLine("GetAsync");
+
             var talons = await _talonRepository.GetTalonsAsync();
 
             return talons.Select(talon => new TalonInfo()
@@ -46,31 +49,49 @@ namespace STDentalReact.Controllers
         }
 
         [HttpGet]
-        [ActionName("filters")]
-        public async Task<IEnumerable<TalonInfo>> GetTalonsFilterAsync(int patientid, int doctorid, DateTime startdata, DateTime enddata)
+        [ActionName("gettalonsfilter")]
+        public async Task<IEnumerable<TalonInfo>> TalonsFilterAsync(int? patientid, int? doctorid, DateTime? startdata, DateTime? enddata)
         {
+            Console.WriteLine("TalonsFilterAsync");
+            Console.WriteLine($"- {patientid}, - {doctorid}, - {startdata}, - {enddata}");
+
+            var patientId = 5;
+            var doctorId = 4;
+
+            DateTime startDate;
+
+            DateTime.TryParse("01.01.2021", out startDate);
+
+            DateTime endDate;
+
+            DateTime.TryParse("01.06.2021", out endDate);
+
             Console.WriteLine("go to GeTalonsFilterAsync");
-            
-            /*
-             if (int.TryParse(context.Request.Query["id"], out var serviceId))
-                    {
-                        var repository = context.RequestServices.GetService<IServiceRepository>();
-                        var serviceList = await repository.GetServiceMaterialsAsync(serviceId);
+            Console.WriteLine($"patientid = {patientId.ToString()}");
+            Console.WriteLine($"doctorid = {doctorId.ToString()}");
+            Console.WriteLine($"startdata = {startDate.ToString()}");
+            Console.WriteLine($"enddata = {endDate.ToString()}");
 
-                        var options = new JsonSerializerOptions()
-                        {
-                            ReferenceHandler = ReferenceHandler.Preserve
-                        };
+            ////////////////////////////////////////////////
+            /*if (int.TryParse(context.Request.Query["id"], out var serviceId))
+                   {
+                       var repository = context.RequestServices.GetService<IServiceRepository>();
+                       var serviceList = await repository.GetServiceMaterialsAsync(serviceId);
 
-                        await context.Response.WriteAsync(JsonSerializer.Serialize(serviceList, options));
-                    }
-                    else
-                    {
-                        await context.Response.WriteAsync("False");
-                    }
-             */
+                       var options = new JsonSerializerOptions()
+                       {
+                           ReferenceHandler = ReferenceHandler.Preserve
+                       };
 
-            var talons = await _talonRepository.GetTalonsFilterAsync(patientid, doctorid, startdata, enddata);
+                       await context.Response.WriteAsync(JsonSerializer.Serialize(serviceList, options));
+                   }
+                   else
+                   {
+                       await context.Response.WriteAsync("False");
+                   }*/
+            //////////////////////////////////////////////////////// 
+
+            var talons = await _talonRepository.GetTalonsFilterAsync(patientId, doctorId, startDate, endDate);
 
             return talons.Select(talon => new TalonInfo()
                 {
@@ -85,5 +106,6 @@ namespace STDentalReact.Controllers
                 })
                 .ToArray();
         }
+
     }
 }

@@ -41,7 +41,7 @@ export class MenuAdministrator extends Component{
                   </button>
                   <div className="dropdown-menu" aria-labelledby="dropdownMenuVocabulary" x-placement="bottom-start" style={{position: "absolute", transform: "translate3d(0px, 38px, 0px)", top: "0px", left: "0px", willchange: "transform"}}>
                     <a className="dropdown-item" href="/">Редактировать</a>
-                    <a className="dropdown-item" href="/">Уалить</a>
+                    <a className="dropdown-item" href="/">Удалить</a>
                   </div>
                 </div>
                 </NavItem>

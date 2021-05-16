@@ -29,7 +29,7 @@ namespace STDentalReact.Controllers
 
             return doctors.Select(doctor => new DoctorComboBox()
                 {
-                    Id = doctor.StaffId.ToString(),
+                    Id = doctor.Id,
                     Name = doctor.Name
                 })
                 .ToArray();

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using STDentalLibrary.Models;
+using STDentalLibrary.Models.ModelsResponse;
 
 namespace STDentalLibrary.Repositories
 {
@@ -11,7 +12,7 @@ namespace STDentalLibrary.Repositories
     {
         Task<IEnumerable<Staff>> GetActualStaffsAsync();
 
-        Task<IEnumerable<Staff>> GetFoundedStaffsInTalonsAsync();
+        Task<IEnumerable<DoctorComboBox>> GetFoundedStaffsInTalonsAsync();
 
         Task<Staff> GetStaffAsync(int staffId);
 

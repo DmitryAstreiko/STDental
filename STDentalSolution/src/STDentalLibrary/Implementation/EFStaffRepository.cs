@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using STDentalLibrary.Context;
 using STDentalLibrary.Models;
 using STDentalLibrary.Models.Enums;
+using STDentalLibrary.Models.ModelsResponse;
 using STDentalLibrary.Repositories;
 
 namespace STDentalLibrary.Implementation
@@ -63,35 +64,15 @@ namespace STDentalLibrary.Implementation
             }
         }
 
-        public async Task<IEnumerable<Staff>> GetFoundedStaffsInTalonsAsync()
+        public async Task<IEnumerable<DoctorComboBox>> GetFoundedStaffsInTalonsAsync()
         {
             await using (var context = CreateContext())
             {
-                return await context.Staffs
-                    .Include(e => e.Post)
-                    .OrderBy(s => s.StaffId)
-                    .ToListAsync();
-            
-
-            /*return await context.Staffs
-                    .Include(e => e.Post)
-                    .Join(context.Talons,
-                        st => st.StaffId,
-                        t => t.StaffId,
-                        (st, t) => new
-                        {
-                            StaffId = st.StaffId
-                        })
-                    .OrderBy(r => r.StaffId)
-                    .Select(o => o.StaffId)
-                    .ToListAsync();
-            */
-
-                /*return await context.Talons
+                return await context.Talons
                     .Include(e => e.Staff)
-                    .Select(x => new DoctorCombobox { Id = x.StaffId, Name = x.Staff.Name })
+                    .Select(x => new DoctorComboBox { Id = x.StaffId.ToString(), Name = x.Staff.Name })
                     .Distinct()
-                    .ToListAsync();*/
+                    .ToListAsync();
             }
             
         }

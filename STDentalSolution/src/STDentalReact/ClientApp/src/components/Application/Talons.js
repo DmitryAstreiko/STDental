@@ -222,7 +222,7 @@ export class Talons extends Component{
     }
 
     async populateTalons() {        
-        const response = await fetch('talons');
+        const response = await fetch('Talons');
         const data = await response.json();   
         this.setState({ talons: data, loadingTalons: false });
     }
@@ -230,7 +230,8 @@ export class Talons extends Component{
     async populateFilterTalons(filterForTalons) {   
         console.log(`Goto populateFilterTalons`);     
 
-        const response = await fetch(`talons/filters?${filterForTalons}`);
+        const response = await fetch(`talons/gettalonsfilter/?${filterForTalons}`);
+        //const response = await fetch(`Talons/TalonsFilter`);
         const data = await response.json();   
         this.setState({ talons: data, loadingTalons: false });
     }

@@ -63,7 +63,17 @@ namespace STDentalReact
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller}/{action=Index}/{id?}");
+
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "talons/Get/");
+
+                endpoints.MapControllerRoute(
+                    name: "gettalonsfilter",
+                    pattern: "talons/GetTalonsFilterAsync/filtertalons");
             });
+
+            
 
             app.UseSpa(spa =>
             {
@@ -74,6 +84,7 @@ namespace STDentalReact
                     spa.UseReactDevelopmentServer(npmScript: "start");
                     //spa.UseProxyToSpaDevelopmentServer("http:/localhost:5001");
                 }
+
             });
         }
     }

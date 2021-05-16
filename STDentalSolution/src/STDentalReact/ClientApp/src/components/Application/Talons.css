@@ -1,6 +1,6 @@
-.conteiner{
+/*.conteiner{
     width: 100% !important;
-}
+}*/
 
 .table{
     width: none;
@@ -12,12 +12,12 @@
 }
 
 .table th, .table td {
-    /*padding: 0rem;*/ 
+    padding: 0rem; 
     vertical-align: middle;
     border-top: 1px solid #dee2e6;
     text-align: center;  
     border: 1px solid #333; /* Параметры рамки */
-    padding: 4px; /* Поля в ячейках */  
+    /*padding: 2px; /* Поля в ячейках */  
 }
 
 .table tr:hover { 
