@@ -31,7 +31,8 @@ export class Talons extends Component{
             selectedEndDate: null,
             currentPage: 1,
             talonsPerPage: 15,
-            generatedFilter: null
+            talonsCount: null,
+            filterTalons: null
         }
 
         this.onRowSelect = this.onRowSelect.bind(this);
@@ -39,17 +40,15 @@ export class Talons extends Component{
         this.onPatientSelect = this.onPatientSelect.bind(this);
     }
 
-    componentDidMount() {        
+    componentDidMount() {
+        this.populateCountTalons();
         this.populatePatients();
         this.populateDoctors();
-        this.populateTalons();
+        this.populateTalons();        
     } 
 
     onRowSelect = row => (
-        //console.log(row) 
-        //(row !== null) && (
-            this.setState({selectedTalon: row && row})
-            /*<TalonServices talonId="1" />*/
+        this.setState({selectedTalon: row && row})
     )
 
     onPatientSelect = value => {
@@ -85,10 +84,15 @@ export class Talons extends Component{
 
     onGenerateFilter() {       
 
-        /*{this.state.selectedPatientId && filter.join(filter, `patientid=${this.state.selectedPatientId}`)}
-        {this.state.selectedDoctorId && filter.join(filter, `&staffid=${this.state.selectedDoctorId}`)}
-        {this.state.selectedStartDate && filter.join(filter, `&startdate=${this.state.selectedStartDate}`)}
-        {this.state.selectedEndDate && filter.join(filter, `&enddate=${this.state.selectedEndDate}`)}*/
+        let filter;
+
+        filter = this.state.selectedPatientId && filter.join(`&patientid=${this.state.selectedPatientId})`);
+        filter = filter && filter.join(`&`);
+        filter = this.state.selectedDoctorId && `doctorid=${this.state.selectedDoctorId}`;
+        filter = filter && filter.join(`&`);
+        filter = this.state.selectedStartDate && `startdate=${this.state.selectedStartDate}`;
+        filter = filter && filter.join(`&`);
+        filter = this.state.selectedEndDate && `enddate=${this.state.selectedEndDate}`;
 
         //let filterPatient = this.state.selectedPatientId && `patientid=${this.state.selectedPatientId}`;
         //let filterDoctor = this.state.selectedDoctorId && `&staffid=${this.state.selectedDoctorId}`;
@@ -96,12 +100,12 @@ export class Talons extends Component{
         //let filterEndDate = this.state.selectedEndDate && `&enddate=${this.state.selectedEndDate}`;
         //console.log(filterPatient);
 
-        let filterTalons = `patientid=1&doctorid=1&startdata=01.05.2021&enddata=01.06.2021`;
-        this.setState({ generatedFilter: {filterTalons} });
+        //let filterTalons = `patientid=1&doctorid=1&startdata=01.05.2021&enddata=01.06.2021`;
+        this.setState({ filterTalons: { filter} });
 
-        this.state.generatedFilter && this.populateFilterTalons(filterTalons)
+        this.populateFilterTalons(filterTalons);
         
-        console.log(`generatedFilter ${this.state.generatedFilter}`);
+        console.log(`filterTalons ${this.state.filterTalons}`);
     }
 
     renderTalonsTable() {      
@@ -114,100 +118,83 @@ export class Talons extends Component{
 
         const nextPage = () => this.setState({ currentPage: this.state.currentPage + 1});
 
-        //const prevPage = () => this.setState({ currentPage: this.state.currentPage - 1});
         const prevPage = () => this.setState({ currentPage: this.state.currentPage - 1});
+
+        this.populateTalons();
 
         return (
             <div>
                 <MenuAdministrator />
-            {/*<div>
-                {`selectPatientId: ${this.state.selectPatientId}`}                
-            </div>
-            <div>
-                {`selectedDoctorId: ${this.state.selectedDoctorId}`}
-            </div>
-            <div>
-                {`selectedTalon: ${this.state.selectedTalon.talonId}`}
-            </div>
-            <div>
-                {`selectedStartDate: ${this.state.selectedStartDate}`}
-            </div>
-            <div>
-                {`selectedEndDate: ${this.state.selectedEndDate}`}
-            </div>*/}
-
-            <div className="input-group">
-                <div className="input-group-prepend">
-                    <span className="input-group-text" id="">Выбран талон: </span>
+                <div className="input-group">
+                    <div className="input-group-prepend">
+                        <span className="input-group-text" id="">Выбран талон: </span>
+                    </div>
+                        <input type="text" value={this.state.selectedTalon.talonId ? `№ ${this.state.selectedTalon.talonId}` : ``} style={{ width: "110px", textAlign: "center" }} readOnly />
+                        <input type="text" value={this.state.selectedTalon.talonId ? `Пациент - ${this.state.selectedTalon.patientName}` : ``} style={{ width: "250px", textAlign: "center" }} readOnly />
+                        <input type="text" value={this.state.selectedTalon.talonId ? `Врач - ${this.state.selectedTalon.staffName}` : ``} style={{ width: "250px", textAlign: "center" }} readOnly />
+                        <input type="text" value={this.state.selectedTalon.talonId ? `Дата талона - ${this.state.selectedTalon.createDate}` : ``} style={{ width: "250px", textAlign: "center" }} readOnly />
+                        <input type="text" value={this.state.selectedTalon.talonId ? `Итого по талону - ${this.state.selectedTalon.cost}` : ``} style={{ width: "250px", textAlign: "center" }} readOnly />
+                </div> 
+                <div style={{height: "20px"}}>
+                    </div>
+                <div >
+                    <div className="row">
+                        <div className="col-sm">
+                            <ComboBox labelvalue={"Выберите пациента"} fios={this.state.patients} 
+                                onSelected={ (value) => this.onPatientSelect(value) } nameid={"combopatient"} />
+                        </div>
+                        <div className="col-sm">
+                            <ComboBox labelvalue={"Выберите врача"} fios={this.state.doctors} 
+                                onSelected={ (value) => this.onDoctorSelect(value) } nameid={"combodoctor"} />
+                        </div>
+                        <div className="col-sm">
+                            <DatePicker labelvalue={"Начало периода"} onSelected={ (value) => this.onDateStartSelect(value) } />
+                        </div>
+                        <div className="col-sm">
+                            <DatePicker labelvalue={"Окончание периода"} onSelected={ (value) => this.onDateEndSelect(value) } />
+                        </div>
+                        <div className="col-sm" style={{position: "relative"}}>
+                            <Button style={{position: "absolute", top: "50%", transform: "translate(0, -50%)"}} 
+                                variant="contained" onClick={ () => this.onGenerateFilter()}>Поиск</Button>
+                            {/*https://www.w3.org/Style/Examples/007/center.ru.html - позиционирование*/}
+                        </div>
+                                </div>
+                    </div>
+                <div>
+                <div style={{height: "20px"}}>
                 </div>
-                    <input type="text" value={this.state.selectedTalon.talonId ? `№ ${this.state.selectedTalon.talonId}` : ``} style={{ width: "110px", textAlign: "center" }} readOnly />
-                    <input type="text" value={this.state.selectedTalon.talonId ? `Пациент - ${this.state.selectedTalon.patientName}` : ``} style={{ width: "250px", textAlign: "center" }} readOnly />
-                    <input type="text" value={this.state.selectedTalon.talonId ? `Врач - ${this.state.selectedTalon.staffName}` : ``} style={{ width: "250px", textAlign: "center" }} readOnly />
-                    <input type="text" value={this.state.selectedTalon.talonId ? `Дата талона - ${this.state.selectedTalon.createDate}` : ``} style={{ width: "250px", textAlign: "center" }} readOnly />
-                    <input type="text" value={this.state.selectedTalon.talonId ? `Итого по талону - ${this.state.selectedTalon.cost}` : ``} style={{ width: "250px", textAlign: "center" }} readOnly />
-            </div> 
-            <div style={{height: "20px"}}>
-                </div>
-            <div >
-                <div className="row">
-                    <div className="col-sm">
-                        <ComboBox labelvalue={"Выберите пациента"} fios={this.state.patients} 
-                            onSelected={ (value) => this.onPatientSelect(value) } nameid={"combopatient"} />
-                    </div>
-                    <div className="col-sm">
-                        <ComboBox labelvalue={"Выберите врача"} fios={this.state.doctors} 
-                            onSelected={ (value) => this.onDoctorSelect(value) } nameid={"combodoctor"} />
-                    </div>
-                    <div className="col-sm">
-                        <DatePicker labelvalue={"Начало периода"} onSelected={ (value) => this.onDateStartSelect(value) } />
-                    </div>
-                    <div className="col-sm">
-                        <DatePicker labelvalue={"Окончание периода"} onSelected={ (value) => this.onDateEndSelect(value) } />
-                    </div>
-                    <div className="col-sm" style={{position: "relative"}}>
-                        <Button style={{position: "absolute", top: "50%", transform: "translate(0, -50%)"}} 
-                            variant="contained" onClick={ () => this.onGenerateFilter()}>Поиск</Button>
-                        {/*https://www.w3.org/Style/Examples/007/center.ru.html - позиционирование*/}
-                    </div>
-                </div>
-                </div>
-            <div>
-            <div style={{height: "20px"}}>
-            </div>
-            {this.state.loadingTalons ? (
+                {this.state.loadingTalons ? (
                     <Loader /> ) : ( 
-            <Table className='table' aria-labelledby="tabelLabel">
-                <thead>
-                    <tr>
-                        <th>№ талона</th>
-                        <th>ФИО пациента</th>
-                        <th>ФИО врача</th>
-                        <th>Стоимость</th>
-                        <th>Со скидкой</th>
-                        <th>Дата талона</th>
-                        <th>Комментарий</th>
-                    </tr>
-                </thead>               
-                    
-                    <tbody>
-                        {currentTalons.map(talon =>
-                            <tr key={talon.talonId} className={talon.talonStatus} onClick={() => this.onRowSelect(talon)}>
-                                <td>{talon.talonId}</td>
-                                <td>{talon.patientName}</td>
-                                <td>{talon.staffName}</td> 
-                                <td>{talon.summa}</td>   
-                                <td>{talon.cost}</td>
-                                <td>{talon.createDate}</td>
-                                <td>{talon.description}</td>
+                    <Table className='table' aria-labelledby="tabelLabel">
+                        <thead>
+                            <tr>
+                                <th>№ талона</th>
+                                <th>ФИО пациента</th>
+                                <th>ФИО врача</th>
+                                <th>Стоимость</th>
+                                <th>Со скидкой</th>
+                                <th>Дата талона</th>
+                                <th>Комментарий</th>
                             </tr>
-                        )}
-                    </tbody>              
-                                
-            </Table> )}   
+                        </thead>           
+                            <tbody>
+                                {currentTalons.map(talon =>
+                                    <tr key={talon.talonId} className={talon.talonStatus} onClick={() => this.onRowSelect(talon)}>
+                                        <td>{talon.talonId}</td>
+                                        <td>{talon.patientName}</td>
+                                        <td>{talon.staffName}</td> 
+                                        <td>{talon.summa}</td>   
+                                        <td>{talon.cost}</td>
+                                        <td>{talon.createDate}</td>
+                                        <td>{talon.description}</td>
+                                    </tr>
+                                )}
+                            </tbody>                  
+                    </Table> )}   
 
-                    {!this.state.loadingTalons && (<Pagination talonsPerPage={this.state.talonsPerPage} totalTalons={this.state.talons.length}
+                    {!this.state.loadingTalons && (<Pagination talonsPerPage={this.state.talonsPerPage} totalTalons={this.state.talonsCount}
                         paginate={paginate} nextPage={nextPage} prevPage={prevPage} goToPage={ paginate }/>)}
-            </div>
+                </div>
             </div>
         );
     }
@@ -223,20 +210,16 @@ export class Talons extends Component{
     }
 
     async populateTalons() {
-
-        const response = await fetch(`talons?page=${this.state.currentPage}&itemsPerPage=${this.state.talonsPerPage}`);
+        const response = await fetch(`talons?page=${this.state.currentPage}&itemsPerPage=${this.state.talonsPerPage}${this.state.filter}`);
         const data = await response.json();   
         this.setState({ talons: data, loadingTalons: false });
     }
 
-    async populateFilterTalons(filterForTalons) {   
-        console.log(`Goto populateFilterTalons`);     
-
-        const response = await fetch(`talons/filter/?${filterForTalons}`);
-        //const response = await fetch(`Talons/TalonsFilter`);
+    /*async populateFilterTalons() {     
+        const response = await fetch(`talons/filter/?${this.state.filterTalons}`);
         const data = await response.json();   
         this.setState({ talons: data, loadingTalons: false });
-    }
+    }*/
 
     async populatePatients() {        
         const response = await fetch('patients');
@@ -248,5 +231,11 @@ export class Talons extends Component{
         const response = await fetch('staffs');
         const data = await response.json();   
         this.setState({ doctors: data });
+    }
+
+    async populateCountTalons() {
+        const response = await fetch('talons/count');
+        const data = await response.json();
+        this.setState({ talonsCount: data });
     }
 }

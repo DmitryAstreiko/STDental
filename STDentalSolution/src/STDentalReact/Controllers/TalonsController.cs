@@ -26,7 +26,7 @@ namespace STDentalReact.Controllers
             _talonRepository = talonRepository;
         }
 
-        [HttpGet]
+        /*[HttpGet]
         public async Task<IEnumerable<TalonInfo>> GetAsync(int page, int itemsPerPage)
         {
             Console.WriteLine("GetAsync");
@@ -45,40 +45,19 @@ namespace STDentalReact.Controllers
                     Description = talon.Description
                 })
                 .ToArray();
+        }*/
+
+        [HttpGet("count")]
+        public async Task<int> GetCountTalonsAsync()
+        {
+            return await _talonRepository.GetCountTalonsAsync();
         }
 
-        [HttpGet("filter")]
-        public async Task<IEnumerable<TalonInfo>> TalonsFilterAsync(int? patientId, int? doctorId, DateTime? startDate, DateTime? endDate)
+        //[HttpGet("filter")]
+        [HttpGet]
+        public async Task<IEnumerable<TalonInfo>> TalonsFilterAsync(int page, int itemsPerPage, int? patientId, int? doctorId, DateTime? startDate, DateTime? endDate)
         {
-            Console.WriteLine("TalonsFilterAsync");
-            Console.WriteLine($"- {patientId}, - {doctorId}, - {startDate}, - {endDate}");
-
-            Console.WriteLine("go to GeTalonsFilterAsync");
-            Console.WriteLine($"patientid = {patientId.ToString()}");
-            Console.WriteLine($"doctorid = {doctorId.ToString()}");
-            Console.WriteLine($"startdata = {startDate.ToString()}");
-            Console.WriteLine($"enddata = {endDate.ToString()}");
-
-            ////////////////////////////////////////////////
-            /*if (int.TryParse(context.Request.Query["id"], out var serviceId))
-                   {
-                       var repository = context.RequestServices.GetService<IServiceRepository>();
-                       var serviceList = await repository.GetServiceMaterialsAsync(serviceId);
-
-                       var options = new JsonSerializerOptions()
-                       {
-                           ReferenceHandler = ReferenceHandler.Preserve
-                       };
-
-                       await context.Response.WriteAsync(JsonSerializer.Serialize(serviceList, options));
-                   }
-                   else
-                   {
-                       await context.Response.WriteAsync("False");
-                   }*/
-            //////////////////////////////////////////////////////// 
-
-            var talons = await _talonRepository.GetTalonsFilterAsync(patientId, doctorId, startDate, endDate);
+            var talons = await _talonRepository.GetTalonsFilterAsync(page, itemsPerPage, patientId, doctorId, startDate, endDate);
 
             return talons.Select(talon => new TalonInfo()
                 {

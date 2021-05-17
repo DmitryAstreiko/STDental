@@ -22,9 +22,9 @@ export default class Pagination extends Component {
             prevPage();
         }
 
-        const handlePaginateClick = (e) => {
+        /*const handlePaginateClick = (e) => {
             e.preventDefault();  
-        }
+        }*/
 
         /*paginaterr(num) {
             () => {paginate(num)};
@@ -39,7 +39,7 @@ export default class Pagination extends Component {
                     {pageNumbers.map(num => (
                         <li className="page-item" key={num}>
                             {/*<a onClick={() => paginate(num)} href="/" className="page-link">{num}</a>*/}
-                            <a onClick={(e) => { e.preventDefault(); goToPage(num); }} href="/" className="page-link">{num}</a>
+                            <a onClick={(e) => { e.preventDefault(); paginate(num); }} href="/" className="page-link">{num}</a>
                         </li>
                     ))}
                     <li className="page-item">

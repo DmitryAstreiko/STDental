@@ -572,7 +572,7 @@ namespace STDentalWeb
 
                 #region Talons
 
-                endpoints.MapGet("/talons", async context =>
+                /*endpoints.MapGet("/talons", async context =>
                 {
                     var repository = context.RequestServices.GetService<ITalonRepository>();
                     var talonList = await repository.GetTalonsAsync();
@@ -583,7 +583,7 @@ namespace STDentalWeb
                     };
 
                     await context.Response.WriteAsync(JsonSerializer.Serialize(talonList, options));
-                });
+                });*/
 
                 endpoints.MapGet("/talon", async context =>
                 {

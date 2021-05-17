@@ -20,6 +20,23 @@ namespace STDentalLibrary.Implementation
             _configuration = configuration;
         }
 
+        public async Task<IEnumerable<Talon>> GetTalonsAsync(int page, int itemsPerPage)
+        {
+            await using (var context = CreateContext())
+            {
+                return await context.Talons
+                    .Include(s => s.Staff)
+                    .Include(p => p.Patient)
+                    .Where(q => q.CreateDate > DateTime.UtcNow.AddDays(-360))
+                    .OrderBy(a => a.PaymentStatus)
+                    .ThenByDescending(s => s.CreateDate)
+                    .ThenByDescending(s => s.TalonId)
+                    .Skip((page - 1) * itemsPerPage)
+                    .Take(itemsPerPage)
+                    .ToListAsync();
+            }
+        }
+
         public async Task<int> AddPaymentAsync(Payment payment)
         {
             await using (var context = CreateContext())
@@ -29,7 +46,6 @@ namespace STDentalLibrary.Implementation
                 return res.Entity.PaymentId;
             }
         }
-
         public async Task<int> AddTalonAsync(Talon talon)
         {
             await using (var context = CreateContext())
@@ -39,7 +55,6 @@ namespace STDentalLibrary.Implementation
                 return res.Entity.TalonId;
             }
         }
-
         public async Task<bool> DeleteTalonAsync(int talonId)
         {
             try
@@ -65,24 +80,14 @@ namespace STDentalLibrary.Implementation
             } 
         }
 
-        public async Task<IEnumerable<Talon>> GetTalonsAsync(int page, int itemsPerPage)
+        public async Task<int> GetCountTalonsAsync()
         {
             await using (var context = CreateContext())
             {
-                return await context.Talons
-                    .Include(s => s.Staff)
-                    .Include(p => p.Patient)
-                    .Where(q => q.CreateDate > DateTime.UtcNow.AddDays(-360))
-                    .OrderBy(a => a.PaymentStatus)
-                    .ThenByDescending(s => s.CreateDate)
-                    .ThenByDescending(s => s.TalonId)
-                    .Skip((page - 1) * itemsPerPage)
-                    .Take(itemsPerPage)
-                    .ToListAsync();
+                return await context.Talons.CountAsync();
             }
         }
-
-        public async Task<IEnumerable<Talon>> GetTalonsFilterAsync(int? patientId, int? doctorId, DateTime? startDate, DateTime? endDate)
+        public async Task<IEnumerable<Talon>> GetTalonsFilterAsync(int page, int itemsPerPage, int? patientId, int? doctorId, DateTime? startDate, DateTime? endDate)
         {
             await using (var context = CreateContext())
             {
@@ -102,10 +107,11 @@ namespace STDentalLibrary.Implementation
                 return await query.OrderBy(a => a.PaymentStatus)
                     .ThenByDescending(s => s.CreateDate)
                     .ThenByDescending(s => s.TalonId)
+                    .Skip((page - 1) * itemsPerPage)
+                    .Take(itemsPerPage)
                     .ToListAsync();
             }
         }
-
         public async Task<Talon> GetTalonAsync(int talonId)
         {
             await using (var context = CreateContext())
@@ -115,7 +121,6 @@ namespace STDentalLibrary.Implementation
                     .Where(w => w.TalonId == talonId);
             }
         }
-
         public async Task<IEnumerable<TalonService>> GetTalonServicesAsync(int talonId)
         {
             await using (var context = CreateContext())
@@ -126,7 +131,6 @@ namespace STDentalLibrary.Implementation
                     .ToListAsync();
             }
         }
-
         public async Task<bool> UpdateTalonAsync(Talon talon)
         {
             try
@@ -145,10 +149,8 @@ namespace STDentalLibrary.Implementation
             catch
             {
                 return false;
-            }
-           
+            }           
         }
-
         private STDentalContext CreateContext()
         {
             return new STDentalContext(_configuration.GetConnectionString("STDentalDB"));
