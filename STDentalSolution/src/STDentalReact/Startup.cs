@@ -63,14 +63,6 @@ namespace STDentalReact
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller}/{action=Index}/{id?}");
-
-                endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "talons/Get/");
-
-                endpoints.MapControllerRoute(
-                    name: "gettalonsfilter",
-                    pattern: "talons/GetTalonsFilterAsync/filtertalons");
             });
 
             

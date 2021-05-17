@@ -27,8 +27,8 @@ export class Talons extends Component{
             doctors: [],
             selectedPatientId: null,
             selectedDoctorId: null,
-            selectedStartDate: null,
-            selectedEndDate: null,
+            selectedStartDate: moment(new Date()).format('DD.MM.YYYY'),
+            selectedEndDate: moment(new Date()).format('DD.MM.YYYY'),
             currentPage: 1,
             talonsPerPage: 15,
             talonsCount: null,
@@ -52,7 +52,7 @@ export class Talons extends Component{
     )
 
     onPatientSelect = value => {
-        this.setState({ selectPatientId: value && value.id })
+        this.setState({ selectedPatientId: value && value.id })
     }
 
     onDoctorSelect = value => {
@@ -82,45 +82,39 @@ export class Talons extends Component{
         )
     )
 
-    onGenerateFilter() {       
+    onGenerateFilter() {      
+        let filterPatient = this.state.selectedPatientId && `&patientid=${this.state.selectedPatientId}`;
+        let filterDoctor = this.state.selectedDoctorId && `&doctorid=${this.state.selectedDoctorId}`;
+        let filterStartDate = this.state.selectedStartDate && `&startdate=${this.state.selectedStartDate}`;
+        let filterEndDate = this.state.selectedEndDate && `&enddate=${this.state.selectedEndDate}`;
 
-        let filter;
+        console.log(`filterPatient = ${filterPatient}`);
+        console.log(`filterDoctor = ${filterDoctor}`);
+        console.log(`filterStartDate = ${filterStartDate}`);
+        console.log(`filterEndDate = ${filterEndDate}`);
 
-        filter = this.state.selectedPatientId && filter.join(`&patientid=${this.state.selectedPatientId})`);
-        filter = filter && filter.join(`&`);
-        filter = this.state.selectedDoctorId && `doctorid=${this.state.selectedDoctorId}`;
-        filter = filter && filter.join(`&`);
-        filter = this.state.selectedStartDate && `startdate=${this.state.selectedStartDate}`;
-        filter = filter && filter.join(`&`);
-        filter = this.state.selectedEndDate && `enddate=${this.state.selectedEndDate}`;
+        let filter = `${filterPatient}${filterDoctor}${filterStartDate}${filterEndDate}`.replace('&null','');
 
-        //let filterPatient = this.state.selectedPatientId && `patientid=${this.state.selectedPatientId}`;
-        //let filterDoctor = this.state.selectedDoctorId && `&staffid=${this.state.selectedDoctorId}`;
-        //let filterStartDate = this.state.selectedStartDate && `&startdate=${this.state.selectedStartDate}`;
-        //let filterEndDate = this.state.selectedEndDate && `&enddate=${this.state.selectedEndDate}`;
-        //console.log(filterPatient);
+        console.log(`filter = ${filter}`);
 
-        //let filterTalons = `patientid=1&doctorid=1&startdata=01.05.2021&enddata=01.06.2021`;
-        this.setState({ filterTalons: { filter} });
+        this.setState({ filterTalons:  filter });
 
-        this.populateFilterTalons(filterTalons);
-        
-        console.log(`filterTalons ${this.state.filterTalons}`);
+        this.populateTalons();
     }
 
     renderTalonsTable() {      
+        //const indexOfLastTalon = this.state.currentPage * this.state.talonsPerPage;
+        //const indexOfFirstTalon = indexOfLastTalon - this.state.talonsPerPage;
+        //const currentTalons = this.state.talonsCount.slice(indexOfFirstTalon, indexOfLastTalon);
+       // const currentTalons = this.state.talons;
 
-        const indexOfLastTalon = this.state.currentPage * this.state.talonsPerPage;
-        const indexOfFirstTalon = indexOfLastTalon - this.state.talonsPerPage;
-        const currentTalons = this.state.talons.slice(indexOfFirstTalon, indexOfLastTalon);
+        const paginate = pageNum => {this.setState({currentPage: pageNum}); this.populateTalons()};
 
-        const paginate = pageNum => this.setState({currentPage: pageNum});
+        const nextPage = () => {this.setState({ currentPage: this.state.currentPage + 1}); this.populateTalons()};
 
-        const nextPage = () => this.setState({ currentPage: this.state.currentPage + 1});
+        const prevPage = () => {this.setState({ currentPage: this.state.currentPage - 1}); this.populateTalons()};
 
-        const prevPage = () => this.setState({ currentPage: this.state.currentPage - 1});
-
-        this.populateTalons();
+        //this.populateTalons();
 
         return (
             <div>
@@ -164,8 +158,8 @@ export class Talons extends Component{
                 <div style={{height: "20px"}}>
                 </div>
                 {this.state.loadingTalons ? (
-                    <Loader /> ) : ( 
-                    <Table className='table' aria-labelledby="tabelLabel">
+                    <Loader /> ) : 
+                    (<Table className='table' aria-labelledby="tabelLabel">
                         <thead>
                             <tr>
                                 <th>№ талона</th>
@@ -178,7 +172,7 @@ export class Talons extends Component{
                             </tr>
                         </thead>           
                             <tbody>
-                                {currentTalons.map(talon =>
+                                {this.state.talons.map(talon =>
                                     <tr key={talon.talonId} className={talon.talonStatus} onClick={() => this.onRowSelect(talon)}>
                                         <td>{talon.talonId}</td>
                                         <td>{talon.patientName}</td>
@@ -190,10 +184,13 @@ export class Talons extends Component{
                                     </tr>
                                 )}
                             </tbody>                  
-                    </Table> )}   
+                    </Table> 
+                    )
+                }   
 
                     {!this.state.loadingTalons && (<Pagination talonsPerPage={this.state.talonsPerPage} totalTalons={this.state.talonsCount}
-                        paginate={paginate} nextPage={nextPage} prevPage={prevPage} goToPage={ paginate }/>)}
+                        paginate={paginate} nextPage={nextPage} prevPage={prevPage} goToPage={ paginate }/>)
+                    }
                 </div>
             </div>
         );
@@ -210,7 +207,15 @@ export class Talons extends Component{
     }
 
     async populateTalons() {
-        const response = await fetch(`talons?page=${this.state.currentPage}&itemsPerPage=${this.state.talonsPerPage}${this.state.filter}`);
+        //console.log(`filterTalons = ${this.state.filterTalons}`);
+
+        //let filterRow = `talons?page=${this.state.currentPage}&itemsPerPage=${this.state.talonsPerPage}`;
+
+        //console.log(`filterRow = ${filterRow}`);
+        let filterRow = `talons?page=${this.state.currentPage}&itemsPerPage=${this.state.talonsPerPage}${this.state.filterTalons}`.replace('null','');
+        //console.log(`filterRow == = ${filterRow}`);
+
+        const response = await fetch(filterRow);
         const data = await response.json();   
         this.setState({ talons: data, loadingTalons: false });
     }
