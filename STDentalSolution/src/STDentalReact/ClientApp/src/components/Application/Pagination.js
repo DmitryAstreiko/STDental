@@ -4,7 +4,7 @@ export default class Pagination extends Component {
     
     render() {
         
-        const { talonsPerPage, totalTalons, paginate, nextPage, prevPage } = this.props;
+        const { talonsPerPage, totalTalons, paginate, nextPage, prevPage, goToPage } = this.props;
 
         const pageNumbers = [];
 
@@ -39,7 +39,7 @@ export default class Pagination extends Component {
                     {pageNumbers.map(num => (
                         <li className="page-item" key={num}>
                             {/*<a onClick={() => paginate(num)} href="/" className="page-link">{num}</a>*/}
-                            <a onClick={ handlePaginateClick } href="/" className="page-link">{num}</a>
+                            <a onClick={(e) => { e.preventDefault(); goToPage(num); }} href="/" className="page-link">{num}</a>
                         </li>
                     ))}
                     <li className="page-item">

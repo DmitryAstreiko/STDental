@@ -27,12 +27,11 @@ namespace STDentalReact.Controllers
         }
 
         [HttpGet]
-        [ActionName("get")]
-        public async Task<IEnumerable<TalonInfo>> GetAsync()
+        public async Task<IEnumerable<TalonInfo>> GetAsync(int page, int itemsPerPage)
         {
             Console.WriteLine("GetAsync");
 
-            var talons = await _talonRepository.GetTalonsAsync();
+            var talons = await _talonRepository.GetTalonsAsync(page, itemsPerPage);
 
             return talons.Select(talon => new TalonInfo()
                 {
@@ -48,23 +47,11 @@ namespace STDentalReact.Controllers
                 .ToArray();
         }
 
-        [HttpGet]
-        [ActionName("gettalonsfilter")]
-        public async Task<IEnumerable<TalonInfo>> TalonsFilterAsync(int? patientid, int? doctorid, DateTime? startdata, DateTime? enddata)
+        [HttpGet("filter")]
+        public async Task<IEnumerable<TalonInfo>> TalonsFilterAsync(int? patientId, int? doctorId, DateTime? startDate, DateTime? endDate)
         {
             Console.WriteLine("TalonsFilterAsync");
-            Console.WriteLine($"- {patientid}, - {doctorid}, - {startdata}, - {enddata}");
-
-            var patientId = 5;
-            var doctorId = 4;
-
-            DateTime startDate;
-
-            DateTime.TryParse("01.01.2021", out startDate);
-
-            DateTime endDate;
-
-            DateTime.TryParse("01.06.2021", out endDate);
+            Console.WriteLine($"- {patientId}, - {doctorId}, - {startDate}, - {endDate}");
 
             Console.WriteLine("go to GeTalonsFilterAsync");
             Console.WriteLine($"patientid = {patientId.ToString()}");

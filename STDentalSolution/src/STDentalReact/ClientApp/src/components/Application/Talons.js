@@ -173,7 +173,9 @@ export class Talons extends Component{
                 </div>
             <div>
             <div style={{height: "20px"}}>
-                </div>
+            </div>
+            {this.state.loadingTalons ? (
+                    <Loader /> ) : ( 
             <Table className='table' aria-labelledby="tabelLabel">
                 <thead>
                     <tr>
@@ -186,8 +188,7 @@ export class Talons extends Component{
                         <th>Комментарий</th>
                     </tr>
                 </thead>               
-                    { this.state.loadingTalons ? (
-                    <Loader /> ) : ( 
+                    
                     <tbody>
                         {currentTalons.map(talon =>
                             <tr key={talon.talonId} className={talon.talonStatus} onClick={() => this.onRowSelect(talon)}>
@@ -201,11 +202,11 @@ export class Talons extends Component{
                             </tr>
                         )}
                     </tbody>              
-                    )}                
-            </Table>
+                                
+            </Table> )}   
 
-                {!this.state.loadingTalons && (<Pagination talonsPerPage={this.state.talonsPerPage} totalTalons={this.state.talons.length} 
-                paginate={paginate} nextPage={nextPage} prevPage={prevPage}/>)}
+                    {!this.state.loadingTalons && (<Pagination talonsPerPage={this.state.talonsPerPage} totalTalons={this.state.talons.length}
+                        paginate={paginate} nextPage={nextPage} prevPage={prevPage} goToPage={ paginate }/>)}
             </div>
             </div>
         );
@@ -221,8 +222,9 @@ export class Talons extends Component{
         )
     }
 
-    async populateTalons() {        
-        const response = await fetch('Talons');
+    async populateTalons() {
+
+        const response = await fetch(`talons?page=${this.state.currentPage}&itemsPerPage=${this.state.talonsPerPage}`);
         const data = await response.json();   
         this.setState({ talons: data, loadingTalons: false });
     }
@@ -230,7 +232,7 @@ export class Talons extends Component{
     async populateFilterTalons(filterForTalons) {   
         console.log(`Goto populateFilterTalons`);     
 
-        const response = await fetch(`talons/gettalonsfilter/?${filterForTalons}`);
+        const response = await fetch(`talons/filter/?${filterForTalons}`);
         //const response = await fetch(`Talons/TalonsFilter`);
         const data = await response.json();   
         this.setState({ talons: data, loadingTalons: false });

@@ -65,7 +65,7 @@ namespace STDentalLibrary.Implementation
             } 
         }
 
-        public async Task<IEnumerable<Talon>> GetTalonsAsync()
+        public async Task<IEnumerable<Talon>> GetTalonsAsync(int page, int itemsPerPage)
         {
             await using (var context = CreateContext())
             {
@@ -76,6 +76,8 @@ namespace STDentalLibrary.Implementation
                     .OrderBy(a => a.PaymentStatus)
                     .ThenByDescending(s => s.CreateDate)
                     .ThenByDescending(s => s.TalonId)
+                    .Skip((page - 1) * itemsPerPage)
+                    .Take(itemsPerPage)
                     .ToListAsync();
             }
         }
@@ -84,14 +86,20 @@ namespace STDentalLibrary.Implementation
         {
             await using (var context = CreateContext())
             {
-                return await context.Talons
+                var query = context.Talons
                     .Include(s => s.Staff)
-                    .Include(p => p.Patient)
-                    .Where(p => p.PatientId == patientId)
-                    .Where(s => s.StaffId == doctorId)
-                    .Where(e => e.CreateDate >= startDate)
-                    .Where(q => q.CreateDate <= endDate)
-                    .OrderBy(a => a.PaymentStatus)
+                    .Include(p => p.Patient).AsQueryable();
+
+                if (patientId.HasValue)
+                    query = query.Where(p => p.PatientId == patientId);
+                if (doctorId.HasValue)
+                    query = query.Where(s => s.StaffId == doctorId);
+                if (startDate.HasValue)
+                    query = query.Where(e => e.CreateDate >= startDate);
+                if (endDate.HasValue)
+                    query = query.Where(q => q.CreateDate <= endDate);
+
+                return await query.OrderBy(a => a.PaymentStatus)
                     .ThenByDescending(s => s.CreateDate)
                     .ThenByDescending(s => s.TalonId)
                     .ToListAsync();
