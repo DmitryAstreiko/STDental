@@ -7,6 +7,7 @@ import { Counter } from './components/Counter';
 import {Services} from './components/Services';
 //import {AuthUser} from './components/Application/AuthUser';
 import { Talons } from './components/Application/Talons';
+import { TalonAction } from './components/Application/TalonAction'
 //import {Contacts} from './components/Application/Contacts';
 //import { NavMenu } from './components/NavMenu';
 //import { MenuDental } from './components/Application/MenuDental';
@@ -26,6 +27,7 @@ import BoardUser from "./components/board-user.component";
 import BoardModerator from "./components/board-moderator.component";
 import BoardAdmin from "./components/board-admin.component";
 import Administrator from "./components/Application/Administrator";
+
 
 import './custom.css'
 
@@ -56,7 +58,6 @@ export default class App extends Component {
   logOut() {
     AuthService.logout();
   }
-
 
   render () {
     //const { currentUser, showModeratorBoard, showAdminBoard } = this.state;
@@ -212,6 +213,7 @@ export default class App extends Component {
             <Route exact path='/services' Component={Services}/>
             <Route exact path='/whyme' component={Counter} />
             <Route exact path='/appdental/administrator/talons' component={Talons} />
+            <Route exact path='/appdental/administrator/talons/add' component={TalonAction} />
             <Route exact path='/appdental/administrator' component={Administrator} />
             <Route path="/user" component={BoardUser} />
             <Route path="/mod" component={BoardModerator} />

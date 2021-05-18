@@ -33,7 +33,7 @@ export default function ComboBoxM(props) {
 
 
       id={props.nameid}
-      options={props.fios}
+      options={props.lists}
       getOptionLabel={(option) => option.name}
       style={{ width: 300 }}
       //getOptionSelected={(option, value) => {return option.id === value.id}}

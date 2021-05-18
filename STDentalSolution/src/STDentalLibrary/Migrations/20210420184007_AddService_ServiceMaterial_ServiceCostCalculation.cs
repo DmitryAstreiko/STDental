@@ -49,11 +49,11 @@ namespace STDentalLibrary.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Services", x => x.ServiceId);
-                    table.ForeignKey(
+                    /*table.ForeignKey(
                         name: "FK_Services_ServiceCostCalculations_ServiceId",
                         column: x => x.ServiceId,
                         principalTable: "ServiceCostCalculations",
-                        principalColumn: "ServiceCostId");
+                        principalColumn: "ServiceCostId");*/
                     table.ForeignKey(
                         name: "FK_Services_Units_UnitId",
                         column: x => x.UnitId,

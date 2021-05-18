@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using STDentalLibrary.Context;
 
 namespace STDentalLibrary.Migrations
 {
     [DbContext(typeof(STDentalContext))]
-    partial class STDentalContextModelSnapshot : ModelSnapshot
+    [Migration("20210518220252_SomeChanges")]
+    partial class SomeChanges
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -358,7 +360,9 @@ namespace STDentalLibrary.Migrations
             modelBuilder.Entity("STDentalLibrary.Models.ServiceCostCalculation", b =>
                 {
                     b.Property<int>("ServiceCostId")
-                        .HasColumnType("int");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<decimal>("Cost")
                         .HasColumnType("decimal(18,2)");
@@ -382,6 +386,9 @@ namespace STDentalLibrary.Migrations
                         .HasColumnType("decimal(18,2)");
 
                     b.HasKey("ServiceCostId");
+
+                    b.HasIndex("ServiceId")
+                        .IsUnique();
 
                     b.ToTable("ServiceCostCalculations");
                 });
@@ -677,7 +684,7 @@ namespace STDentalLibrary.Migrations
                 {
                     b.HasOne("STDentalLibrary.Models.Service", "Service")
                         .WithOne("ServiceCostCalculation")
-                        .HasForeignKey("STDentalLibrary.Models.ServiceCostCalculation", "ServiceCostId")
+                        .HasForeignKey("STDentalLibrary.Models.ServiceCostCalculation", "ServiceId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

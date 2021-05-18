@@ -217,6 +217,11 @@ namespace STDentalLibrary.Context
                     .HasForeignKey(u => u.UnitId)
                     .OnDelete(DeleteBehavior.NoAction);
 
+                service.HasOne(m => m.ServiceCostCalculation)
+                    .WithOne(u => u.Service)
+                    .HasForeignKey<ServiceCostCalculation>(u => u.ServiceCostId)
+                    .OnDelete(DeleteBehavior.Cascade);
+
                 service.Property(p => p.Shifr)
                     .HasColumnType("nvarchar(20)")
                     .IsRequired();
@@ -265,10 +270,10 @@ namespace STDentalLibrary.Context
                     .HasColumnType("decimal(18,2)")
                     .IsRequired();
 
-                serviceCost.HasOne(m => m.Service)
+                /*serviceCost.HasOne(m => m.Service)
                     .WithOne(u => u.ServiceCostCalculation)
                     .HasForeignKey<Service>(u => u.ServiceId)
-                    .OnDelete(DeleteBehavior.Cascade);
+                    .OnDelete(DeleteBehavior.Cascade);*/
             });
 
             #endregion

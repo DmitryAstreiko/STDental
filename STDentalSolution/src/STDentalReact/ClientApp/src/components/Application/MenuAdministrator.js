@@ -32,7 +32,7 @@ export class MenuAdministrator extends Component{
                 <NavLink tag={Link} className="text-dark" to="/appdental/administrator/talons">Талоны</NavLink>
                 </NavItem>
                 <NavItem>
-                    <NavLink tag={Link} className="text-dark" to="/">Выписка талона</NavLink>
+                    <NavLink tag={Link} className="text-dark" to="/appdental/administrator/talons/add">Выписка талона</NavLink>
                 </NavItem>
                 <NavItem>
                 <div className="dropdown">

@@ -10,9 +10,9 @@ namespace STDentalLibrary.Migrations
                 name: "FK_ServiceMaterials_Services_ServiceId",
                 table: "ServiceMaterials");
 
-            migrationBuilder.DropForeignKey(
+            /*migrationBuilder.DropForeignKey(
                 name: "FK_Services_ServiceCostCalculations_ServiceId",
-                table: "Services");
+                table: "Services");*/
 
             migrationBuilder.AddForeignKey(
                 name: "FK_ServiceMaterials_Services_ServiceId",
@@ -22,13 +22,13 @@ namespace STDentalLibrary.Migrations
                 principalColumn: "ServiceId",
                 onDelete: ReferentialAction.Cascade);
 
-            migrationBuilder.AddForeignKey(
+            /*migrationBuilder.AddForeignKey(
                 name: "FK_Services_ServiceCostCalculations_ServiceId",
                 table: "Services",
                 column: "ServiceId",
                 principalTable: "ServiceCostCalculations",
                 principalColumn: "ServiceCostId",
-                onDelete: ReferentialAction.Cascade);
+                onDelete: ReferentialAction.Cascade);*/
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -37,9 +37,9 @@ namespace STDentalLibrary.Migrations
                 name: "FK_ServiceMaterials_Services_ServiceId",
                 table: "ServiceMaterials");
 
-            migrationBuilder.DropForeignKey(
+            /*migrationBuilder.DropForeignKey(
                 name: "FK_Services_ServiceCostCalculations_ServiceId",
-                table: "Services");
+                table: "Services");*/
 
             migrationBuilder.AddForeignKey(
                 name: "FK_ServiceMaterials_Services_ServiceId",
@@ -48,12 +48,12 @@ namespace STDentalLibrary.Migrations
                 principalTable: "Services",
                 principalColumn: "ServiceId");
 
-            migrationBuilder.AddForeignKey(
+            /*migrationBuilder.AddForeignKey(
                 name: "FK_Services_ServiceCostCalculations_ServiceId",
                 table: "Services",
                 column: "ServiceId",
                 principalTable: "ServiceCostCalculations",
-                principalColumn: "ServiceCostId");
+                principalColumn: "ServiceCostId");*/
         }
     }
 }
