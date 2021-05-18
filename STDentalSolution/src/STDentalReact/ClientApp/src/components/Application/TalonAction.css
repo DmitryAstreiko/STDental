@@ -19,15 +19,3 @@
 .table tr:hover { 
     background: #d5e6a2; /* Цвет фона */
 }
-
-.NotPaid {
-    background-color: white;
-}
-
-.Paid {
-    background-color: greenyellow;
-}
-
-.PartiallyPaid {
-    background-color: yellow;
-}

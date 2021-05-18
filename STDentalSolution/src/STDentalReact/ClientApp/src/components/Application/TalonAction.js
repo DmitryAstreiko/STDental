@@ -3,6 +3,10 @@ import Modal from '@material-ui/core/Modal';
 import { MenuAdministrator } from './MenuAdministrator';
 import {Container} from 'reactstrap';
 import ComboBox from './Combobox.component';
+import './TalonAction.css';
+import { Table } from 'reactstrap';
+import DatePicker from './Picker.component';
+import * as moment  from 'moment';
 
 export class TalonAction extends Component{
 
@@ -15,7 +19,11 @@ export class TalonAction extends Component{
             patients: null,
             doctors: null,
             selectedPatientId: null,
-            selectedDoctorId: null
+            selectedDoctorId: null,
+            selectedService: null,
+            selectedServices: [],
+            selectedTalonDate: null,
+            selectedCost: null
             }
     }
 
@@ -34,18 +42,24 @@ export class TalonAction extends Component{
         this.setState({ selectedDoctorId: value && value.id })
     }
 
-    onDoctorSelect = value => {
-        //this.setState({ selectedDoctorId: value && value.id })
+    onPriceSelect = value => {
+        this.setState({ selectedService: value && value.id })
+    }
+
+    onDateStartSelect = value => {
+        //let res = moment(value).format('DD.MM.YYYY')
+        this.setState({ selectedTalonDate: moment(value).format('DD.MM.YYYY') })
     }
 
     render(){
         return (
             <div>
                 <MenuAdministrator />
+                {this.state.selectedService}
                 <Container>
                     <div>
                         <div className="row">
-                            <div className="col-sm">
+                            <div className="col">
                                 <ComboBox labelvalue={"Выберите пациента"} lists={this.state.patients} 
                                     onSelected={ (value) => this.onPatientSelect(value) } nameid={"combopatient"} />
                             </div>
@@ -58,14 +72,57 @@ export class TalonAction extends Component{
                         <div className="row">
                             <ComboBox labelvalue={"Выберите услугу"} lists={this.state.prices} 
                                 onSelected={ (value) => this.onPriceSelect(value) } nameid={"comboprice"} 
-                                style={{ width:"600px" }}/>
+                                style={{ width:"600px"}}/>
                         </div>
                         <div className="row" style={{ height: "20px" }}></div>
-                        <div className="row"></div>
-                        <div className="row"></div>
                     </div>
                 </Container>
-                <p>dfasfsadfsdf</p>
+                <div >
+                    <div className="row">
+                        <Table className='table' aria-labelledby="tabelLabel">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>№ п.п.</th>
+                                <th>Шифр</th>
+                                <th style={{width: "600px"}}>Наименование</th>
+                                <th>Стоимость</th>
+                                <th>Количество</th>
+                                <th>Сумма</th>
+                                <th>...</th>
+                            </tr>
+                        </thead>           
+                            <tbody>
+                                {this.state.selectedServices.map(service =>
+                                    <tr key={service.serviceId}>
+                                        <td>{service.serviceId}</td>
+                                        <td>{service.number}</td>
+                                        <td>{service.shifr}</td>
+                                        <td>{service.name}</td> 
+                                        <td>{service.price}</td>   
+                                        <td>{service.amount}</td>
+                                        <td>{service.cost}</td>
+                                    </tr>
+                                )}
+                            </tbody>                  
+                        </Table>
+                    </div>
+                    <div className="row" style={{ height: "20px" }}></div>
+                    <div className="row">
+                        <div className="text-right" style={{width: "300px"}}>
+                            Дата выписки талона: 
+                        </div>
+                        <div className="col">
+                            <DatePicker onSelected={ (value) => this.onDateStartSelect(value) } />
+                        </div>
+                        <div className="text-right" style={{width: "200px"}}>
+                            Итого по талону: 
+                        </div>
+                        <div className="col-sm">
+                            <input type="text" value={this.state.selectedCost ? `${this.state.selectedCost}` : `0.00`} style={{ width: "150px", textAlign: "center" }} readOnly />
+                        </div>
+                    </div>
+                </div>                
             </div>
         )    
     }
@@ -85,7 +142,7 @@ export class TalonAction extends Component{
     async populatePrices() {        
         const response = await fetch('services/comboservices');
         const data = await response.json();   
-        this.setState({ patients: data });
+        this.setState({ prices: data });
     }
 
 }

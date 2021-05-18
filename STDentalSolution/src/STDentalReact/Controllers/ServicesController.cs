@@ -29,24 +29,18 @@ namespace STDentalReact.Controllers
             return await _serviceRepository.GetServicesAsync();
         }
 
-       /* [HttpGet("comboservices")]
-        public async Task<IEnumerable<TalonInfo>> GetServicesComboAsync()
+        [HttpGet("comboservices")]
+        public async Task<IEnumerable<ServiceComboBox>> GetServicesComboAsync()
         {
-            var talons = await _serviceRepository.GetServicesAsync()
+            var services = await _serviceRepository.GetServicesComboAsync();
 
-            return talons.Select(talon => new TalonInfo()
+            return services.Select(service => new ServiceComboBox()
             {
-                TalonId = talon.TalonId.ToString(),
-                PatientName = talon.Patient.Name,
-                StaffName = talon.Staff.Name,
-                Summa = talon.Summa.ToString(),
-                Cost = talon.Cost.ToString(),
-                CreateDate = talon.CreateDate.ToString("dd.MM.yyyy"),
-                TalonStatus = talon.PaymentStatus.ToString(),
-                Description = talon.Description
+                Id = service.ServiceId.ToString(),
+                Name = $"{service.Shifr} {service.Name}"
             })
                 .ToArray();
-        }*/
+        }
 
     }
 }

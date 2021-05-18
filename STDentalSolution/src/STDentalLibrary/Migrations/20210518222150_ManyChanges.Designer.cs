@@ -10,8 +10,8 @@ using STDentalLibrary.Context;
 namespace STDentalLibrary.Migrations
 {
     [DbContext(typeof(STDentalContext))]
-    [Migration("20210420200005_AddGroupName_GroupService")]
-    partial class AddGroupName_GroupService
+    [Migration("20210518222150_ManyChanges")]
+    partial class ManyChanges
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -34,7 +34,7 @@ namespace STDentalLibrary.Migrations
 
                     b.HasKey("GroupNameId");
 
-                    b.ToTable("GroupNameService");
+                    b.ToTable("GroupNameServices");
                 });
 
             modelBuilder.Entity("STDentalLibrary.Models.GroupService", b =>
@@ -52,7 +52,7 @@ namespace STDentalLibrary.Migrations
 
                     b.HasIndex("GroupNameId");
 
-                    b.ToTable("GroupService");
+                    b.ToTable("GroupServices");
                 });
 
             modelBuilder.Entity("STDentalLibrary.Models.Material", b =>
@@ -71,6 +71,9 @@ namespace STDentalLibrary.Migrations
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(128)");
+
+                    b.Property<int?>("ParentId")
+                        .HasColumnType("int");
 
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,3)");
@@ -237,7 +240,7 @@ namespace STDentalLibrary.Migrations
 
             modelBuilder.Entity("STDentalLibrary.Models.Payment", b =>
                 {
-                    b.Property<int>("paymentId")
+                    b.Property<int>("PaymentId")
                         .HasColumnType("int");
 
                     b.Property<decimal>("AmountBefore")
@@ -261,9 +264,9 @@ namespace STDentalLibrary.Migrations
                     b.Property<int>("TalonId")
                         .HasColumnType("int");
 
-                    b.HasKey("paymentId");
+                    b.HasKey("PaymentId");
 
-                    b.ToTable("Payment");
+                    b.ToTable("Payments");
                 });
 
             modelBuilder.Entity("STDentalLibrary.Models.Post", b =>
@@ -282,10 +285,50 @@ namespace STDentalLibrary.Migrations
                     b.ToTable("Posts");
                 });
 
+            modelBuilder.Entity("STDentalLibrary.Models.Reception", b =>
+                {
+                    b.Property<int>("ReceptionId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Comment")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(512)");
+
+                    b.Property<DateTime>("EndTime")
+                        .HasColumnType("datetime");
+
+                    b.Property<int>("PatientId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ReceptionStatus")
+                        .HasColumnType("int");
+
+                    b.Property<int>("StaffId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("StartTime")
+                        .HasColumnType("datetime");
+
+                    b.Property<DateTime>("VisitDay")
+                        .HasColumnType("date");
+
+                    b.HasKey("ReceptionId");
+
+                    b.HasIndex("PatientId");
+
+                    b.HasIndex("StaffId");
+
+                    b.ToTable("Receptions");
+                });
+
             modelBuilder.Entity("STDentalLibrary.Models.Service", b =>
                 {
                     b.Property<int>("ServiceId")
-                        .HasColumnType("int");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("datetime");
@@ -317,9 +360,7 @@ namespace STDentalLibrary.Migrations
             modelBuilder.Entity("STDentalLibrary.Models.ServiceCostCalculation", b =>
                 {
                     b.Property<int>("ServiceCostId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
 
                     b.Property<decimal>("Cost")
                         .HasColumnType("decimal(18,2)");
@@ -424,6 +465,9 @@ namespace STDentalLibrary.Migrations
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("datetime");
 
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(512)");
+
                     b.Property<int>("PatientId")
                         .HasColumnType("int");
 
@@ -448,7 +492,7 @@ namespace STDentalLibrary.Migrations
 
                     b.HasIndex("StaffId");
 
-                    b.ToTable("Talon");
+                    b.ToTable("Talons");
                 });
 
             modelBuilder.Entity("STDentalLibrary.Models.TalonService", b =>
@@ -479,7 +523,7 @@ namespace STDentalLibrary.Migrations
 
                     b.HasIndex("TalonId");
 
-                    b.ToTable("TalonService");
+                    b.ToTable("TalonServices");
                 });
 
             modelBuilder.Entity("STDentalLibrary.Models.Unit", b =>
@@ -565,13 +609,13 @@ namespace STDentalLibrary.Migrations
                     b.HasOne("STDentalLibrary.Models.GroupNameService", "GroupName")
                         .WithMany("GroupServices")
                         .HasForeignKey("GroupNameId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("STDentalLibrary.Models.Service", "Service")
                         .WithMany("GroupServices")
                         .HasForeignKey("GroupServiceId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("GroupName");
@@ -592,32 +636,54 @@ namespace STDentalLibrary.Migrations
 
             modelBuilder.Entity("STDentalLibrary.Models.Payment", b =>
                 {
-                    b.HasOne("STDentalLibrary.Models.Talon", "talon")
+                    b.HasOne("STDentalLibrary.Models.Talon", "Talon")
                         .WithMany("Payments")
-                        .HasForeignKey("paymentId")
+                        .HasForeignKey("PaymentId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.Navigation("talon");
+                    b.Navigation("Talon");
+                });
+
+            modelBuilder.Entity("STDentalLibrary.Models.Reception", b =>
+                {
+                    b.HasOne("STDentalLibrary.Models.Patient", "Patient")
+                        .WithMany("Receptions")
+                        .HasForeignKey("PatientId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("STDentalLibrary.Models.Staff", "Staff")
+                        .WithMany("Receptions")
+                        .HasForeignKey("StaffId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Patient");
+
+                    b.Navigation("Staff");
                 });
 
             modelBuilder.Entity("STDentalLibrary.Models.Service", b =>
                 {
-                    b.HasOne("STDentalLibrary.Models.ServiceCostCalculation", "ServiceCostCalculation")
-                        .WithOne("Service")
-                        .HasForeignKey("STDentalLibrary.Models.Service", "ServiceId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
                     b.HasOne("STDentalLibrary.Models.Unit", "Unit")
                         .WithMany("Services")
                         .HasForeignKey("UnitId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.Navigation("ServiceCostCalculation");
-
                     b.Navigation("Unit");
+                });
+
+            modelBuilder.Entity("STDentalLibrary.Models.ServiceCostCalculation", b =>
+                {
+                    b.HasOne("STDentalLibrary.Models.Service", "Service")
+                        .WithOne("ServiceCostCalculation")
+                        .HasForeignKey("STDentalLibrary.Models.ServiceCostCalculation", "ServiceCostId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Service");
                 });
 
             modelBuilder.Entity("STDentalLibrary.Models.ServiceMaterial", b =>
@@ -631,7 +697,7 @@ namespace STDentalLibrary.Migrations
                     b.HasOne("STDentalLibrary.Models.Service", "Service")
                         .WithMany("ServiceMaterials")
                         .HasForeignKey("ServiceId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Material");
@@ -723,6 +789,8 @@ namespace STDentalLibrary.Migrations
 
             modelBuilder.Entity("STDentalLibrary.Models.Patient", b =>
                 {
+                    b.Navigation("Receptions");
+
                     b.Navigation("Talons");
                 });
 
@@ -735,18 +803,17 @@ namespace STDentalLibrary.Migrations
                 {
                     b.Navigation("GroupServices");
 
+                    b.Navigation("ServiceCostCalculation");
+
                     b.Navigation("ServiceMaterials");
 
                     b.Navigation("TalonServices");
                 });
 
-            modelBuilder.Entity("STDentalLibrary.Models.ServiceCostCalculation", b =>
-                {
-                    b.Navigation("Service");
-                });
-
             modelBuilder.Entity("STDentalLibrary.Models.Staff", b =>
                 {
+                    b.Navigation("Receptions");
+
                     b.Navigation("Talons");
                 });
 

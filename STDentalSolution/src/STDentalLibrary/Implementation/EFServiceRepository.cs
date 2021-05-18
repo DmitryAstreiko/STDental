@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using STDentalLibrary.Context;
 using STDentalLibrary.Models;
+using STDentalLibrary.Models.ModelsResponse;
 using STDentalLibrary.Repositories;
 
 namespace STDentalLibrary.Implementation
@@ -73,6 +74,18 @@ namespace STDentalLibrary.Implementation
                     .Where(q => q.EndDate == null)
                     .OrderBy(s => s.Shifr)
                     .OrderBy(s => s.ServiceId)
+                    .ToListAsync();
+            }
+        }
+
+        public async Task<IEnumerable<Service>> GetServicesComboAsync()
+        {
+            await using (var context = CreateContext())
+            {
+                return await context.Services
+                    .Where(q => q.EndDate == null)
+                    .OrderBy(s => s.Shifr)
+                    //.OrderBy(s => s.ServiceId)
                     .ToListAsync();
             }
         }

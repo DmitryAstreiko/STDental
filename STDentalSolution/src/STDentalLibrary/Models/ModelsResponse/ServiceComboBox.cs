@@ -8,6 +8,8 @@ namespace STDentalLibrary.Models.ModelsResponse
 {
     public class ServiceComboBox
     {
+        public string Id { get; set; }
 
+        public string Name { get; set; }
     }
 }
