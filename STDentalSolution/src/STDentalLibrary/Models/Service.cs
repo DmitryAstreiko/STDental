@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using STDentalLibrary.Models.Enums;
 
 namespace STDentalLibrary.Models
@@ -23,6 +24,7 @@ namespace STDentalLibrary.Models
         public Unit Unit { get; set; }
 
         //public int ServiceCostId { get; set; }
+
         public ServiceCostCalculation ServiceCostCalculation { get; set; }
 
         public List<ServiceMaterial> ServiceMaterials { get; set; }

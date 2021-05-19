@@ -1,4 +1,6 @@
-﻿namespace STDentalLibrary.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace STDentalLibrary.Models
 {
     public class ServiceCostCalculation
     {

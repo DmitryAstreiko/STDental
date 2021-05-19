@@ -13,6 +13,8 @@ namespace STDentalLibrary.Models
 
         public DateTime EndTime { get; set; }
 
+        public int asdasd { get; set; }
+
         public string Comment { get; set; }
 
         public ReceptionStatus ReceptionStatus { get; set; }

@@ -21,24 +21,12 @@ export default function ComboBoxM(props) {
     //onChange={(event, value) => props.patientid = value.id}
       onChange={(event, value) => props.onSelected(value)}
 
-        /*value={value}
-        onChange={(event, value) => {
-          setValue(value.id);
-        }}
-
-        inputValue={inputValue}
-        onInputChange={(event, newInputValue) => {
-          setInputValue(newInputValue);
-        }}*/
-
-
       id={props.nameid}
       options={props.lists}
       getOptionLabel={(option) => option.name}
       style={{ width: 300 }}
       //getOptionSelected={(option, value) => {return option.id === value.id}}
       renderInput={(params) => <TextField {...params} label={props.labelvalue} variant="outlined" />}
-      /*variant="outlined"*/
     />
     </div>
   );

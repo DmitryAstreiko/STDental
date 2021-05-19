@@ -189,7 +189,7 @@ export class Talons extends Component{
                 }   
 
                     {!this.state.loadingTalons && (<Pagination talonsPerPage={this.state.talonsPerPage} totalTalons={this.state.talonsCount}
-                        paginate={paginate} nextPage={nextPage} prevPage={prevPage} goToPage={ paginate }/>)
+                        paginate={ paginate } nextPage={ nextPage } prevPage={ prevPage } />)
                     }
                 </div>
             </div>

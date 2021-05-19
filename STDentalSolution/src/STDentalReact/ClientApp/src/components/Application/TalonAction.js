@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
-import Modal from '@material-ui/core/Modal';
+//import Modal from '@material-ui/core/Modal';
 import { MenuAdministrator } from './MenuAdministrator';
-import {Container} from 'reactstrap';
+import { Container, Table } from 'reactstrap';
 import ComboBox from './Combobox.component';
 import './TalonAction.css';
-import { Table } from 'reactstrap';
 import DatePicker from './Picker.component';
 import * as moment  from 'moment';
 
@@ -18,12 +17,10 @@ export class TalonAction extends Component{
             selectedDoctorId: null,
             patients: null,
             doctors: null,
-            selectedPatientId: null,
-            selectedDoctorId: null,
-            selectedService: null,
-            selectedServices: [],
+            selectedServiceId: 5,
+            tableServices: [],
             selectedTalonDate: null,
-            selectedCost: null
+            selectedCost: null,
             }
     }
 
@@ -43,7 +40,8 @@ export class TalonAction extends Component{
     }
 
     onPriceSelect = value => {
-        this.setState({ selectedService: value && value.id })
+        this.setState({ selectedServiceId: value && value.id });
+        this.populateSelectedPrice();
     }
 
     onDateStartSelect = value => {
@@ -55,21 +53,22 @@ export class TalonAction extends Component{
         return (
             <div>
                 <MenuAdministrator />
-                {this.state.selectedService}
+                {this.state.selectedServiceId}
+                {this.state.tableServices}
                 <Container>
-                    <div>
+                    <div >
                         <div className="row">
                             <div className="col">
                                 <ComboBox labelvalue={"Выберите пациента"} lists={this.state.patients} 
-                                    onSelected={ (value) => this.onPatientSelect(value) } nameid={"combopatient"} />
+                                    onSelected={ (value) => this.onPatientSelect(value) } nameid={"combopatientprice"} />
                             </div>
                             <div className="col-sm">
                                 <ComboBox labelvalue={"Выберите врача"} lists={this.state.doctors} 
-                                    onSelected={ (value) => this.onDoctorSelect(value) } nameid={"combodoctor"} />                                
+                                    onSelected={ (value) => this.onDoctorSelect(value) } nameid={"combodoctorprice"} />                                
                             </div>
                         </div>
                         <div className="row" style={{ height: "20px" }}></div>
-                        <div className="row">
+                        <div className="row" >
                             <ComboBox labelvalue={"Выберите услугу"} lists={this.state.prices} 
                                 onSelected={ (value) => this.onPriceSelect(value) } nameid={"comboprice"} 
                                 style={{ width:"600px"}}/>
@@ -93,7 +92,7 @@ export class TalonAction extends Component{
                             </tr>
                         </thead>           
                             <tbody>
-                                {this.state.selectedServices.map(service =>
+                                {this.state.tableServices.map(service =>
                                     <tr key={service.serviceId}>
                                         <td>{service.serviceId}</td>
                                         <td>{service.number}</td>
@@ -145,4 +144,12 @@ export class TalonAction extends Component{
         this.setState({ prices: data });
     }
 
+    async populateSelectedPrice() {        
+        const response = await fetch(`services/service?serviceid=${this.state.selectedServiceId}`);
+        const data = await response.json();   
+        //let list = this.state.tableServices;
+        //list.add(data);
+        console.log(data);
+        this.setState({ tableServices: data[0] });
+    }
 }

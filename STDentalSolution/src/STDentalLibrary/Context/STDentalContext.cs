@@ -219,7 +219,7 @@ namespace STDentalLibrary.Context
 
                 service.HasOne(m => m.ServiceCostCalculation)
                     .WithOne(u => u.Service)
-                    .HasForeignKey<ServiceCostCalculation>(u => u.ServiceCostId)
+                    .HasForeignKey<ServiceCostCalculation>(u => u.ServiceId)
                     .OnDelete(DeleteBehavior.Cascade);
 
                 service.Property(p => p.Shifr)
@@ -245,6 +245,8 @@ namespace STDentalLibrary.Context
             modelBuilder.Entity<ServiceCostCalculation>(serviceCost =>
             {
                 serviceCost.HasKey(s => s.ServiceCostId);
+
+                //serviceCost.HasNoKey();
                 
                 serviceCost.Property(p => p.WorkCost)
                     .HasColumnType("decimal(18,2)")

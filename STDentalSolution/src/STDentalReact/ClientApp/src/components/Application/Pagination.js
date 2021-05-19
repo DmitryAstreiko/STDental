@@ -4,7 +4,7 @@ export default class Pagination extends Component {
     
     render() {
         
-        const { talonsPerPage, totalTalons, paginate, nextPage, prevPage, goToPage } = this.props;
+        const { talonsPerPage, totalTalons, paginate, nextPage, prevPage } = this.props;
 
         const pageNumbers = [];
 

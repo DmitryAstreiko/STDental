@@ -199,7 +199,8 @@ namespace STDentalLibrary.Migrations
                 name: "Payments",
                 columns: table => new
                 {
-                    PaymentId = table.Column<int>(type: "int", nullable: false),
+                    PaymentId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     AmountBefore = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     PaymentAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Dept = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
