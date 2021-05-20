@@ -4,9 +4,11 @@ export default class Pagination extends Component {
     
     render() {
         
-        const { talonsPerPage, totalTalons, paginate, nextPage, prevPage } = this.props;
+        const { talonsPerPage, totalTalons, paginate, nextPage, prevPage, currentPage } = this.props;
 
         const pageNumbers = [];
+
+        console.log(currentPage);
 
         for(let i = 1; i <= Math.ceil(totalTalons / talonsPerPage); i++) {
             pageNumbers.push(i);
@@ -31,23 +33,29 @@ export default class Pagination extends Component {
         } */
         
         return (
-            <nav>
-                <ul className="pagination justify-content-center">
-                    <li className="page-item">
-                        <a className="page-link" onClick={handlePrevClick} href="/" >Previous</a>
-                    </li>
-                    {pageNumbers.map(num => (
-                        <li className="page-item" key={num}>
-                            {/*<a onClick={() => paginate(num)} href="/" className="page-link">{num}</a>*/}
-                            <a onClick={(e) => { e.preventDefault(); paginate(num); }} href="/" className="page-link">{num}</a>
+                <nav>                
+                    <ul className="pagination justify-content-center">
+                        <li className="page-item">
+                            <a className="page-link" onClick={handlePrevClick} href="/" disabled={ true }>Предыдущая</a>
+                            <button  onClick={handlePrevClick} disabled={ currentPage === 1  } >Предыдущая </button>
                         </li>
-                    ))}
-                    <li className="page-item">
-                        {/*<a className="page-link" onClick={() => nextPage()} href="/">Next</a>*/}
-                        <a className="page-link" onClick={handleNextClick} href="/">Next</a>
-                    </li>
-                </ul>    
-            </nav>
+                        {pageNumbers.map(num => (
+                            <li className="page-item" key={num}>
+                                {/*<a onClick={() => paginate(num)} href="/" className="page-link">{num}</a>*/}
+                                <a onClick={(e) => { e.preventDefault(); paginate(num); }} href="/" className="page-link">{num}</a>
+                                <button onClick={(e) => { e.preventDefault(); paginate(num); }} >{num}</button>
+                            </li>
+                        ))}
+                        <li className="page-item">
+                            {/*<a className="page-link" onClick={() => nextPage()} href="/">Next</a>*/}
+                            <a className="page-link" onClick={handleNextClick} href="/">Следующая</a>
+                            <button  onClick={handleNextClick} disabled={ currentPage === pageNumbers.length } >Следующая</button>
+                        </li>
+                    </ul>  
+                    <div>Страница {currentPage} из {pageNumbers.length} </div>
+
+               
+                </nav>
         )
     }
 }

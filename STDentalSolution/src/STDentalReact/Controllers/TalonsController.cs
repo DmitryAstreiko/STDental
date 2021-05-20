@@ -48,15 +48,19 @@ namespace STDentalReact.Controllers
         }*/
 
         [HttpGet("count")]
-        public async Task<int> GetCountTalonsAsync()
+        public async Task<int> GetCountTalonsAsync(int? patientId, int? doctorId, DateTime? startDate, DateTime? endDate)
         {
-            return await _talonRepository.GetCountTalonsAsync();
+            return await _talonRepository.GetCountTalonsAsync(patientId, doctorId, startDate, endDate);
         }
 
         //[HttpGet("filter")]
         [HttpGet]
         public async Task<IEnumerable<TalonInfo>> TalonsFilterAsync(int page, int itemsPerPage, int? patientId, int? doctorId, DateTime? startDate, DateTime? endDate)
         {
+            //DateTime www;
+            //Console.WriteLine(startDate.ToString());
+            //DateTime.TryParse(startDate, out www);
+
             var talons = await _talonRepository.GetTalonsFilterAsync(page, itemsPerPage, patientId, doctorId, startDate, endDate);
 
             return talons.Select(talon => new TalonInfo()

@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { MenuAdministrator } from './MenuAdministrator';
 import { Container, Table } from 'reactstrap';
 import ComboBox from './Combobox.component';
+import Button from '@material-ui/core/Button';
 import './TalonAction.css';
 import DatePicker from './Picker.component';
 import * as moment  from 'moment';
@@ -52,11 +53,11 @@ export class TalonAction extends Component{
         this.setState({ selectedTalonDate: moment(value).format('DD.MM.YYYY') })
     }
 
-    deleteRowTalon = value => (
+    deleteRowTalon = value => {
         let rows = this.state.tableServices;
         rows.spice(value, 1); 
-        this.setState(tableServices: rows)       
-    )
+        this.setState({tableServices: rows});
+    }
 
     render(){
         return (
@@ -113,7 +114,7 @@ export class TalonAction extends Component{
                                         <td>{service.amount}</td>
                                         <td>{service.cost}</td>
                                         <td>
-                                            <Button key={index} onClick={ (index) => this.deleteRowTalon(index) } >Удалить</Button>
+                                            <Button >Удалить</Button>
                                         </td>
                                     </tr>
                                 )}

@@ -13,7 +13,7 @@ namespace STDentalLibrary.Repositories
         //Get all talons
         Task<IEnumerable<Talon>> GetTalonsAsync(int page, int itemsPerPage);
 
-        Task<int> GetCountTalonsAsync();
+        Task<int> GetCountTalonsAsync(int? patientId, int? doctorId, DateTime? startDate, DateTime? endDate);
 
         Task<IEnumerable<Talon>> GetTalonsFilterAsync(int page, int itemsPerPage, int? patientId, int? doctorId, DateTime? startDate, DateTime? endDate);
 

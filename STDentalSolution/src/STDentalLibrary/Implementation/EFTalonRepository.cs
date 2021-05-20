@@ -80,11 +80,25 @@ namespace STDentalLibrary.Implementation
             } 
         }
 
-        public async Task<int> GetCountTalonsAsync()
+        public async Task<int> GetCountTalonsAsync(int? patientId, int? doctorId, DateTime? startDate, DateTime? endDate)
         {
             await using (var context = CreateContext())
             {
-                return await context.Talons.CountAsync();
+                var query = context.Talons.AsQueryable();
+
+                Console.WriteLine(startDate.ToString());
+
+                if (patientId.HasValue)
+                    query = query.Where(p => p.PatientId == patientId);
+                if (doctorId.HasValue)
+                    query = query.Where(s => s.StaffId == doctorId);
+                if (startDate.HasValue)
+                    query = query.Where(e => e.CreateDate >= startDate);
+                if (endDate.HasValue)
+                    query = query.Where(q => q.CreateDate <= endDate);
+            
+
+            return await query.CountAsync();
             }
         }
         public async Task<IEnumerable<Talon>> GetTalonsFilterAsync(int page, int itemsPerPage, int? patientId, int? doctorId, DateTime? startDate, DateTime? endDate)

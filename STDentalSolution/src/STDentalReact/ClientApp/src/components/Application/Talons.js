@@ -10,6 +10,7 @@ import Loader from './Loader';
 //import TalonServices from './TalonServices';
 import { MenuAdministrator } from './MenuAdministrator';
 import Pagination from './Pagination';
+import PaginationNew from './Pagination.component';
 import DatePicker from './Picker.component';
 //import { maskedDateFormatter } from '@material-ui/pickers/_helpers/text-field-helper';
 import * as moment  from 'moment';
@@ -28,8 +29,8 @@ export class Talons extends Component{
             doctors: [],
             selectedPatientId: null,
             selectedDoctorId: null,
-            selectedStartDate: moment(new Date()).format('DD.MM.YYYY'),
-            selectedEndDate: moment(new Date()).format('DD.MM.YYYY'),
+            selectedStartDate: moment(new Date()).format('YYYY-MM-DD'),
+            selectedEndDate: moment(new Date()).format('YYYY-MM-DD'),
             currentPage: 1,
             talonsPerPage: 15,
             talonsCount: null,
@@ -66,7 +67,7 @@ export class Talons extends Component{
 
         //const result = new Date(value);
         //let res = Date.parse(value)
-        let res = moment(value).format('DD.MM.YYYY')
+        let res = moment(value).format('YYYY-MM-DD')
         //console.log(www)
         //console.log(res)
         //console.log(result.getUTCDate())
@@ -74,7 +75,7 @@ export class Talons extends Component{
     }
 
     onDateEndSelect = value => {
-        let res = moment(value).format('DD.MM.YYYY')
+        let res = moment(value).format('YYYY-MM-DD')
         this.setState({ selectedEndDate: res })
     }
 
@@ -95,18 +96,28 @@ export class Talons extends Component{
         console.log(`filterStartDate = ${filterStartDate}`);
         console.log(`filterEndDate = ${filterEndDate}`);
 
-        let filter = `${filterPatient}${filterDoctor}${filterStartDate}${filterEndDate}`.replace('&null','');
+        let filter = `${filterPatient}${filterDoctor}${filterStartDate}${filterEndDate}`.replace('null','').replace('null','');
 
         console.log(`filter = ${filter}`);
 
         this.setState({ filterTalons:  filter });
 
+        this.populateCountTalons(filter);
         this.populateTalons(1, filter);
     }
 
     onCancelFilter() {     
         //clear combobox and state current date to datepicker
+        this.setState({ filterTalons: null });
+        
+        let www = document.getElementById('combopatient');
+        www.value = null;
 
+        console.log(www);
+
+        
+
+        this.populateCountTalons();
         this.populateTalons(1);
     }
 
@@ -120,7 +131,7 @@ export class Talons extends Component{
 
         const nextPage = () => { this.populateTalons(this.state.currentPage + 1, this.state.filterTalons) };
 
-        const prevPage = () => { this.populateTalons(this.state.currentPage - 1, this.state.filterTalons) };
+        const prevPage = () => { !(this.state.currentPage === 1) && this.populateTalons(this.state.currentPage - 1, this.state.filterTalons) };
 
         //this.populateTalons();
 
@@ -142,14 +153,14 @@ export class Talons extends Component{
                 <div >
                     <div className="row">
                         <div className="col-sm">
-                            <ComboBox labelvalue={"Выберите пациента"} fios={this.state.patients} 
+                            <ComboBox labelvalue={"Выберите пациента"} lists={this.state.patients} 
                                 onSelected={ (value) => this.onPatientSelect(value) } nameid={"combopatient"} 
                                 widthValue={300} />
                         </div>
                         <div className="col-sm">
-                            <ComboBox labelvalue={"Выберите врача"} fios={this.state.doctors} 
+                            <ComboBox labelvalue={"Выберите врача"} lists={this.state.doctors} 
                                 onSelected={ (value) => this.onDoctorSelect(value) } nameid={"combodoctor"} 
-                                widthValue={300}/>
+                                widthValue={300} />
                         </div>
                         <div className="col-sm">
                             <DatePicker labelvalue={"Начало периода"} onSelected={ (value) => this.onDateStartSelect(value) } />
@@ -208,8 +219,12 @@ export class Talons extends Component{
                     )
                 }   
 
-                    {!this.state.loadingTalons && (<Pagination talonsPerPage={this.state.talonsPerPage} totalTalons={this.state.talonsCount}
-                        paginate={ paginate } nextPage={ nextPage } prevPage={ prevPage } />)
+                    {!this.state.loadingTalons && !!this.state.talonsCount && (<Pagination talonsPerPage={this.state.talonsPerPage} totalTalons={this.state.talonsCount}
+                        paginate={ paginate } nextPage={ nextPage } prevPage={ prevPage } currentPage={this.state.currentPage} />)
+                    }
+
+                    {!this.state.loadingTalons && !!this.state.talonsCount && (<PaginationNew talonsPerPage={this.state.talonsPerPage} totalTalons={this.state.talonsCount}
+                        paginate={ paginate } nextPage={ nextPage } prevPage={ prevPage } currentPage={this.state.currentPage} />)
                     }
                 </div>
             </div>
@@ -242,7 +257,7 @@ export class Talons extends Component{
             this.setState({ talons: data, loadingTalons: false, currentPage: page });
         }
         catch (error) {
-            this.setState({ errorLoad });
+            this.setState({ errorLoad: error });
         }
     }
 
@@ -264,8 +279,12 @@ export class Talons extends Component{
         this.setState({ doctors: data });
     }
 
-    async populateCountTalons() {
-        const response = await fetch('talons/count');
+    async populateCountTalons(filter=null) {
+        
+        let response;
+        (!filter) ? response = await fetch('talons/count') :
+            response = await fetch(`talons/count?${filter}`);
+
         const data = await response.json();
         this.setState({ talonsCount: data });
     }
