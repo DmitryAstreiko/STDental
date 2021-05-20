@@ -13,6 +13,7 @@ import Pagination from './Pagination';
 import DatePicker from './Picker.component';
 //import { maskedDateFormatter } from '@material-ui/pickers/_helpers/text-field-helper';
 import * as moment  from 'moment';
+import Error from './Error';
 
 export class Talons extends Component{
 
@@ -32,7 +33,8 @@ export class Talons extends Component{
             currentPage: 1,
             talonsPerPage: 15,
             talonsCount: null,
-            filterTalons: null
+            filterTalons: null,
+            errorLoad: null
         }
 
         this.onRowSelect = this.onRowSelect.bind(this);
@@ -44,7 +46,7 @@ export class Talons extends Component{
         this.populateCountTalons();
         this.populatePatients();
         this.populateDoctors();
-        this.populateTalons();        
+        this.populateTalons(this.state.currentPage, null);        
     } 
 
     onRowSelect = row => (
@@ -99,7 +101,13 @@ export class Talons extends Component{
 
         this.setState({ filterTalons:  filter });
 
-        this.populateTalons();
+        this.populateTalons(1, filter);
+    }
+
+    onCancelFilter() {     
+        //clear combobox and state current date to datepicker
+
+        this.populateTalons(1);
     }
 
     renderTalonsTable() {      
@@ -108,11 +116,11 @@ export class Talons extends Component{
         //const currentTalons = this.state.talonsCount.slice(indexOfFirstTalon, indexOfLastTalon);
        // const currentTalons = this.state.talons;
 
-        const paginate = pageNum => {this.setState({currentPage: pageNum}); this.populateTalons()};
+        const paginate = pageNum => { this.populateTalons(pageNum, this.state.filterTalons) };
 
-        const nextPage = () => {this.setState({ currentPage: this.state.currentPage + 1}); this.populateTalons()};
+        const nextPage = () => { this.populateTalons(this.state.currentPage + 1, this.state.filterTalons) };
 
-        const prevPage = () => {this.setState({ currentPage: this.state.currentPage - 1}); this.populateTalons()};
+        const prevPage = () => { this.populateTalons(this.state.currentPage - 1, this.state.filterTalons) };
 
         //this.populateTalons();
 
@@ -135,11 +143,13 @@ export class Talons extends Component{
                     <div className="row">
                         <div className="col-sm">
                             <ComboBox labelvalue={"Выберите пациента"} fios={this.state.patients} 
-                                onSelected={ (value) => this.onPatientSelect(value) } nameid={"combopatient"} />
+                                onSelected={ (value) => this.onPatientSelect(value) } nameid={"combopatient"} 
+                                widthValue={300} />
                         </div>
                         <div className="col-sm">
                             <ComboBox labelvalue={"Выберите врача"} fios={this.state.doctors} 
-                                onSelected={ (value) => this.onDoctorSelect(value) } nameid={"combodoctor"} />
+                                onSelected={ (value) => this.onDoctorSelect(value) } nameid={"combodoctor"} 
+                                widthValue={300}/>
                         </div>
                         <div className="col-sm">
                             <DatePicker labelvalue={"Начало периода"} onSelected={ (value) => this.onDateStartSelect(value) } />
@@ -152,6 +162,10 @@ export class Talons extends Component{
                                 variant="contained" onClick={ () => this.onGenerateFilter()}>Поиск</Button>
                             {/*https://www.w3.org/Style/Examples/007/center.ru.html - позиционирование*/}
                         </div>
+                        <div className="col-sm" style={{position: "relative"}}>
+                            <Button style={{position: "absolute", top: "50%", transform: "translate(0, -50%)"}} 
+                                variant="contained" onClick={ () => this.onCancelFilter()}>Сбросить</Button>                            
+                        </div>
                                 </div>
                     </div>
                 <div>
@@ -159,32 +173,38 @@ export class Talons extends Component{
                 </div>
                 {this.state.loadingTalons ? (
                     <Loader /> ) : 
-                    (<Table className='table' aria-labelledby="tabelLabel">
-                        <thead>
-                            <tr>
-                                <th>№ талона</th>
-                                <th>ФИО пациента</th>
-                                <th>ФИО врача</th>
-                                <th>Стоимость</th>
-                                <th>Со скидкой</th>
-                                <th>Дата талона</th>
-                                <th>Комментарий</th>
-                            </tr>
-                        </thead>           
-                            <tbody>
-                                {this.state.talons.map(talon =>
-                                    <tr key={talon.talonId} className={talon.talonStatus} onClick={() => this.onRowSelect(talon)}>
-                                        <td>{talon.talonId}</td>
-                                        <td>{talon.patientName}</td>
-                                        <td>{talon.staffName}</td> 
-                                        <td>{talon.summa}</td>   
-                                        <td>{talon.cost}</td>
-                                        <td>{talon.createDate}</td>
-                                        <td>{talon.description}</td>
-                                    </tr>
-                                )}
-                            </tbody>                  
-                    </Table> 
+                    (
+                    (this.state.errorLoad) ? (
+                        <Error /> ) :
+                        (
+                        <Table className='table' aria-labelledby="tabelLabel">
+                            <thead>
+                                <tr>
+                                    <th>№ талона</th>
+                                    <th>ФИО пациента</th>
+                                    <th>ФИО врача</th>
+                                    <th>Стоимость</th>
+                                    <th>Со скидкой</th>
+                                    <th>Дата талона</th>
+                                    <th>Комментарий</th>
+                                    <th></th>
+                                </tr>
+                            </thead>           
+                                <tbody>
+                                    {this.state.talons.map(talon =>
+                                        <tr key={talon.talonId} className={talon.talonStatus} onClick={() => this.onRowSelect(talon)}>
+                                            <td>{talon.talonId}</td>
+                                            <td>{talon.patientName}</td>
+                                            <td>{talon.staffName}</td> 
+                                            <td>{talon.summa}</td>   
+                                            <td>{talon.cost}</td>
+                                            <td>{talon.createDate}</td>
+                                            <td>{talon.description}</td>                                            
+                                        </tr>
+                                    )}
+                                </tbody>                  
+                        </Table> 
+                        )
                     )
                 }   
 
@@ -206,18 +226,24 @@ export class Talons extends Component{
         )
     }
 
-    async populateTalons() {
-        //console.log(`filterTalons = ${this.state.filterTalons}`);
+    async populateTalons(page, filter=null) {
+        try{
+        
+            //console.log(`filterTalons = ${this.state.filterTalons}`);
 
-        //let filterRow = `talons?page=${this.state.currentPage}&itemsPerPage=${this.state.talonsPerPage}`;
+            //let filterRow = `talons?page=${this.state.currentPage}&itemsPerPage=${this.state.talonsPerPage}`;
 
-        //console.log(`filterRow = ${filterRow}`);
-        let filterRow = `talons?page=${this.state.currentPage}&itemsPerPage=${this.state.talonsPerPage}${this.state.filterTalons}`.replace('null','');
-        //console.log(`filterRow == = ${filterRow}`);
+            //console.log(`filterRow = ${filterRow}`);
+            let filterRow = `talons?page=${page}&itemsPerPage=${this.state.talonsPerPage}${filter}`.replace('null','');
+            //console.log(`filterRow == = ${filterRow}`);
 
-        const response = await fetch(filterRow);
-        const data = await response.json();   
-        this.setState({ talons: data, loadingTalons: false });
+            const response = await fetch(filterRow);
+            const data = await response.json();   
+            this.setState({ talons: data, loadingTalons: false, currentPage: page });
+        }
+        catch (error) {
+            this.setState({ errorLoad });
+        }
     }
 
     /*async populateFilterTalons() {     

@@ -22,6 +22,9 @@ export class TalonAction extends Component{
             selectedTalonDate: null,
             selectedCost: null,
             }
+
+        /*this.onClickPatient = this.onClickPatient.bind(this);
+        this.onPatientSelect = this.onPatientSelect.bind(this);*/
     }
 
     componentDidMount() {
@@ -49,6 +52,12 @@ export class TalonAction extends Component{
         this.setState({ selectedTalonDate: moment(value).format('DD.MM.YYYY') })
     }
 
+    deleteRowTalon = value => (
+        let rows = this.state.tableServices;
+        rows.spice(value, 1); 
+        this.setState(tableServices: rows)       
+    )
+
     render(){
         return (
             <div>
@@ -60,18 +69,20 @@ export class TalonAction extends Component{
                         <div className="row">
                             <div className="col">
                                 <ComboBox labelvalue={"Выберите пациента"} lists={this.state.patients} 
-                                    onSelected={ (value) => this.onPatientSelect(value) } nameid={"combopatientprice"} />
+                                    onSelected={ (value) => this.onPatientSelect(value) } nameid={"combopatientprice"} 
+                                    widthValue={300} />
                             </div>
                             <div className="col-sm">
                                 <ComboBox labelvalue={"Выберите врача"} lists={this.state.doctors} 
-                                    onSelected={ (value) => this.onDoctorSelect(value) } nameid={"combodoctorprice"} />                                
+                                    onSelected={ (value) => this.onDoctorSelect(value) } nameid={"combodoctorprice"} 
+                                    widthValue={300} />                                
                             </div>
                         </div>
                         <div className="row" style={{ height: "20px" }}></div>
                         <div className="row" >
                             <ComboBox labelvalue={"Выберите услугу"} lists={this.state.prices} 
                                 onSelected={ (value) => this.onPriceSelect(value) } nameid={"comboprice"} 
-                                style={{ width:"600px"}}/>
+                                widthValue={700}/>
                         </div>
                         <div className="row" style={{ height: "20px" }}></div>
                     </div>
@@ -101,6 +112,9 @@ export class TalonAction extends Component{
                                         <td>{service.price}</td>   
                                         <td>{service.amount}</td>
                                         <td>{service.cost}</td>
+                                        <td>
+                                            <Button key={index} onClick={ (index) => this.deleteRowTalon(index) } >Удалить</Button>
+                                        </td>
                                     </tr>
                                 )}
                             </tbody>                  

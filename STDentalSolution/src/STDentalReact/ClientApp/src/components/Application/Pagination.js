@@ -34,7 +34,7 @@ export default class Pagination extends Component {
             <nav>
                 <ul className="pagination justify-content-center">
                     <li className="page-item">
-                        <a className="page-link" onClick={handlePrevClick} href="/">Previous</a>
+                        <a className="page-link" onClick={handlePrevClick} href="/" >Previous</a>
                     </li>
                     {pageNumbers.map(num => (
                         <li className="page-item" key={num}>
