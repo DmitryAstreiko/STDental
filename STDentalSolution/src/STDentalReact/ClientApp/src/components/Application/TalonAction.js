@@ -17,7 +17,7 @@ export class TalonAction extends Component{
             selectedDoctorId: null,
             patients: null,
             doctors: null,
-            selectedServiceId: 5,
+            selectedServiceId: 7,
             tableServices: [],
             selectedTalonDate: null,
             selectedCost: null,
