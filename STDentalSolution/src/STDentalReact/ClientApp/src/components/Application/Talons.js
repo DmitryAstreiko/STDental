@@ -9,12 +9,13 @@ import Loader from './Loader';
 //import DetailRowView from './DetailRowView';
 //import TalonServices from './TalonServices';
 import { MenuAdministrator } from './MenuAdministrator';
-import Pagination from './Pagination';
-import PaginationNew from './Pagination.component';
+//import Pagination from './Pagination';
 import DatePicker from './Picker.component';
 //import { maskedDateFormatter } from '@material-ui/pickers/_helpers/text-field-helper';
 import * as moment  from 'moment';
 import Error from './Error';
+import PaginationControlled from './Pagination.component';
+//import NotInfo from './NotInfo';
 
 export class Talons extends Component{
 
@@ -32,7 +33,7 @@ export class Talons extends Component{
             selectedStartDate: moment(new Date()).format('YYYY-MM-DD'),
             selectedEndDate: moment(new Date()).format('YYYY-MM-DD'),
             currentPage: 1,
-            talonsPerPage: 15,
+            talonsPerPage: 20,
             talonsCount: null,
             filterTalons: null,
             errorLoad: null
@@ -68,9 +69,6 @@ export class Talons extends Component{
         //const result = new Date(value);
         //let res = Date.parse(value)
         let res = moment(value).format('YYYY-MM-DD')
-        //console.log(www)
-        //console.log(res)
-        //console.log(result.getUTCDate())
         this.setState({ selectedStartDate: res })
     }
 
@@ -116,7 +114,6 @@ export class Talons extends Component{
         console.log(www);
 
         
-
         this.populateCountTalons();
         this.populateTalons(1);
     }
@@ -129,10 +126,10 @@ export class Talons extends Component{
 
         const paginate = pageNum => { this.populateTalons(pageNum, this.state.filterTalons) };
 
-        const nextPage = () => { this.populateTalons(this.state.currentPage + 1, this.state.filterTalons) };
+        /*const nextPage = () => { this.populateTalons(this.state.currentPage + 1, this.state.filterTalons) };
 
         const prevPage = () => { !(this.state.currentPage === 1) && this.populateTalons(this.state.currentPage - 1, this.state.filterTalons) };
-
+        */    
         //this.populateTalons();
 
         return (
@@ -140,40 +137,45 @@ export class Talons extends Component{
                 <MenuAdministrator />
                 <div className="input-group">
                     <div className="input-group-prepend">
-                        <span className="input-group-text" id="">Выбран талон: </span>
+                        <span className="input-group-text" id="valueshow" style={{ margin: "10px" }}>Выбран талон: </span>
                     </div>
-                        <input type="text" value={this.state.selectedTalon.talonId ? `№ ${this.state.selectedTalon.talonId}` : ``} style={{ width: "110px", textAlign: "center" }} readOnly />
-                        <input type="text" value={this.state.selectedTalon.talonId ? `Пациент - ${this.state.selectedTalon.patientName}` : ``} style={{ width: "250px", textAlign: "center" }} readOnly />
-                        <input type="text" value={this.state.selectedTalon.talonId ? `Врач - ${this.state.selectedTalon.staffName}` : ``} style={{ width: "250px", textAlign: "center" }} readOnly />
-                        <input type="text" value={this.state.selectedTalon.talonId ? `Дата талона - ${this.state.selectedTalon.createDate}` : ``} style={{ width: "250px", textAlign: "center" }} readOnly />
-                        <input type="text" value={this.state.selectedTalon.talonId ? `Итого по талону - ${this.state.selectedTalon.cost}` : ``} style={{ width: "250px", textAlign: "center" }} readOnly />
+                        <input type="text" value={this.state.selectedTalon.talonId ? `№ ${this.state.selectedTalon.talonId}` : ``} 
+                            style={{ width: "110px", textAlign: "center", margin: "10px" }} readOnly />                        
+                        <input type="text" value={this.state.selectedTalon.talonId ? `Пациент - ${this.state.selectedTalon.patientName}` : ``} 
+                            style={{ width: "250px", textAlign: "center", margin: "10px" }} readOnly />
+                        <input type="text" value={this.state.selectedTalon.talonId ? `Врач - ${this.state.selectedTalon.staffName}` : ``} 
+                            style={{ width: "250px", textAlign: "center", margin: "10px" }} readOnly />
+                        <input type="text" value={this.state.selectedTalon.talonId ? `Дата талона - ${this.state.selectedTalon.createDate}` : ``} 
+                            style={{ width: "250px", textAlign: "center", margin: "10px" }} readOnly />
+                        <input type="text" value={this.state.selectedTalon.talonId ? `Итого по талону - ${this.state.selectedTalon.cost}` : ``} 
+                            style={{ width: "250px", textAlign: "center", margin: "10px" }} readOnly />
                 </div> 
                 <div style={{height: "20px"}}>
                     </div>
                 <div >
-                    <div className="row">
-                        <div className="col-sm">
+                    <div className={"row", "d-flex justify-content-around"}>
+                        <div className="col">
                             <ComboBox labelvalue={"Выберите пациента"} lists={this.state.patients} 
                                 onSelected={ (value) => this.onPatientSelect(value) } nameid={"combopatient"} 
                                 widthValue={300} />
                         </div>
-                        <div className="col-sm">
+                        <div className="col">
                             <ComboBox labelvalue={"Выберите врача"} lists={this.state.doctors} 
                                 onSelected={ (value) => this.onDoctorSelect(value) } nameid={"combodoctor"} 
                                 widthValue={300} />
                         </div>
-                        <div className="col-sm">
+                        <div className="col">
                             <DatePicker labelvalue={"Начало периода"} onSelected={ (value) => this.onDateStartSelect(value) } />
                         </div>
-                        <div className="col-sm">
+                        <div className="col">
                             <DatePicker labelvalue={"Окончание периода"} onSelected={ (value) => this.onDateEndSelect(value) } />
                         </div>
-                        <div className="col-sm" style={{position: "relative"}}>
+                        <div className={"col"} style={{position: "relative"}}>
                             <Button style={{position: "absolute", top: "50%", transform: "translate(0, -50%)"}} 
                                 variant="contained" onClick={ () => this.onGenerateFilter()}>Поиск</Button>
                             {/*https://www.w3.org/Style/Examples/007/center.ru.html - позиционирование*/}
                         </div>
-                        <div className="col-sm" style={{position: "relative"}}>
+                        <div className={"col"} style={{position: "relative"}}>
                             <Button style={{position: "absolute", top: "50%", transform: "translate(0, -50%)"}} 
                                 variant="contained" onClick={ () => this.onCancelFilter()}>Сбросить</Button>                            
                         </div>
@@ -188,44 +190,58 @@ export class Talons extends Component{
                     (this.state.errorLoad) ? (
                         <Error /> ) :
                         (
-                        <Table className='table' aria-labelledby="tabelLabel">
-                            <thead>
-                                <tr>
-                                    <th>№ талона</th>
-                                    <th>ФИО пациента</th>
-                                    <th>ФИО врача</th>
-                                    <th>Стоимость</th>
-                                    <th>Со скидкой</th>
-                                    <th>Дата талона</th>
-                                    <th>Комментарий</th>
-                                    <th></th>
-                                </tr>
-                            </thead>           
-                                <tbody>
-                                    {this.state.talons.map(talon =>
-                                        <tr key={talon.talonId} className={talon.talonStatus} onClick={() => this.onRowSelect(talon)}>
-                                            <td>{talon.talonId}</td>
-                                            <td>{talon.patientName}</td>
-                                            <td>{talon.staffName}</td> 
-                                            <td>{talon.summa}</td>   
-                                            <td>{talon.cost}</td>
-                                            <td>{talon.createDate}</td>
-                                            <td>{talon.description}</td>                                            
+                            (this.state.talons.length === 0) ? (
+                                //<NotInfo /> ) : 
+                                <div className="d-flex justify-content-center">
+                                    <h1 style={{ color: "red" }}>Нет информации для отображения</h1>
+                                </div> 
+                                ) :
+                                (<Table className='table' aria-labelledby="tabelLabel">
+                                    <thead>
+                                        <tr>
+                                            <th>№ талона</th>
+                                            <th>ФИО пациента</th>
+                                            <th>ФИО врача</th>
+                                            <th>Стоимость</th>
+                                            <th>Со скидкой</th>
+                                            <th>Дата талона</th>
+                                            <th>Комментарий</th>
                                         </tr>
-                                    )}
-                                </tbody>                  
-                        </Table> 
+                                    </thead>           
+                                        <tbody>
+                                            {this.state.talons.map(talon =>
+                                                <tr key={talon.talonId} className={talon.talonStatus} onClick={() => this.onRowSelect(talon)}>
+                                                    <td>{talon.talonId}</td>
+                                                    <td>{talon.patientName}</td>
+                                                    <td>{talon.staffName}</td> 
+                                                    <td>{talon.summa}</td>   
+                                                    <td>{talon.cost}</td>
+                                                    <td>{talon.createDate}</td>
+                                                    <td>{talon.description}</td>                                            
+                                                </tr>
+                                            )}
+                                        </tbody>                  
+                                </Table> 
+                                )
                         )
                     )
                 }   
 
-                    {!this.state.loadingTalons && !!this.state.talonsCount && (<Pagination talonsPerPage={this.state.talonsPerPage} totalTalons={this.state.talonsCount}
+                    {/* {!this.state.loadingTalons && !!this.state.talonsCount && (<Pagination talonsPerPage={this.state.talonsPerPage} totalTalons={this.state.talonsCount}
                         paginate={ paginate } nextPage={ nextPage } prevPage={ prevPage } currentPage={this.state.currentPage} />)
-                    }
+                    }*/}
 
-                    {!this.state.loadingTalons && !!this.state.talonsCount && (<PaginationNew talonsPerPage={this.state.talonsPerPage} totalTalons={this.state.talonsCount}
-                        paginate={ paginate } nextPage={ nextPage } prevPage={ prevPage } currentPage={this.state.currentPage} />)
-                    }
+                    {!(this.state.talons.length === 0) && !this.state.loadingTalons && !!this.state.talonsCount && (
+                        <div className="row">
+                            <div className={"col", "d-flex justify-content-center"} style={{width: "350px"}} >Записей на странице: {this.state.talons.length}</div>
+                            <div className="col" >
+                                <PaginationControlled talonsPerPage={this.state.talonsPerPage} 
+                                    totalTalons={this.state.talonsCount} paginate={ paginate } currentPage={this.state.currentPage} />
+                                
+                            </div>
+                            <div className={"col", "d-flex justify-content-center"} style={{width: "350px"}} >Всего записей: {this.state.talonsCount}</div>
+                        </div>
+                    )}
                 </div>
             </div>
         );

@@ -32,12 +32,12 @@ export class MenuAdministrator extends Component{
                 <NavLink tag={Link} className="text-dark" to="/appdental/administrator/talons">Талоны</NavLink>
                 </NavItem>
                 <NavItem>
-                    <NavLink tag={Link} className="text-dark" to="/appdental/administrator/talons/add">Выписка талона</NavLink>
+                    <NavLink tag={Link} className="text-dark" to="/appdental/administrator/talons/add">Создать талон</NavLink>
                 </NavItem>
                 <NavItem>
                 <div className="dropdown">
                   <button className="btn dropdown-toggle" type="button" id="dropdownMenuVocabulary" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Работа с талоном
+                      Редактирование/удаление талона
                   </button>
                   <div className="dropdown-menu" aria-labelledby="dropdownMenuVocabulary" x-placement="bottom-start" style={{position: "absolute", transform: "translate3d(0px, 38px, 0px)", top: "0px", left: "0px", willchange: "transform"}}>
                     <a className="dropdown-item" href="/">Редактировать</a>

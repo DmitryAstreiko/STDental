@@ -65,29 +65,27 @@ export class TalonAction extends Component{
                 <MenuAdministrator />
                 {this.state.selectedServiceId}
                 {this.state.tableServices}
-                <Container>
-                    <div >
-                        <div className="row">
-                            <div className="col">
-                                <ComboBox labelvalue={"Выберите пациента"} lists={this.state.patients} 
-                                    onSelected={ (value) => this.onPatientSelect(value) } nameid={"combopatientprice"} 
-                                    widthValue={300} />
-                            </div>
-                            <div className="col-sm">
-                                <ComboBox labelvalue={"Выберите врача"} lists={this.state.doctors} 
-                                    onSelected={ (value) => this.onDoctorSelect(value) } nameid={"combodoctorprice"} 
-                                    widthValue={300} />                                
-                            </div>
+
+                <div >
+                    <div className={"d-flex justify-content-around"} style={{ marginBottom: "20px" }}>
+                        <div>
+                            <ComboBox labelvalue={"Выберите пациента"} lists={this.state.patients} 
+                                onSelected={ (value) => this.onPatientSelect(value) } nameid={"combopatientprice"} 
+                                widthValue={350} />
                         </div>
-                        <div className="row" style={{ height: "20px" }}></div>
-                        <div className="row" >
-                            <ComboBox labelvalue={"Выберите услугу"} lists={this.state.prices} 
-                                onSelected={ (value) => this.onPriceSelect(value) } nameid={"comboprice"} 
-                                widthValue={700}/>
-                        </div>
-                        <div className="row" style={{ height: "20px" }}></div>
+                        <div className={"d-flex justify-content-center"} >
+                        <ComboBox labelvalue={"Выберите услугу"} lists={this.state.prices} 
+                            onSelected={ (value) => this.onPriceSelect(value) } nameid={"comboprice"} 
+                            widthValue={800} />
                     </div>
-                </Container>
+                        <div >
+                            <ComboBox labelvalue={"Выберите врача"} lists={this.state.doctors} 
+                                onSelected={ (value) => this.onDoctorSelect(value) } nameid={"combodoctorprice"} 
+                                widthValue={300} />                                
+                        </div>
+                    </div>                       
+                </div>
+
                 <div >
                     <div className="row">
                         <Table className='table' aria-labelledby="tabelLabel">
@@ -121,21 +119,23 @@ export class TalonAction extends Component{
                             </tbody>                  
                         </Table>
                     </div>
-                    <div className="row" style={{ height: "20px" }}></div>
-                    <div className="row">
-                        <div className="text-right" style={{width: "300px"}}>
-                            Дата выписки талона: 
+
+                    <div className={"row", "d-flex justify-content-around"} style={{ marginTop: "20px" }}>
+                        <div className={"row", "d-flex justify-content-center"} >
+                            <div >
+                                <DatePicker onSelected={ (value) => this.onDateStartSelect(value) } labelvalue={"Дата выписки талона"}/>
+                            </div>            
                         </div>
-                        <div className="col">
-                            <DatePicker onSelected={ (value) => this.onDateStartSelect(value) } />
-                        </div>
-                        <div className="text-right" style={{width: "200px"}}>
-                            Итого по талону: 
-                        </div>
-                        <div className="col-sm">
-                            <input type="text" value={this.state.selectedCost ? `${this.state.selectedCost}` : `0.00`} style={{ width: "150px", textAlign: "center" }} readOnly />
+                        <div className={"row", "d-flex justify-content-center"} style={{ marginTop: "20px" }}>
+                            <div className="text-right" style={{width: "200px", marginRight: "20px"}}>
+                                Итого по талону: 
+                            </div>
+                            <div >
+                                <input type="text" value={this.state.selectedCost ? `${this.state.selectedCost}` : `0.00`} style={{ width: "150px", textAlign: "center" }} readOnly />
+                            </div>
                         </div>
                     </div>
+
                 </div>                
             </div>
         )    
