@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 //import Modal from '@material-ui/core/Modal';
 import { MenuAdministrator } from './MenuAdministrator';
-import { Container, Table } from 'reactstrap';
+import { Table } from 'reactstrap';
 import ComboBox from './Combobox.component';
 import Button from '@material-ui/core/Button';
 import './TalonAction.css';
 import DatePicker from './Picker.component';
 import * as moment  from 'moment';
+import TextField from '@material-ui/core/TextField';
+import Input from '@material-ui/core/Input';
 
 export class TalonAction extends Component{
 
@@ -18,7 +20,7 @@ export class TalonAction extends Component{
             selectedDoctorId: null,
             patients: null,
             doctors: null,
-            selectedServiceId: 7,
+            //selectedServiceId: 7,
             tableServices: [],
             selectedTalonDate: null,
             selectedCost: null,
@@ -43,9 +45,10 @@ export class TalonAction extends Component{
         this.setState({ selectedDoctorId: value && value.id })
     }
 
-    onPriceSelect = value => {
-        this.setState({ selectedServiceId: value && value.id });
-        this.populateSelectedPrice();
+    onPriceSelect = value => {     
+        //this.setState({ selectedServiceId: value && value.id });
+        (value) && this.populateSelectedPrice(value.id);
+        
     }
 
     onDateStartSelect = value => {
@@ -62,10 +65,7 @@ export class TalonAction extends Component{
     render(){
         return (
             <div>
-                <MenuAdministrator />
-                {this.state.selectedServiceId}
-                {this.state.tableServices}
-
+                <MenuAdministrator />           
                 <div >
                     <div className={"d-flex justify-content-around"} style={{ marginBottom: "20px" }}>
                         <div>
@@ -74,9 +74,9 @@ export class TalonAction extends Component{
                                 widthValue={350} />
                         </div>
                         <div className={"d-flex justify-content-center"} >
-                        <ComboBox labelvalue={"Выберите услугу"} lists={this.state.prices} 
-                            onSelected={ (value) => this.onPriceSelect(value) } nameid={"comboprice"} 
-                            widthValue={800} />
+                            <ComboBox labelvalue={"Выберите услугу"} lists={this.state.prices} 
+                                onSelected={ (value) => this.onPriceSelect(value) } nameid={"comboprice"} 
+                                widthValue={800} />
                     </div>
                         <div >
                             <ComboBox labelvalue={"Выберите врача"} lists={this.state.doctors} 
@@ -98,21 +98,23 @@ export class TalonAction extends Component{
                                 <th>Стоимость</th>
                                 <th>Количество</th>
                                 <th>Сумма</th>
-                                <th>...</th>
+                                <th>Действие</th>
                             </tr>
                         </thead>           
                             <tbody>
-                                {this.state.tableServices.map(service =>
-                                    <tr key={service.serviceId}>
-                                        <td>{service.serviceId}</td>
-                                        <td>{service.number}</td>
+                                {this.state.tableServices.map((service, index) =>
+                                    <tr key={service.id}>
+                                        <td>{service.id}</td>
+                                        <td>1231</td>
                                         <td>{service.shifr}</td>
                                         <td>{service.name}</td> 
                                         <td>{service.price}</td>   
-                                        <td>{service.amount}</td>
+                                        <td >
+                                            <Input defaultValue="1" />    
+                                        </td>
                                         <td>{service.cost}</td>
                                         <td>
-                                            <Button >Удалить</Button>
+                                            <Button key={index}>Удалить</Button>
                                         </td>
                                     </tr>
                                 )}
@@ -120,13 +122,13 @@ export class TalonAction extends Component{
                         </Table>
                     </div>
 
-                    <div className={"row", "d-flex justify-content-around"} style={{ marginTop: "20px" }}>
-                        <div className={"row", "d-flex justify-content-center"} >
+                    <div className={"d-flex justify-content-around"} style={{ marginTop: "20px" }}>
+                        <div className={"d-flex justify-content-center"} >
                             <div >
                                 <DatePicker onSelected={ (value) => this.onDateStartSelect(value) } labelvalue={"Дата выписки талона"}/>
                             </div>            
                         </div>
-                        <div className={"row", "d-flex justify-content-center"} style={{ marginTop: "20px" }}>
+                        <div className={"d-flex justify-content-center"} style={{ marginTop: "20px" }}>
                             <div className="text-right" style={{width: "200px", marginRight: "20px"}}>
                                 Итого по талону: 
                             </div>
@@ -159,12 +161,22 @@ export class TalonAction extends Component{
         this.setState({ prices: data });
     }
 
-    async populateSelectedPrice() {        
-        const response = await fetch(`services/service?serviceid=${this.state.selectedServiceId}`);
-        const data = await response.json();   
-        //let list = this.state.tableServices;
-        //list.add(data);
-        console.log(data);
-        this.setState({ tableServices: data[0] });
+    async populateSelectedPrice(serviceid) {  
+        try{ 
+        const response = await fetch(`services/service?serviceid=${serviceid}`);
+        const data = await response.json(); 
+        console.log(data); 
+
+        let service;
+        !(this.state.tableServices === null) && (
+            service = this.state.tableServices,
+            service = service.push(data),
+            console.log(service)
+        )
+        this.setState({ tableServices: service });
+        }
+        catch (error) {
+            console.log(`error - ${error}`);
+        }
     }
 }

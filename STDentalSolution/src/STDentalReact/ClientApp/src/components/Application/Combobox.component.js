@@ -2,7 +2,7 @@ import React from 'react';
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 
-export default function ComboBoxM(props) {
+export default function ComboBox(props) {
   //const [value, setValue] = useState('');
   /*const [inputValue, setInputValue] = useState('');
 
@@ -19,7 +19,7 @@ export default function ComboBoxM(props) {
   <br />*/}
     <Autocomplete
     //onChange={(event, value) => props.patientid = value.id}
-      onChange={(event, value) => props.onSelected(value)}
+      onChange={(event, value) => { props.onSelected(value) }}
 
       id={props.nameid}
       options={props.lists}

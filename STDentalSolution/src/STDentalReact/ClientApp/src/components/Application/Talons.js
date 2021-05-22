@@ -153,7 +153,7 @@ export class Talons extends Component{
                 <div style={{height: "20px"}}>
                     </div>
                 <div >
-                    <div className={"row", "d-flex justify-content-around"}>
+                    <div className={"d-flex justify-content-around"}>
                         <div className="col">
                             <ComboBox labelvalue={"Выберите пациента"} lists={this.state.patients} 
                                 onSelected={ (value) => this.onPatientSelect(value) } nameid={"combopatient"} 
@@ -233,13 +233,13 @@ export class Talons extends Component{
 
                     {!(this.state.talons.length === 0) && !this.state.loadingTalons && !!this.state.talonsCount && (
                         <div className="row">
-                            <div className={"col", "d-flex justify-content-center"} style={{width: "350px"}} >Записей на странице: {this.state.talons.length}</div>
+                            <div className={"d-flex justify-content-center"} style={{width: "350px"}} >Записей на странице: {this.state.talons.length}</div>
                             <div className="col" >
                                 <PaginationControlled talonsPerPage={this.state.talonsPerPage} 
                                     totalTalons={this.state.talonsCount} paginate={ paginate } currentPage={this.state.currentPage} />
                                 
                             </div>
-                            <div className={"col", "d-flex justify-content-center"} style={{width: "350px"}} >Всего записей: {this.state.talonsCount}</div>
+                            <div className={"d-flex justify-content-center"} style={{width: "350px"}} >Всего записей: {this.state.talonsCount}</div>
                         </div>
                     )}
                 </div>
