@@ -7,8 +7,13 @@ import Button from '@material-ui/core/Button';
 import './TalonAction.css';
 import DatePicker from './Picker.component';
 import * as moment  from 'moment';
-import TextField from '@material-ui/core/TextField';
+//import TextField from '@material-ui/core/TextField';
 import Input from '@material-ui/core/Input';
+import Icon from '@material-ui/core/Icon';
+import DeleteIcon from '@material-ui/icons/Delete';
+import SaveIcon from '@material-ui/icons/Save';
+import { Link } from 'react-router-dom';
+import { ThemeProvider } from '@material-ui/styles';
 
 export class TalonAction extends Component{
 
@@ -20,8 +25,7 @@ export class TalonAction extends Component{
             selectedDoctorId: null,
             patients: null,
             doctors: null,
-            //selectedServiceId: 7,
-            tableServices: [],
+            tableServices: [ ],
             selectedTalonDate: null,
             selectedCost: null,
             }
@@ -51,6 +55,49 @@ export class TalonAction extends Component{
         
     }
 
+    onChangeCount(evt, index) {
+        
+        console.log(`index = ${index}`);
+        console.log(`evt.target.value = ${evt.target.value}`);
+        
+        //if (evt.charCode == 13) {
+        let servArray = this.state.tableServices;
+        console.log(servArray[index].price);
+
+        let price = parseFloat((servArray[index].price).replace(",", ".")); 
+
+        console.log(`cost = ${evt.target.value} * ${price}`)
+
+        let newCost = (price * evt.target.value);
+
+        let newCostString = (price * evt.target.value).toString();
+
+        console.log(`newCost = ${newCost}`);
+
+        servArray[index].cost =  newCostString;
+
+        this.setState({ tableServices: servArray });
+        //}
+        this.CountCostAllTalons();
+        
+    }
+
+    CountCostAllTalons() {
+
+        let servicesTal = this.state.tableServices;
+        let newSumCost = 0.00;
+
+        servicesTal.forEach(service => {
+            console.log(`newSumCost11 = ${newSumCost}`);
+            newSumCost = parseFloat(service.cost) + newSumCost;
+            console.log(`newSumCost22 = ${newSumCost}`);
+        });
+
+        console.log(`newSumCost = ${newSumCost}`);
+
+        this.setState({ selectedCost: (newSumCost.toString()).replace(".", ",") });
+    }
+
     onDateStartSelect = value => {
         //let res = moment(value).format('DD.MM.YYYY')
         this.setState({ selectedTalonDate: moment(value).format('DD.MM.YYYY') })
@@ -58,11 +105,16 @@ export class TalonAction extends Component{
 
     deleteRowTalon = value => {
         let rows = this.state.tableServices;
+
+        console.log(`rowsTalon = ${rows[0]}`);
+        console.log(`rowId = ${value}`);
+
         rows.spice(value, 1); 
         this.setState({tableServices: rows});
     }
 
     render(){
+        console.log(this.state.tableServices[0]);
         return (
             <div>
                 <MenuAdministrator />           
@@ -110,11 +162,24 @@ export class TalonAction extends Component{
                                         <td>{service.name}</td> 
                                         <td>{service.price}</td>   
                                         <td >
-                                            <Input defaultValue="1" />    
+                                            <Input type="number" defaultValue="1" key={index} onChange={ (evt) => this.onChangeCount(evt, index) }/>    
                                         </td>
                                         <td>{service.cost}</td>
                                         <td>
-                                            <Button key={index}>Удалить</Button>
+                                            {/*<Button key={index} >Удалить</Button>*/}
+                                            <Button
+                                                //variant="contained"
+                                                variant="outlined"
+                                                color="secondary"
+                                                size="small"
+                                                //className={classes.button}
+                                                startIcon={<DeleteIcon />}
+                                                
+                                                key={index} 
+                                                onClick={ (key) => (this.deleteRowTalon(key)) }
+                                            >
+                                                Удалить
+                                            </Button>
                                         </td>
                                     </tr>
                                 )}
@@ -136,6 +201,30 @@ export class TalonAction extends Component{
                                 <input type="text" value={this.state.selectedCost ? `${this.state.selectedCost}` : `0.00`} style={{ width: "150px", textAlign: "center" }} readOnly />
                             </div>
                         </div>
+                    </div>
+
+                    <div className={"d-flex justify-content-around"} style={{ marginTop: "20px" }}>
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        size="small"
+                        //className={classes.button}
+                        startIcon={<SaveIcon />}
+                        //style={{ background: "yellow" }}
+                    >
+                        Сохранить
+                    </Button>
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        //className={classes.button}
+                        endIcon={<Icon>reply</Icon>}
+                        //style={{ background: 'green' }}
+                        //onClick={() => { alert('clicked') }}
+                        href="/appdental/administrator/talons"
+                    >
+                        Закрыть
+                    </Button>
                     </div>
 
                 </div>                
@@ -167,14 +256,16 @@ export class TalonAction extends Component{
         const data = await response.json(); 
         console.log(data); 
 
-        let service;
-        !(this.state.tableServices === null) && (
+        /*let service;
+        !(this.state.tableServices.length === 0) && (
             service = this.state.tableServices,
             service = service.push(data),
             console.log(service)
         )
-        this.setState({ tableServices: service });
+        this.setState({ tableServices: service });*/
+        this.setState({ tableServices: data });
         }
+
         catch (error) {
             console.log(`error - ${error}`);
         }
