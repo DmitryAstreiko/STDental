@@ -79,7 +79,7 @@ export class TalonAction extends Component{
         this.setState({ tableServices: servArray });
         //}
         this.CountCostAllTalons();
-        
+
     }
 
     CountCostAllTalons() {
@@ -111,6 +111,14 @@ export class TalonAction extends Component{
 
         rows.spice(value, 1); 
         this.setState({tableServices: rows});
+    }
+
+    onSaveTalon() {
+        //check doctor, patient, tablesservices
+        let jsonTalon;
+        let jsonServiceTalon;
+
+        this.addTalon(jsonTalon, jsonServiceTalon);
     }
 
     render(){
@@ -157,7 +165,7 @@ export class TalonAction extends Component{
                                 {this.state.tableServices.map((service, index) =>
                                     <tr key={service.id}>
                                         <td>{service.id}</td>
-                                        <td>1231</td>
+                                        <td>{index + 1}</td>
                                         <td>{service.shifr}</td>
                                         <td>{service.name}</td> 
                                         <td>{service.price}</td>   
@@ -211,6 +219,7 @@ export class TalonAction extends Component{
                         //className={classes.button}
                         startIcon={<SaveIcon />}
                         //style={{ background: "yellow" }}
+                        onClick={this.onSaveTalon()}
                     >
                         Сохранить
                     </Button>
@@ -252,22 +261,35 @@ export class TalonAction extends Component{
 
     async populateSelectedPrice(serviceid) {  
         try{ 
-        const response = await fetch(`services/service?serviceid=${serviceid}`);
-        const data = await response.json(); 
-        console.log(data); 
+            const response = await fetch(`services/service?serviceid=${serviceid}`);
+            const data = await response.json(); 
+            console.log(data); 
 
-        /*let service;
-        !(this.state.tableServices.length === 0) && (
-            service = this.state.tableServices,
-            service = service.push(data),
-            console.log(service)
-        )
-        this.setState({ tableServices: service });*/
-        this.setState({ tableServices: data });
+            /*let service;
+            !(this.state.tableServices.length === 0) && (
+                service = this.state.tableServices,
+                service = service.push(data),
+                console.log(service)
+            )
+            this.setState({ tableServices: service });*/
+            this.setState({ tableServices: data });
         }
-
         catch (error) {
             console.log(`error - ${error}`);
         }
+    }
+
+    async addTalon(jsonTalon, jsonServiceTalon) {
+        try{
+            response = await fetch(`talons/addtalon?talon=${jsonTalon}&$servicetalon${jsonServiceTalon}`);
+    
+            const res = await response.json();
+            alert(`Талон успешно добавлен. Номер талона: ${res}`);
+
+        }
+        catch (error) {
+            alert(`Не удалось добавить талон. Повторите попытку`);
+        }
+       
     }
 }
