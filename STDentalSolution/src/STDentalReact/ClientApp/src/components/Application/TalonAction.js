@@ -118,11 +118,11 @@ export class TalonAction extends Component{
         let jsonTalon;
         let jsonServiceTalon;
 
-        this.addTalon(jsonTalon, jsonServiceTalon);
+        //this.addTalon(jsonTalon, jsonServiceTalon);
     }
 
     render(){
-        console.log(this.state.tableServices[0]);
+        //console.log(this.state.tableServices[0]);
         return (
             <div>
                 <MenuAdministrator />           
@@ -170,7 +170,7 @@ export class TalonAction extends Component{
                                         <td>{service.name}</td> 
                                         <td>{service.price}</td>   
                                         <td >
-                                            <Input type="number" defaultValue="1" key={index} onChange={ (evt) => this.onChangeCount(evt, index) }/>    
+                                            <input type="number" Value="1" min="1" max="50" key={index} onChange={ (evt) => this.onChangeCount(evt, index) }/>    
                                         </td>
                                         <td>{service.cost}</td>
                                         <td>
@@ -280,16 +280,18 @@ export class TalonAction extends Component{
     }
 
     async addTalon(jsonTalon, jsonServiceTalon) {
-        try{
-            response = await fetch(`talons/addtalon?talon=${jsonTalon}&$servicetalon${jsonServiceTalon}`);
+        //try{
+            const response = await fetch(`talons/addtalon?talon=${jsonTalon}&servicetalon${jsonServiceTalon}`);
     
             const res = await response.json();
-            alert(`Талон успешно добавлен. Номер талона: ${res}`);
+
+            console.log(`addTalon = ${res}`);
+        {/*    alert(`Талон успешно добавлен. Номер талона: ${res}`);
 
         }
         catch (error) {
             alert(`Не удалось добавить талон. Повторите попытку`);
-        }
+        */}
        
     }
 }
