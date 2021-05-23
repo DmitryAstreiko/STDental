@@ -77,5 +77,31 @@ namespace STDentalReact.Controllers
                 .ToArray();
         }
 
+        [HttpPost("addtalon")]
+        public async Task<int> AddTalonAsync(string jsonTalon, string jsonServicesTalon)
+        {
+            try
+            {
+                /*var talon = JsonSerializer.DeserializeAsync<Talon>(jsonTalon);
+
+                var listServiceTalon = JsonSerializer.DeserializeAsync<List<TalonService>>(jsonServicesTalon);
+
+                var talonId = await _talonRepository.AddTalonAsync(talon);
+
+                var listServiceTalonWithTalonId = ;
+
+                var res = await _talonRepository.AddTalonServiceAsync(listServiceTalonWithTalonId);
+
+                return talonId;*/
+                return 1;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Talon didn`t add. Detail: {e.StackTrace}");
+                return 0;
+            }
+           
+        }
+
     }
 }

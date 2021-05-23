@@ -55,6 +55,29 @@ namespace STDentalLibrary.Implementation
                 return res.Entity.TalonId;
             }
         }
+
+        public async Task<bool> AddTalonServiceAsync(List<TalonService> servicesList)
+        {
+            try
+            {
+                await using (var context = CreateContext())
+                {
+                    foreach (var service in servicesList)
+                    {
+                        var res = await context.TalonServices.AddAsync(service);
+                    }
+                    await context.SaveChangesAsync();
+                    return true;
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"TalonService didn`t add. Detail: {e.StackTrace}");
+                return false;
+            }
+            
+        }
+
         public async Task<bool> DeleteTalonAsync(int talonId)
         {
             try
