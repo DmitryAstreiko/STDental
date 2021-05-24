@@ -25,7 +25,7 @@ export class TalonAction extends Component{
             selectedDoctorId: null,
             patients: null,
             doctors: null,
-            tableServices: [ ],
+            tableServices: [],
             selectedTalonDate: null,
             selectedCost: null,
             }
@@ -56,7 +56,8 @@ export class TalonAction extends Component{
     }
 
     onChangeCount(evt, index) {
-        
+
+        let value = parseInt(evt.target.value);
         console.log(`index = ${index}`);
         console.log(`evt.target.value = ${evt.target.value}`);
         
@@ -64,13 +65,13 @@ export class TalonAction extends Component{
         let servArray = this.state.tableServices;
         console.log(servArray[index].price);
 
-        let price = parseFloat((servArray[index].price).replace(",", ".")); 
+        let price = servArray[index].price; 
 
-        console.log(`cost = ${evt.target.value} * ${price}`)
+        console.log(`cost = ${value} * ${price}`)
 
-        let newCost = (price * evt.target.value);
+        let newCost = (price * value);
 
-        let newCostString = (price * evt.target.value).toString();
+        let newCostString = (price * value);
 
         console.log(`newCost = ${newCost}`);
 
@@ -272,7 +273,11 @@ export class TalonAction extends Component{
                 console.log(service)
             )
             this.setState({ tableServices: service });*/
-            this.setState({ tableServices: data });
+            debugger;
+            var tableServices = this.state.tableServices;
+            tableServices.push(data);
+            this.setState({ tableServices: tableServices });
+            this.CountCostAllTalons();
         }
         catch (error) {
             console.log(`error - ${error}`);

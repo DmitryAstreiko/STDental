@@ -17,11 +17,12 @@ export default function ComboBox(props) {
       {/*<div>{`value: ${value !== null ? `'${value}'` : 'null'}`}</div>
       <div>{`inputValue: '${inputValue}'`}</div>
   <br />*/}
-    <Autocomplete
-    //onChange={(event, value) => props.patientid = value.id}
-      onChange={(event, value) => { props.onSelected(value) }}
-
-      id={props.nameid}
+          <Autocomplete
+              //onChange={(event, value) => props.patientid = value.id}
+              onChange={(event, value) => { props.onSelected(value) }}
+              clearOnBlur={true}
+              clearOnEscape={true}
+              disableCloseOnSelectid={props.nameid}
       options={props.lists}
       getOptionLabel={(option) => option.name}
       style={{ width: props.widthValue }}

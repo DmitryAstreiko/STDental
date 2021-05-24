@@ -90,7 +90,7 @@ namespace STDentalLibrary.Implementation
             }
         }
 
-        public async Task<IEnumerable<Service>> GetServiceAsync(int serviceId)
+        public async Task<Service> GetServiceAsync(int serviceId)
         {
             await using (var context = CreateContext())
             {
@@ -98,7 +98,7 @@ namespace STDentalLibrary.Implementation
                     .Include(d => d.ServiceMaterials)
                     .Include(r => r.ServiceCostCalculation)
                     .Where(w => w.ServiceId == serviceId)
-                    .ToListAsync();
+                    .FirstOrDefaultAsync();
             }
         }
 

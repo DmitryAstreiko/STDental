@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -30,20 +31,21 @@ namespace STDentalReact.Controllers
         }
 
         [HttpGet("service")]
-        public async Task<IEnumerable<ServiceAction>> GetServiceAsync(int serviceId)
+        public async Task<ServiceAction> GetServiceAsync(int serviceId)
         {
             var service = await _serviceRepository.GetServiceAsync(serviceId);
+            if (service == null)
+                throw new System.Web.Http.HttpResponseException(System.Net.HttpStatusCode.NotFound);
 
-            return service.Select(serv => new ServiceAction()
+            return new ServiceAction()
                 {
-                    Id = serv.ServiceId.ToString(),
-                    Name = serv.Name,
-                    Shifr = serv.Shifr,
-                    Price = serv.ServiceCostCalculation.Cost.ToString(),
-                    Amount = "1",
-                    Cost = serv.ServiceCostCalculation.Cost.ToString()
-                })
-                .ToArray();
+                    Id = service.ServiceId,
+                    Name = service.Name,
+                    Shifr = service.Shifr,
+                    Price = service.ServiceCostCalculation?.Cost,
+                    Amount = 1,
+                    Cost = service.ServiceCostCalculation?.Cost
+                };
         }
 
         [HttpGet("comboservices")]

@@ -18,7 +18,7 @@ namespace STDentalLibrary.Repositories
 
         Task<IEnumerable<Service>> GetServicesComboAsync();
 
-        Task<IEnumerable<Service>> GetServiceAsync(int serviceId);
+        Task<Service> GetServiceAsync(int serviceId);
 
         Task<IEnumerable<ServiceMaterial>> GetServiceMaterialsAsync(int serviceId);
 
