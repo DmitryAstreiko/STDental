@@ -64,8 +64,6 @@ export class Talons extends Component{
     }
 
     onDateStartSelect = value => {
-        //console.log(value);
-
         //const result = new Date(value);
         //let res = Date.parse(value)
         let res = moment(value).format('YYYY-MM-DD')
@@ -89,14 +87,7 @@ export class Talons extends Component{
         let filterStartDate = this.state.selectedStartDate && `&startdate=${this.state.selectedStartDate}`;
         let filterEndDate = this.state.selectedEndDate && `&enddate=${this.state.selectedEndDate}`;
 
-        console.log(`filterPatient = ${filterPatient}`);
-        console.log(`filterDoctor = ${filterDoctor}`);
-        console.log(`filterStartDate = ${filterStartDate}`);
-        console.log(`filterEndDate = ${filterEndDate}`);
-
         let filter = `${filterPatient}${filterDoctor}${filterStartDate}${filterEndDate}`.replace('null','').replace('null','');
-
-        console.log(`filter = ${filter}`);
 
         this.setState({ filterTalons:  filter });
 
@@ -130,7 +121,6 @@ export class Talons extends Component{
 
         const prevPage = () => { !(this.state.currentPage === 1) && this.populateTalons(this.state.currentPage - 1, this.state.filterTalons) };
         */    
-        //this.populateTalons();
 
         return (
             <div>
@@ -259,12 +249,6 @@ export class Talons extends Component{
 
     async populateTalons(page, filter=null) {
         try{
-        
-            //console.log(`filterTalons = ${this.state.filterTalons}`);
-
-            //let filterRow = `talons?page=${this.state.currentPage}&itemsPerPage=${this.state.talonsPerPage}`;
-
-            //console.log(`filterRow = ${filterRow}`);
             let filterRow = `talons?page=${page}&itemsPerPage=${this.state.talonsPerPage}${filter}`.replace('null','');
             //console.log(`filterRow == = ${filterRow}`);
 
@@ -276,12 +260,6 @@ export class Talons extends Component{
             this.setState({ errorLoad: error });
         }
     }
-
-    /*async populateFilterTalons() {     
-        const response = await fetch(`talons/filter/?${this.state.filterTalons}`);
-        const data = await response.json();   
-        this.setState({ talons: data, loadingTalons: false });
-    }*/
 
     async populatePatients() {        
         const response = await fetch('patients');

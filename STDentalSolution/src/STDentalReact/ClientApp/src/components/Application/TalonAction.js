@@ -8,12 +8,12 @@ import './TalonAction.css';
 import DatePicker from './Picker.component';
 import * as moment  from 'moment';
 //import TextField from '@material-ui/core/TextField';
-import Input from '@material-ui/core/Input';
+//import Input from '@material-ui/core/Input';
 import Icon from '@material-ui/core/Icon';
 import DeleteIcon from '@material-ui/icons/Delete';
 import SaveIcon from '@material-ui/icons/Save';
-import { Link } from 'react-router-dom';
-import { ThemeProvider } from '@material-ui/styles';
+// { Link } from 'react-router-dom';
+//import { ThemeProvider } from '@material-ui/styles';
 
 export class TalonAction extends Component{
 
@@ -26,8 +26,9 @@ export class TalonAction extends Component{
             patients: null,
             doctors: null,
             tableServices: [],
-            selectedTalonDate: null,
+            selectedTalonDate: moment(new Date()).format('YYYY-MM-DD'),
             selectedCost: null,
+            descriptionTalon: null
             }
 
         /*this.onClickPatient = this.onClickPatient.bind(this);
@@ -35,7 +36,6 @@ export class TalonAction extends Component{
     }
 
     componentDidMount() {
-        //this.populateCountTalons();
         this.populatePatients();
         this.populateDoctors();
         this.populatePrices();        
@@ -49,38 +49,31 @@ export class TalonAction extends Component{
         this.setState({ selectedDoctorId: value && value.id })
     }
 
-    onPriceSelect = value => {     
+    /*onPriceSelect = value => {     
         //this.setState({ selectedServiceId: value && value.id });
-        (value) && this.populateSelectedPrice(value.id);
-        
+        (value) && (
+            this.populateSelectedPrice(value.id),
+            this.CountCostAllTalons()
+        )        
+    }*/
+
+    onPriceSelect(value) {     
+        (value) && (
+            this.populateSelectedPrice(value.id))    
+
+        this.CountCostAllTalons()
     }
 
     onChangeCount(evt, index) {
 
-        let value = parseInt(evt.target.value);
-        console.log(`index = ${index}`);
-        console.log(`evt.target.value = ${evt.target.value}`);
-        
-        //if (evt.charCode == 13) {
         let servArray = this.state.tableServices;
-        console.log(servArray[index].price);
+        let newCost = (parseInt(evt.target.value) * servArray[index].price);
 
-        let price = servArray[index].price; 
-
-        console.log(`cost = ${value} * ${price}`)
-
-        let newCost = (price * value);
-
-        let newCostString = (price * value);
-
-        console.log(`newCost = ${newCost}`);
-
-        servArray[index].cost =  newCostString;
+        servArray[index].cost =  newCost;
 
         this.setState({ tableServices: servArray });
-        //}
-        this.CountCostAllTalons();
 
+        this.CountCostAllTalons();
     }
 
     CountCostAllTalons() {
@@ -89,14 +82,10 @@ export class TalonAction extends Component{
         let newSumCost = 0.00;
 
         servicesTal.forEach(service => {
-            console.log(`newSumCost11 = ${newSumCost}`);
             newSumCost = parseFloat(service.cost) + newSumCost;
-            console.log(`newSumCost22 = ${newSumCost}`);
         });
 
-        console.log(`newSumCost = ${newSumCost}`);
-
-        this.setState({ selectedCost: (newSumCost.toString()).replace(".", ",") });
+        this.setState({ selectedCost: newSumCost });
     }
 
     onDateStartSelect = value => {
@@ -107,19 +96,48 @@ export class TalonAction extends Component{
     deleteRowTalon = value => {
         let rows = this.state.tableServices;
 
-        console.log(`rowsTalon = ${rows[0]}`);
-        console.log(`rowId = ${value}`);
-
-        rows.spice(value, 1); 
+        rows.splice(value, 1); 
         this.setState({tableServices: rows});
+
+        this.CountCostAllTalons();
     }
 
     onSaveTalon() {
         //check doctor, patient, tablesservices
-        let jsonTalon;
-        let jsonServiceTalon;
 
-        //this.addTalon(jsonTalon, jsonServiceTalon);
+        let newTalonService = [];
+
+        this.state.tableServices.forEach(service => {
+            
+            let rowService = {
+                price: service.price,
+                amount: service.amount,
+                cost: service.cost,
+                serviceid: service.id
+            };
+
+            newTalonService.push(rowService);
+        });
+
+        let newTalon = {
+            createdate: this.state.selectedTalonDate,
+            summa: this.state.selectedCost,
+            sale: 0,
+            summasales: 0,
+            cost: this.state.selectedCost,
+            paymentstatus: 1,
+            description: this.state.descriptionTalon,
+            patientid: this.state.selectedPatientId,
+            staffid: this.state.selectedDoctorId,
+            //talonservice: {newTalonService}
+            tableServices: newTalonService
+        }
+        
+        let newjson = JSON.stringify(newTalon, null, '\t')
+
+        console.log(newjson);
+
+        this.addTalon(newjson);
     }
 
     render(){
@@ -164,18 +182,18 @@ export class TalonAction extends Component{
                         </thead>           
                             <tbody>
                                 {this.state.tableServices.map((service, index) =>
-                                    <tr key={service.id}>
+                                    <tr key={index} style={{ height: "50px" }}>
                                         <td>{service.id}</td>
-                                        <td>{index + 1}</td>
+                                        <td>{service.amount}</td>
                                         <td>{service.shifr}</td>
                                         <td>{service.name}</td> 
                                         <td>{service.price}</td>   
                                         <td >
-                                            <input type="number" Value="1" min="1" max="50" key={index} onChange={ (evt) => this.onChangeCount(evt, index) }/>    
+                                            <input type="number" defaultValue="1" min="1" max="50" keyin={index} onChange={ (evt) => this.onChangeCount(evt, index) }
+                                                style={{ height: "20px" }}/>    
                                         </td>
                                         <td>{service.cost}</td>
                                         <td>
-                                            {/*<Button key={index} >Удалить</Button>*/}
                                             <Button
                                                 //variant="contained"
                                                 variant="outlined"
@@ -183,9 +201,9 @@ export class TalonAction extends Component{
                                                 size="small"
                                                 //className={classes.button}
                                                 startIcon={<DeleteIcon />}
-                                                
-                                                key={index} 
-                                                onClick={ (key) => (this.deleteRowTalon(key)) }
+                                                height="15px"
+                                                keybut={index} 
+                                                onClick={ () => (this.deleteRowTalon(index)) }
                                             >
                                                 Удалить
                                             </Button>
@@ -220,7 +238,7 @@ export class TalonAction extends Component{
                         //className={classes.button}
                         startIcon={<SaveIcon />}
                         //style={{ background: "yellow" }}
-                        onClick={this.onSaveTalon()}
+                        onClick={() => this.onSaveTalon()}
                     >
                         Сохранить
                     </Button>
@@ -264,17 +282,7 @@ export class TalonAction extends Component{
         try{ 
             const response = await fetch(`services/service?serviceid=${serviceid}`);
             const data = await response.json(); 
-            console.log(data); 
-
-            /*let service;
-            !(this.state.tableServices.length === 0) && (
-                service = this.state.tableServices,
-                service = service.push(data),
-                console.log(service)
-            )
-            this.setState({ tableServices: service });*/
-            debugger;
-            var tableServices = this.state.tableServices;
+            var tableServices = this.state.tableServices;            
             tableServices.push(data);
             this.setState({ tableServices: tableServices });
             this.CountCostAllTalons();
@@ -284,19 +292,25 @@ export class TalonAction extends Component{
         }
     }
 
-    async addTalon(jsonTalon, jsonServiceTalon) {
-        //try{
-            const response = await fetch(`talons/addtalon?talon=${jsonTalon}&servicetalon${jsonServiceTalon}`);
+    async addTalon(jsonTalon) {
+     
+            const response = await fetch(`talons/addtalon`, 
+                {
+                    method: 'POST',
+                    mode: 'cors',
+                    cache: 'no-cache',
+                    credentials: 'same-origin',
+                    headers: {
+                        'Content-type': 'application/json'
+                    },
+                    redirect: 'follow',
+                    referrerPolicy: 'no-referrer',
+                    body: jsonTalon
+                });
     
             const res = await response.json();
 
-            console.log(`addTalon = ${res}`);
-        {/*    alert(`Талон успешно добавлен. Номер талона: ${res}`);
-
-        }
-        catch (error) {
-            alert(`Не удалось добавить талон. Повторите попытку`);
-        */}
+            console.log(`addTalon = ${res}`);     
        
     }
 }

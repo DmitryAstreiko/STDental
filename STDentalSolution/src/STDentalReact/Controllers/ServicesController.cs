@@ -34,8 +34,6 @@ namespace STDentalReact.Controllers
         public async Task<ServiceAction> GetServiceAsync(int serviceId)
         {
             var service = await _serviceRepository.GetServiceAsync(serviceId);
-            if (service == null)
-                throw new System.Web.Http.HttpResponseException(System.Net.HttpStatusCode.NotFound);
 
             return new ServiceAction()
                 {

@@ -83,9 +83,10 @@ namespace STDentalLibrary.Implementation
             await using (var context = CreateContext())
             {
                 return await context.Services
+                    //.Include(a => a.ServiceCostCalculation)
                     .Where(q => q.EndDate == null)
+                    .Where(w => w.ServiceCostCalculation.ServiceId == w.ServiceId)
                     .OrderBy(s => s.Shifr)
-                    //.OrderBy(s => s.ServiceId)
                     .ToListAsync();
             }
         }
