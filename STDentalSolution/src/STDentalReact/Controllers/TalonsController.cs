@@ -65,12 +65,12 @@ namespace STDentalReact.Controllers
 
             return talons.Select(talon => new TalonInfo()
                 {
-                    TalonId = talon.TalonId.ToString(),
+                    TalonId = talon.TalonId,
                     PatientName = talon.Patient.Name,
                     StaffName = talon.Staff.Name,
-                    Summa = talon.Summa.ToString(),
-                    Cost = talon.Cost.ToString(),
-                    CreateDate = talon.CreateDate.ToString("dd.MM.yyyy"),
+                    Summa = talon.Summa,
+                    Cost = talon.Cost,
+                    CreateDate = talon.CreateDate,
                     TalonStatus = talon.PaymentStatus.ToString(),
                     Description = talon.Description
                 })
@@ -78,15 +78,15 @@ namespace STDentalReact.Controllers
         }
 
         [HttpPost("addtalon")]
-        public async Task<int> AddTalonAsync()
+        public async Task<int> AddTalonAsync([FromBody] Talon talon)
         {
             try
             {
-                var www = Response.Body;
+                //var www = Response.Body;
                 
 
-                //return await _talonRepository.AddTalonAsync(www);
-                return 1;
+                return await _talonRepository.AddTalonAsync(talon);
+                //return 1;
             }
             catch (Exception e)
             {

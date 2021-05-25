@@ -14,6 +14,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import SaveIcon from '@material-ui/icons/Save';
 // { Link } from 'react-router-dom';
 //import { ThemeProvider } from '@material-ui/styles';
+import TextField from '@material-ui/core/TextField';
 
 export class TalonAction extends Component{
 
@@ -28,11 +29,9 @@ export class TalonAction extends Component{
             tableServices: [],
             selectedTalonDate: moment(new Date()).format('YYYY-MM-DD'),
             selectedCost: null,
-            descriptionTalon: null
+            descriptionTalon: null,
+            addedTalonId: null
             }
-
-        /*this.onClickPatient = this.onClickPatient.bind(this);
-        this.onPatientSelect = this.onPatientSelect.bind(this);*/
     }
 
     componentDidMount() {
@@ -66,9 +65,11 @@ export class TalonAction extends Component{
 
     onChangeCount(evt, index) {
 
+        let amountService = parseInt(evt.target.value);
         let servArray = this.state.tableServices;
-        let newCost = (parseInt(evt.target.value) * servArray[index].price);
+        let newCost = amountService * servArray[index].price;
 
+        servArray[index].amount =  amountService;
         servArray[index].cost =  newCost;
 
         this.setState({ tableServices: servArray });
@@ -90,7 +91,8 @@ export class TalonAction extends Component{
 
     onDateStartSelect = value => {
         //let res = moment(value).format('DD.MM.YYYY')
-        this.setState({ selectedTalonDate: moment(value).format('DD.MM.YYYY') })
+        //this.setState({ selectedTalonDate: moment(value).format('DD.MM.YYYY') })
+        this.setState({ selectedTalonDate: moment(value).format('YYYY-MM-DD') })
     }
 
     deleteRowTalon = value => {
@@ -104,6 +106,10 @@ export class TalonAction extends Component{
 
     onSaveTalon() {
         //check doctor, patient, tablesservices
+
+        /*!(this.state.selectedPatientId) 
+            ? alert(`Необходимо выбрать пациента.`)
+            : {*/
 
         let newTalonService = [];
 
@@ -130,18 +136,26 @@ export class TalonAction extends Component{
             patientid: this.state.selectedPatientId,
             staffid: this.state.selectedDoctorId,
             //talonservice: {newTalonService}
-            tableServices: newTalonService
+            talonservices: newTalonService
         }
         
         let newjson = JSON.stringify(newTalon, null, '\t')
 
-        console.log(newjson);
-
         this.addTalon(newjson);
+        
+
+        /*!(this.state.addedTalonId) ? 
+            alert(`Не удалось создать талон`) : 
+            (
+                alert(`Талон добавлен под номером - ${this.state.addedTalonId}.`)
+            );*/
+    }
+
+    onDescriptionChange(evt) {
+        this.setState({ descriptionTalon: evt.target.value })
     }
 
     render(){
-        //console.log(this.state.tableServices[0]);
         return (
             <div>
                 <MenuAdministrator />           
@@ -170,29 +184,29 @@ export class TalonAction extends Component{
                         <Table className='table' aria-labelledby="tabelLabel">
                         <thead>
                             <tr>
-                                <th>ID</th>
+                                {/*<th>ID</th>*/}
                                 <th>№ п.п.</th>
                                 <th>Шифр</th>
                                 <th style={{width: "600px"}}>Наименование</th>
                                 <th>Стоимость</th>
                                 <th>Количество</th>
                                 <th>Сумма</th>
-                                <th>Действие</th>
+                                <th></th>
                             </tr>
                         </thead>           
                             <tbody>
                                 {this.state.tableServices.map((service, index) =>
                                     <tr key={index} style={{ height: "50px" }}>
-                                        <td>{service.id}</td>
+                                        {/*<td>{service.id}</td>*/}
                                         <td>{service.amount}</td>
                                         <td>{service.shifr}</td>
                                         <td>{service.name}</td> 
-                                        <td>{service.price}</td>   
+                                        <td>{service.price.toFixed(2)}</td>   
                                         <td >
                                             <input type="number" defaultValue="1" min="1" max="50" keyin={index} onChange={ (evt) => this.onChangeCount(evt, index) }
                                                 style={{ height: "20px" }}/>    
                                         </td>
-                                        <td>{service.cost}</td>
+                                        <td>{service.cost.toFixed(2)}</td>
                                         <td>
                                             <Button
                                                 //variant="contained"
@@ -215,6 +229,11 @@ export class TalonAction extends Component{
                     </div>
 
                     <div className={"d-flex justify-content-around"} style={{ marginTop: "20px" }}>
+                        <div>
+                            <TextField id="outlined-basic" label="Комментарий" variant="outlined" 
+                                style={{ width: "600px", marginTop: "10px"  }}
+                                onChange={(event) => this.onDescriptionChange(event)} />
+                        </div>
                         <div className={"d-flex justify-content-center"} >
                             <div >
                                 <DatePicker onSelected={ (value) => this.onDateStartSelect(value) } labelvalue={"Дата выписки талона"}/>
@@ -225,10 +244,10 @@ export class TalonAction extends Component{
                                 Итого по талону: 
                             </div>
                             <div >
-                                <input type="text" value={this.state.selectedCost ? `${this.state.selectedCost}` : `0.00`} style={{ width: "150px", textAlign: "center" }} readOnly />
+                                <input type="text" value={this.state.selectedCost ? `${this.state.selectedCost.toFixed(2)}` : `0.00`} style={{ width: "150px", textAlign: "center" }} readOnly />
                             </div>
                         </div>
-                    </div>
+                    </div>                   
 
                     <div className={"d-flex justify-content-around"} style={{ marginTop: "20px" }}>
                     <Button
@@ -292,25 +311,23 @@ export class TalonAction extends Component{
         }
     }
 
-    async addTalon(jsonTalon) {
-     
-            const response = await fetch(`talons/addtalon`, 
-                {
-                    method: 'POST',
-                    mode: 'cors',
-                    cache: 'no-cache',
-                    credentials: 'same-origin',
-                    headers: {
-                        'Content-type': 'application/json'
-                    },
-                    redirect: 'follow',
-                    referrerPolicy: 'no-referrer',
-                    body: jsonTalon
-                });
-    
-            const res = await response.json();
+    async addTalon(jsonTalon) {     
+        const response = await fetch(`talons/addtalon`, 
+            {
+                method: 'POST',
+                mode: 'cors',
+                cache: 'no-cache',
+                credentials: 'same-origin',
+                headers: {
+                    'Content-type': 'application/json'
+                },
+                redirect: 'follow',
+                referrerPolicy: 'no-referrer',
+                body: jsonTalon
+            });
 
-            console.log(`addTalon = ${res}`);     
-       
+        const res = await response.json(); 
+
+        this.state.addedTalonId = res;           
     }
 }

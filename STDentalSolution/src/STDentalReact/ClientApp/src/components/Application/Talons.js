@@ -98,23 +98,12 @@ export class Talons extends Component{
     onCancelFilter() {     
         //clear combobox and state current date to datepicker
         this.setState({ filterTalons: null });
-        
-        let www = document.getElementById('combopatient');
-        www.value = null;
-
-        console.log(www);
-
-        
+            
         this.populateCountTalons();
         this.populateTalons(1);
     }
 
     renderTalonsTable() {      
-        //const indexOfLastTalon = this.state.currentPage * this.state.talonsPerPage;
-        //const indexOfFirstTalon = indexOfLastTalon - this.state.talonsPerPage;
-        //const currentTalons = this.state.talonsCount.slice(indexOfFirstTalon, indexOfLastTalon);
-       // const currentTalons = this.state.talons;
-
         const paginate = pageNum => { this.populateTalons(pageNum, this.state.filterTalons) };
 
         /*const nextPage = () => { this.populateTalons(this.state.currentPage + 1, this.state.filterTalons) };
@@ -132,13 +121,13 @@ export class Talons extends Component{
                         <input type="text" value={this.state.selectedTalon.talonId ? `№ ${this.state.selectedTalon.talonId}` : ``} 
                             style={{ width: "110px", textAlign: "center", margin: "10px" }} readOnly />                        
                         <input type="text" value={this.state.selectedTalon.talonId ? `Пациент - ${this.state.selectedTalon.patientName}` : ``} 
-                            style={{ width: "250px", textAlign: "center", margin: "10px" }} readOnly />
+                            style={{ width: "350px", textAlign: "center", margin: "10px" }} readOnly />
                         <input type="text" value={this.state.selectedTalon.talonId ? `Врач - ${this.state.selectedTalon.staffName}` : ``} 
-                            style={{ width: "250px", textAlign: "center", margin: "10px" }} readOnly />
-                        <input type="text" value={this.state.selectedTalon.talonId ? `Дата талона - ${this.state.selectedTalon.createDate}` : ``} 
+                            style={{ width: "350px", textAlign: "center", margin: "10px" }} readOnly />
+                        <input type="text" value={this.state.selectedTalon.talonId ? `Дата талона - ${moment(this.state.selectedTalon.createDate).format("DD.MM.YYYY")}` : ``} 
                             style={{ width: "250px", textAlign: "center", margin: "10px" }} readOnly />
                         <input type="text" value={this.state.selectedTalon.talonId ? `Итого по талону - ${this.state.selectedTalon.cost}` : ``} 
-                            style={{ width: "250px", textAlign: "center", margin: "10px" }} readOnly />
+                            style={{ width: "300px", textAlign: "center", margin: "10px" }} readOnly />
                 </div> 
                 <div style={{height: "20px"}}>
                     </div>
@@ -204,9 +193,9 @@ export class Talons extends Component{
                                                     <td>{talon.talonId}</td>
                                                     <td>{talon.patientName}</td>
                                                     <td>{talon.staffName}</td> 
-                                                    <td>{talon.summa}</td>   
-                                                    <td>{talon.cost}</td>
-                                                    <td>{talon.createDate}</td>
+                                                    <td>{talon.summa.toFixed(2)}</td>   
+                                                    <td>{talon.cost.toFixed(2)}</td>
+                                                    <td>{moment(talon.createDate).format('DD.MM.YYYY')}</td>
                                                     <td>{talon.description}</td>                                            
                                                 </tr>
                                             )}

@@ -12,7 +12,7 @@ namespace STDentalLibrary.Models
 
         public DateTime? ChangeDate { get; set; }
 
-        public double Summa { get; set; }
+        public decimal Summa { get; set; }
 
         public int Sale { get; set; }
 

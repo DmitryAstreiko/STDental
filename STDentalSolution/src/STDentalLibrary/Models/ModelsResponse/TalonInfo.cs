@@ -6,13 +6,13 @@ namespace STDentalLibrary.Models.ModelsResponse
 {
     public class TalonInfo
     {
-        public string TalonId { get; set; }
+        public int TalonId { get; set; }
         
-        public string CreateDate { get; set; }
+        public DateTime CreateDate { get; set; }
 
-        public string Summa { get; set; }
+        public decimal Summa { get; set; }
 
-        public string Cost { get; set; }
+        public decimal Cost { get; set; }
         
         public string PatientName { get; set; }
 
