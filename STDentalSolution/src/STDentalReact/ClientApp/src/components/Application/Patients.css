@@ -1,0 +1,21 @@
+.table{
+    width: none;
+    border-collapse: collapse;
+    text-indent: initial;
+    border-spacing: 2px;
+    border-color: grey;
+    border: 1px solid #dee2e6;
+}
+
+.table th, .table td {
+    padding: 0rem; 
+    vertical-align: middle;
+    border-top: 1px solid #dee2e6;
+    text-align: center;  
+    border: 1px solid #333; /* Параметры рамки */
+    /*padding: 2px; /* Поля в ячейках */  
+}
+
+.table tr:hover { 
+    background: #d5e6a2; /* Цвет фона */
+}

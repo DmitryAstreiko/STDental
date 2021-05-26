@@ -22,7 +22,7 @@ export default function ComboBox(props) {
               onChange={(event, value) => { props.onSelected(value) }}
               clearOnBlur={true}
               clearOnEscape={true}
-              disableCloseOnSelectid={props.nameid}
+              //disableCloseOnSelectid={props.nameid}
       options={props.lists}
       getOptionLabel={(option) => option.name}
       style={{ width: props.widthValue }}

@@ -17,9 +17,9 @@ export default class PaginationControlled extends Component {
 
   render() {    
 
-    const { talonsPerPage, totalTalons, paginate, currentPage } = this.props;
+    const { infoPerPage, totalInfo, paginate, currentPage } = this.props;
 
-    const countPage = Math.ceil(totalTalons / talonsPerPage);
+    const countPage = Math.ceil(totalInfo / infoPerPage);
 
     const handleChange = (event, value) => {
       this.setState({ page: currentPage });

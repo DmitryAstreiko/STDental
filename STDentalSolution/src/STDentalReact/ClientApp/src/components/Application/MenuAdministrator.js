@@ -82,7 +82,7 @@ export class MenuAdministrator extends Component{
                     Справочники
                   </button>
                   <div className="dropdown-menu" aria-labelledby="dropdownMenuVocabulary" x-placement="bottom-start" style={{position: "absolute", transform: "translate3d(0px, 38px, 0px)", top: "0px", left: "0px", willchange: "transform"}}>
-                    <a className="dropdown-item" href="/">Пациенты</a>
+                    <a className="dropdown-item" href="/appdental/administrator/patients">Пациенты</a>
                     <a className="dropdown-item" href="/">Сотрудники</a>
                   </div>
                 </div>

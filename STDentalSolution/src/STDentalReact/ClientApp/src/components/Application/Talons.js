@@ -214,8 +214,8 @@ export class Talons extends Component{
                         <div className="row">
                             <div className={"d-flex justify-content-center"} style={{width: "350px"}} >Записей на странице: {this.state.talons.length}</div>
                             <div className="col" >
-                                <PaginationControlled talonsPerPage={this.state.talonsPerPage} 
-                                    totalTalons={this.state.talonsCount} paginate={ paginate } currentPage={this.state.currentPage} />
+                                <PaginationControlled infoPerPage={this.state.talonsPerPage} 
+                                    totalinfo={this.state.talonsCount} paginate={ paginate } currentPage={this.state.currentPage} />
                                 
                             </div>
                             <div className={"d-flex justify-content-center"} style={{width: "350px"}} >Всего записей: {this.state.talonsCount}</div>
@@ -251,7 +251,7 @@ export class Talons extends Component{
     }
 
     async populatePatients() {        
-        const response = await fetch('patients');
+        const response = await fetch('patients/combo');
         const data = await response.json();   
         this.setState({ patients: data });
     }

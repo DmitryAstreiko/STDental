@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using STDentalLibrary.Models.Enums;
 
-namespace STDentalLibrary.Models
+namespace STDentalLibrary.Models.ModelsResponse
 {
-    public class Patient
+    public class PatientInfo
     {
-        public int PatientId { get; set; }
-        
+        public int Id { get; set; }
+
         public string Name { get; set; }
 
         public string City { get; set; }
@@ -18,12 +21,8 @@ namespace STDentalLibrary.Models
 
         public DateTime DateBorn { get; set; }
 
-        public Nationality Nationality { get; set; }
+        public string Nationality { get; set; }
 
-        public string Description { get; set; }
-
-        public List<Talon> Talons { get; set; }
-
-        public List<Reception> Receptions { get; set; }
+        public string Desription { get; set; }
     }
 }

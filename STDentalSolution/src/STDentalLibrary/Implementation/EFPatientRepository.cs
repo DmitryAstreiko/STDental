@@ -64,6 +64,24 @@ namespace STDentalLibrary.Implementation
             }
         }
 
+        public async Task<IEnumerable<Patient>> GetPatientsComboAsync()
+        {
+            await using (var context = CreateContext())
+            {
+                return await context.Patients
+                    .OrderBy(w => w.Name)
+                    .ToListAsync();
+            }
+        }
+
+        public async Task<int> GetCountPatientsAsync()
+        {
+            await using (var context = CreateContext())
+            {
+                return await context.Patients.CountAsync();
+            }
+        }
+
         public async Task<IEnumerable<Patient>> GetPatientsAsync()
         {
             await using (var context = CreateContext())
@@ -73,7 +91,7 @@ namespace STDentalLibrary.Implementation
                     .ToListAsync();
             }
         }
-        
+
         public async Task<bool> UpdatePatientAsync(Patient patient)
         {
             try

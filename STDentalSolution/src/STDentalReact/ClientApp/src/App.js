@@ -27,7 +27,7 @@ import BoardUser from "./components/board-user.component";
 import BoardModerator from "./components/board-moderator.component";
 import BoardAdmin from "./components/board-admin.component";
 import Administrator from "./components/Application/Administrator";
-
+import Patients from "./components/Application/Patients";
 
 import './custom.css'
 
@@ -215,6 +215,7 @@ export default class App extends Component {
             <Route exact path='/appdental/administrator/talons' component={Talons} />
             <Route exact path='/appdental/administrator/talons/add' component={TalonAction} />
             <Route exact path='/appdental/administrator' component={Administrator} />
+            <Route exact path='/appdental/administrator/patients' component={Patients} />
             <Route path="/user" component={BoardUser} />
             <Route path="/mod" component={BoardModerator} />
             <Route path="/admin" component={BoardAdmin} />

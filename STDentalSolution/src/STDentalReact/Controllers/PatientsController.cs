@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using STDentalLibrary.Models;
+using STDentalLibrary.Models.Enums;
 using STDentalLibrary.Models.ModelsResponse;
 using STDentalLibrary.Repositories;
 
@@ -23,10 +24,10 @@ namespace STDentalReact.Controllers
             _patientRepository = patientRepository;
         }
 
-        [HttpGet]
-        public async Task<IEnumerable<PatientComboBox>> GetAsync()
+        [HttpGet("combo")]
+        public async Task<IEnumerable<PatientComboBox>> GetComboAsync()
         {
-            var patients = await _patientRepository.GetPatientsAsync();
+            var patients = await _patientRepository.GetPatientsComboAsync();
 
             return patients.Select(patient => new PatientComboBox()
                 {
@@ -34,6 +35,31 @@ namespace STDentalReact.Controllers
                     Name = patient.Name
                 })
                 .ToArray();
+        }
+
+        [HttpGet]
+        public async Task<IEnumerable<PatientInfo>> GetAsync()
+        {
+            var patients = await _patientRepository.GetPatientsAsync();
+
+            return patients.Select(patient => new PatientInfo()
+                {
+                    Id = patient.PatientId,
+                    Name = patient.Name,
+                    City = patient.City,
+                    Street = patient.Street,
+                    DateBorn = patient.DateBorn,
+                    Phone = patient.Phone,
+                    Nationality = patient.Nationality.ToString(),
+                    Desription = patient.Description
+                })
+                .ToArray();
+        }
+
+        [HttpGet("count")]
+        public async Task<int> GetCountPatientsAsync()
+        {
+            return await _patientRepository.GetCountPatientsAsync();
         }
     }
 }
