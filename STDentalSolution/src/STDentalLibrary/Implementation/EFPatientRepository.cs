@@ -74,11 +74,18 @@ namespace STDentalLibrary.Implementation
             }
         }
 
-        public async Task<int> GetCountPatientsAsync()
+        public async Task<int> GetCountPatientsAsync(string? fioSearch)
         {
             await using (var context = CreateContext())
             {
-                return await context.Patients.CountAsync();
+                var query = context.Patients.AsQueryable();
+
+                if (fioSearch != null)
+                {
+                    query = query.Where(a => a.Name.ToLower().StartsWith(fioSearch.ToLower()));
+                }
+
+                return await query.CountAsync();
             }
         }
 

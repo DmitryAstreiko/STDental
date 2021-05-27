@@ -1,21 +1,18 @@
 import React, { Component } from 'react'
-//import { Container, Row, Col, Table } from 'reactstrap';
 import { Table } from 'reactstrap';
 import './Talons.css';
 import ComboBox from './Combobox.component';
-//import DateTime from './Datetimepicker.component';
 import Button from '@material-ui/core/Button';
 import Loader from './Loader';
-//import DetailRowView from './DetailRowView';
-//import TalonServices from './TalonServices';
 import { MenuAdministrator } from './MenuAdministrator';
 //import Pagination from './Pagination';
 import DatePicker from './Picker.component';
-//import { maskedDateFormatter } from '@material-ui/pickers/_helpers/text-field-helper';
 import * as moment  from 'moment';
 import Error from './Error';
 import PaginationControlled from './Pagination.component';
-//import NotInfo from './NotInfo';
+import { green } from '@material-ui/core/colors';
+import EditIcon from '@material-ui/icons/Edit';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 export class Talons extends Component{
 
@@ -106,15 +103,10 @@ export class Talons extends Component{
     renderTalonsTable() {      
         const paginate = pageNum => { this.populateTalons(pageNum, this.state.filterTalons) };
 
-        /*const nextPage = () => { this.populateTalons(this.state.currentPage + 1, this.state.filterTalons) };
-
-        const prevPage = () => { !(this.state.currentPage === 1) && this.populateTalons(this.state.currentPage - 1, this.state.filterTalons) };
-        */    
-
         return (
             <div>
                 <MenuAdministrator />
-                <div className="input-group">
+                {/*<div className="input-group">
                     <div className="input-group-prepend">
                         <span className="input-group-text" id="valueshow" style={{ margin: "10px" }}>Выбран талон: </span>
                     </div>
@@ -130,7 +122,7 @@ export class Talons extends Component{
                             style={{ width: "300px", textAlign: "center", margin: "10px" }} readOnly />
                 </div> 
                 <div style={{height: "20px"}}>
-                    </div>
+                </div>*/}
                 <div >
                     <div className={"d-flex justify-content-around"}>
                         <div className="col">
@@ -185,10 +177,12 @@ export class Talons extends Component{
                                             <th>Со скидкой</th>
                                             <th>Дата талона</th>
                                             <th>Комментарий</th>
+                                            <th></th>
+                                            <th></th>
                                         </tr>
                                     </thead>           
                                         <tbody>
-                                            {this.state.talons.map(talon =>
+                                            {this.state.talons.map((talon, index) =>
                                                 <tr key={talon.talonId} className={talon.talonStatus} onClick={() => this.onRowSelect(talon)}>
                                                     <td>{talon.talonId}</td>
                                                     <td>{talon.patientName}</td>
@@ -196,7 +190,34 @@ export class Talons extends Component{
                                                     <td>{talon.summa.toFixed(2)}</td>   
                                                     <td>{talon.cost.toFixed(2)}</td>
                                                     <td>{moment(talon.createDate).format('DD.MM.YYYY')}</td>
-                                                    <td>{talon.description}</td>                                            
+                                                    <td>{talon.description}</td> 
+                                                    <td>
+                                                        <Button
+                                                            //variant="contained"
+                                                            variant="outlined"
+                                                            //color="secondary"
+                                                            style={{ color: green[500] }}
+                                                            size="small"
+                                                            //className={classes.button}
+                                                            startIcon={<EditIcon />}
+                                                            height="15px"
+                                                            keyedit={index} 
+                                                            onClick={ () => (this.editRowTalon(index)) }
+                                                        ></Button>
+                                                    </td>  
+                                                    <td>
+                                                        <Button
+                                                            //variant="contained"
+                                                            variant="outlined"
+                                                            color="secondary"
+                                                            size="small"
+                                                            //className={classes.button}
+                                                            startIcon={<DeleteIcon />}
+                                                            height="15px"
+                                                            keydel={index} 
+                                                            onClick={ () => (this.deleteRowTalon(index)) }
+                                                        ></Button>
+                                                    </td>                                           
                                                 </tr>
                                             )}
                                         </tbody>                  
@@ -215,7 +236,7 @@ export class Talons extends Component{
                             <div className={"d-flex justify-content-center"} style={{width: "350px"}} >Записей на странице: {this.state.talons.length}</div>
                             <div className="col" >
                                 <PaginationControlled infoPerPage={this.state.talonsPerPage} 
-                                    totalinfo={this.state.talonsCount} paginate={ paginate } currentPage={this.state.currentPage} />                                
+                                    totalInfo={this.state.talonsCount} paginate={ paginate } currentPage={this.state.currentPage} />                                
                             </div>
                             <div className={"d-flex justify-content-center"} style={{width: "350px"}} >Всего записей: {this.state.talonsCount}</div>
                         </div>

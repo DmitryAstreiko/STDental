@@ -7,6 +7,10 @@ import PaginationControlled from './Pagination.component';
 import { Table } from 'reactstrap';
 import * as moment  from 'moment';
 import TextField from '@material-ui/core/TextField';
+import EditIcon from '@material-ui/icons/Edit';
+import DeleteIcon from '@material-ui/icons/Delete';
+import Button from '@material-ui/core/Button';
+import { green } from '@material-ui/core/colors';
 
 export default class Patients extends Component{
 
@@ -34,16 +38,39 @@ export default class Patients extends Component{
     } 
 
     onSearchFIOPatient(event) {
+
         let fioSearch = `&fiosearch=${event.target.value}`;
+        
+        this.populatePatients(1, fioSearch);
+        this.populateCountPatients(fioSearch);
 
-        console.log(event.target.value);
+        /*!(inputText) ? 
+        (
+            this.populatePatients(this.state.currentPage, fioSearch),
+            this.populateCountPatients(fioSearch)
+        ) : 
+        (
+            this.populatePatients(this.state.currentPage),
+            this.populateCountPatients()
+        ) */               
+    }
 
-        (event.target.value.length > 2) && (            
-            this.populatePatients(this.state.currentPage, fioSearch) 
-        )
+    deleteRowPatient = value => {
+        /*let rows = this.state.tableServices;
 
-        //this.populateCountPatients();
-        //this.populatePatients(this.state.currentPage); 
+        rows.splice(value, 1); 
+        this.setState({tableServices: rows});
+
+        this.CountCostAllTalons();*/
+    }
+
+    editRowPatient = value => {
+        /*let rows = this.state.tableServices;
+
+        rows.splice(value, 1); 
+        this.setState({tableServices: rows});
+
+        this.CountCostAllTalons();*/
     }
 
     render() {
@@ -52,13 +79,6 @@ export default class Patients extends Component{
         return(
             <div>
                 <MenuAdministrator />                
-                
-                {/*<form>
-                    <div class="form-group">
-                        <input type="text" class="form-control" id="formGroupExampleInput" 
-                            placeholder="Введите ФИО для поиска" style={{ width: "50%", left: "10%" }}/>
-                    </div>
-                </form> */}             
 
                 <div>
                     <TextField id="outlined-basic" label="Введите ФИО для поиска (не менее 3 символов)" variant="outlined" 
@@ -81,6 +101,7 @@ export default class Patients extends Component{
                                 (<Table className='table' aria-labelledby="tabelLabel">
                                     <thead>
                                         <tr>
+                                            <th>№ п.п.</th>
                                             <th>ФИО пациента</th>
                                             <th>Город</th>
                                             <th>Улица</th>
@@ -88,18 +109,48 @@ export default class Patients extends Component{
                                             <th>Дата рождения</th>
                                             <th>Национальность</th>
                                             <th>Комментарий</th>
+                                            <th></th>
+                                            <th></th>
                                         </tr>
                                     </thead>           
                                         <tbody>
                                             {this.state.patients.map((patient, index) =>
                                                 <tr key={index} >
+                                                    <td>{index + 1}</td>
                                                     <td>{patient.name}</td>
                                                     <td>{patient.city}</td> 
                                                     <td>{patient.street}</td> 
                                                     <td>{patient.phone}</td> 
                                                     <td>{moment(patient.dateborn).format("DD.MM.YYYY")}</td> 
-                                                    <td>{patient.nationality}</td> 
-                                                    <td>{patient.description}</td>                                            
+                                                    <td>{(patient.nationality === "BY") ? ('Республика Беларусь') : ('Иное')}</td> 
+                                                    <td>{patient.description}</td> 
+                                                    <td>
+                                                        <Button
+                                                            //variant="contained"
+                                                            variant="outlined"
+                                                            //color="secondary"
+                                                            style={{ color: green[500] }}
+                                                            size="small"
+                                                            //className={classes.button}
+                                                            startIcon={<EditIcon />}
+                                                            height="15px"
+                                                            keyedit={index} 
+                                                            onClick={ () => (this.editRowPatient(index)) }
+                                                        ></Button>
+                                                    </td>  
+                                                    <td>
+                                                        <Button
+                                                            //variant="contained"
+                                                            variant="outlined"
+                                                            color="secondary"
+                                                            size="small"
+                                                            //className={classes.button}
+                                                            startIcon={<DeleteIcon />}
+                                                            height="15px"
+                                                            keydel={index} 
+                                                            onClick={ () => (this.deleteRowPatient(index)) }
+                                                        ></Button>
+                                                    </td>                                         
                                                 </tr>
                                             )}
                                         </tbody>                  
@@ -127,9 +178,7 @@ export default class Patients extends Component{
 
     async populatePatients(page, filter=null) {
         try{
-            console.log(`filter = ${filter}`)
             let filterRow = `patients?page=${page}&itemsPerPage=${this.state.patientsPerPage}${filter}`.replace('null','');
-            console.log(`filterRow =${filterRow}`);
 
             const response = await fetch(filterRow);
             const data = await response.json();   
@@ -141,7 +190,7 @@ export default class Patients extends Component{
     }
 
     async populateCountPatients(filter=null) {
-        
+        console.log(filter)
         let response;
         (!filter) ? response = await fetch('patients/count') :
             response = await fetch(`patients/count?${filter}`);
@@ -149,5 +198,4 @@ export default class Patients extends Component{
         const data = await response.json();
         this.setState({ patientsCount: data });
     }
-
 }

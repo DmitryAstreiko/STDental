@@ -34,7 +34,7 @@ export class MenuAdministrator extends Component{
                 <NavItem>
                     <NavLink tag={Link} className="text-dark" to="/appdental/administrator/talons/add">Создать талон</NavLink>
                 </NavItem>
-                <NavItem>
+                {/*<NavItem>
                 <div className="dropdown">
                   <button className="btn dropdown-toggle" type="button" id="dropdownMenuVocabulary" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                       Редактирование/удаление талона
@@ -44,7 +44,7 @@ export class MenuAdministrator extends Component{
                     <a className="dropdown-item" href="/">Удалить</a>
                   </div>
                 </div>
-                </NavItem>
+                </NavItem>*/}
                 <NavItem>
                 <div className="dropdown">
                   <button className="btn dropdown-toggle" type="button" id="dropdownMenuReport" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

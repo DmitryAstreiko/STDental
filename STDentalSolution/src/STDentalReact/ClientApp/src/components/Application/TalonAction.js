@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-//import Modal from '@material-ui/core/Modal';
 import { MenuAdministrator } from './MenuAdministrator';
 import { Table } from 'reactstrap';
 import ComboBox from './Combobox.component';
@@ -7,19 +6,13 @@ import Button from '@material-ui/core/Button';
 import './TalonAction.css';
 import DatePicker from './Picker.component';
 import * as moment  from 'moment';
-//import TextField from '@material-ui/core/TextField';
-//import Input from '@material-ui/core/Input';
 import Icon from '@material-ui/core/Icon';
 import DeleteIcon from '@material-ui/icons/Delete';
 import SaveIcon from '@material-ui/icons/Save';
-// { Link } from 'react-router-dom';
-//import { ThemeProvider } from '@material-ui/styles';
 import TextField from '@material-ui/core/TextField';
-import { useHistory } from "react-router-dom";
 import { Redirect } from 'react-router'
 
 export class TalonAction extends Component{
-
     constructor(props){
         super(props);
 
@@ -107,11 +100,7 @@ export class TalonAction extends Component{
         this.CountCostAllTalons();
     }
 
-    onSaveTalon() {
-        //let history = useHistory();
-
-        //history.replace("/appdental/administrator/talons");
-        
+    onSaveTalon() {   
         
         //check doctor, patient, tablesservices
 
@@ -143,7 +132,6 @@ export class TalonAction extends Component{
             description: this.state.descriptionTalon,
             patientid: this.state.selectedPatientId,
             staffid: this.state.selectedDoctorId,
-            //talonservice: {newTalonService}
             talonservices: newTalonService
         }
         
@@ -151,18 +139,11 @@ export class TalonAction extends Component{
 
         try{
             this.addTalon(newjson);
-            //history.push("/appdental/administrator/talons");
             this.setState({ redirect: true });
         }
         catch {
-            alert("BAAADADADAD");
+            alert("Не удалось добавить талон. Попытайтесь повторить операцию.");
         }
-
-        /*!(this.state.addedTalonId) ? 
-            alert(`Не удалось создать талон`) : 
-            (
-                alert(`Талон добавлен под номером - ${this.state.addedTalonId}.`)
-            );*/
     }
 
     onDescriptionChange(evt) {
@@ -175,7 +156,6 @@ export class TalonAction extends Component{
         if (redirect) {
             return <Redirect to='/appdental/administrator/talons'/>;
         }
-
         return (
             <div>
                 <MenuAdministrator />           
@@ -238,9 +218,7 @@ export class TalonAction extends Component{
                                                 height="15px"
                                                 keybut={index} 
                                                 onClick={ () => (this.deleteRowTalon(index)) }
-                                            >
-                                                Удалить
-                                            </Button>
+                                            ></Button>
                                         </td>
                                     </tr>
                                 )}
@@ -346,8 +324,6 @@ export class TalonAction extends Component{
                 body: jsonTalon
             });
 
-        return await response.json(); 
-
-        //this.state.addedTalonId = res;           
+        return await response.json();        
     }
 }
