@@ -9,7 +9,7 @@ namespace STDentalLibrary.Repositories
 {
     public interface IPatientRepository
     {
-        Task<IEnumerable<Patient>> GetPatientsAsync();
+        Task<IEnumerable<Patient>> GetPatientsAsync(int page, int itemsPerPage, string? fioSearch);
 
         Task<int> GetCountPatientsAsync();
 

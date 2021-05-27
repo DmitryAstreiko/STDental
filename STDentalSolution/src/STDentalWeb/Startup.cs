@@ -250,13 +250,13 @@ namespace STDentalWeb
 
                 #region Patients
 
-                endpoints.MapGet("/patients", async context =>
+                /*endpoints.MapGet("/patients", async context =>
                 {
                     var repository = context.RequestServices.GetService<IPatientRepository>();
                     var patientList = await repository.GetPatientsAsync();
 
                     await context.Response.WriteAsync(JsonSerializer.Serialize(patientList, null));
-                });
+                });*/
 
                 endpoints.MapGet("/searchpatient", async context =>
                 {

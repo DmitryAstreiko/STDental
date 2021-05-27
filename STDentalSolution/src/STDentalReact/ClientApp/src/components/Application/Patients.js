@@ -25,7 +25,7 @@ export default class Patients extends Component{
             inputNationality: null,
             imputPhone: null,
             patientsCount: null
-            }
+        }
     }
 
     componentDidMount() {
@@ -33,13 +33,17 @@ export default class Patients extends Component{
         this.populatePatients(this.state.currentPage);      
     } 
 
-    onSearchFIOPatient(evt) {
-        (evt.target.value.length > 2) && (            
-            this.populatePatients(this.state.currentPage, evt.target.value) 
+    onSearchFIOPatient(event) {
+        let fioSearch = `&fiosearch=${event.target.value}`;
+
+        console.log(event.target.value);
+
+        (event.target.value.length > 2) && (            
+            this.populatePatients(this.state.currentPage, fioSearch) 
         )
 
-        this.populateCountPatients();
-        this.populatePatients(this.state.currentPage); 
+        //this.populateCountPatients();
+        //this.populatePatients(this.state.currentPage); 
     }
 
     render() {
@@ -111,22 +115,21 @@ export default class Patients extends Component{
                         <div className={"d-flex justify-content-center"} style={{width: "350px"}} >Записей на странице: {this.state.patients.length}</div>
                         <div className="col" >
                             <PaginationControlled infoPerPage={this.state.patientsPerPage} 
-                                totalInfo={this.state.patientsCount} paginate={ paginate } currentPage={this.state.currentPage} />
-                            
+                                totalInfo={this.state.patientsCount} paginate={ paginate } currentPage={this.state.currentPage} />                            
                         </div>
                         <div className={"d-flex justify-content-center"} style={{width: "350px"}} >Всего записей: {this.state.patientsCount}</div>
                     </div>
                 
-                {/*)}*/}
-                
+                {/*)}*/}                
             </div>
         )
     }
 
     async populatePatients(page, filter=null) {
         try{
+            console.log(`filter = ${filter}`)
             let filterRow = `patients?page=${page}&itemsPerPage=${this.state.patientsPerPage}${filter}`.replace('null','');
-            //console.log(`filterRow == = ${filterRow}`);
+            console.log(`filterRow =${filterRow}`);
 
             const response = await fetch(filterRow);
             const data = await response.json();   

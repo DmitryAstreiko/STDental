@@ -82,12 +82,23 @@ namespace STDentalLibrary.Implementation
             }
         }
 
-        public async Task<IEnumerable<Patient>> GetPatientsAsync()
+        public async Task<IEnumerable<Patient>> GetPatientsAsync(int page, int itemsPerPage, string? fioSearch)
         {
             await using (var context = CreateContext())
             {
-                return await context.Patients
-                    .OrderBy(w => w.Name)
+                var query = context.Patients                    
+                    .AsQueryable();
+
+               if (fioSearch != null)
+                {
+                    query = query.Where(a => a.Name.ToLower().StartsWith(fioSearch.ToLower()));
+
+                    //query.Where(a => );
+                }
+
+                return await query.OrderBy(w => w.Name)
+                    .Skip((page - 1) * itemsPerPage)
+                    .Take(itemsPerPage)
                     .ToListAsync();
             }
         }

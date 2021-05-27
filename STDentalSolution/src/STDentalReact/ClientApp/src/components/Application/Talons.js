@@ -215,8 +215,7 @@ export class Talons extends Component{
                             <div className={"d-flex justify-content-center"} style={{width: "350px"}} >Записей на странице: {this.state.talons.length}</div>
                             <div className="col" >
                                 <PaginationControlled infoPerPage={this.state.talonsPerPage} 
-                                    totalinfo={this.state.talonsCount} paginate={ paginate } currentPage={this.state.currentPage} />
-                                
+                                    totalinfo={this.state.talonsCount} paginate={ paginate } currentPage={this.state.currentPage} />                                
                             </div>
                             <div className={"d-flex justify-content-center"} style={{width: "350px"}} >Всего записей: {this.state.talonsCount}</div>
                         </div>

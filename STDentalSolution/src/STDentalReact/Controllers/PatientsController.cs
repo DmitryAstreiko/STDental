@@ -38,9 +38,12 @@ namespace STDentalReact.Controllers
         }
 
         [HttpGet]
-        public async Task<IEnumerable<PatientInfo>> GetAsync()
+        public async Task<IEnumerable<PatientInfo>> GetAsync(int page, int itemsPerPage, string fioSearch)
         {
-            var patients = await _patientRepository.GetPatientsAsync();
+
+            Console.WriteLine(fioSearch);
+
+            var patients = await _patientRepository.GetPatientsAsync(page, itemsPerPage, fioSearch);
 
             return patients.Select(patient => new PatientInfo()
                 {

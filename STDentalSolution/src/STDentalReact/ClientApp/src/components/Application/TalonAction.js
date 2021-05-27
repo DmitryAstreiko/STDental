@@ -15,6 +15,8 @@ import SaveIcon from '@material-ui/icons/Save';
 // { Link } from 'react-router-dom';
 //import { ThemeProvider } from '@material-ui/styles';
 import TextField from '@material-ui/core/TextField';
+import { useHistory } from "react-router-dom";
+import { Redirect } from 'react-router'
 
 export class TalonAction extends Component{
 
@@ -30,7 +32,8 @@ export class TalonAction extends Component{
             selectedTalonDate: moment(new Date()).format('YYYY-MM-DD'),
             selectedCost: null,
             descriptionTalon: null,
-            addedTalonId: null
+            addedTalonId: null,
+            redirect: false
             }
     }
 
@@ -105,6 +108,11 @@ export class TalonAction extends Component{
     }
 
     onSaveTalon() {
+        //let history = useHistory();
+
+        //history.replace("/appdental/administrator/talons");
+        
+        
         //check doctor, patient, tablesservices
 
         /*!(this.state.selectedPatientId) 
@@ -141,8 +149,14 @@ export class TalonAction extends Component{
         
         let newjson = JSON.stringify(newTalon, null, '\t')
 
-        this.addTalon(newjson);
-        
+        try{
+            this.addTalon(newjson);
+            //history.push("/appdental/administrator/talons");
+            this.setState({ redirect: true });
+        }
+        catch {
+            alert("BAAADADADAD");
+        }
 
         /*!(this.state.addedTalonId) ? 
             alert(`Не удалось создать талон`) : 
@@ -156,6 +170,12 @@ export class TalonAction extends Component{
     }
 
     render(){
+        const { redirect } = this.state;
+
+        if (redirect) {
+            return <Redirect to='/appdental/administrator/talons'/>;
+        }
+
         return (
             <div>
                 <MenuAdministrator />           
@@ -286,7 +306,7 @@ export class TalonAction extends Component{
     }
 
     async populatePatients() {        
-        const response = await fetch('patients');
+        const response = await fetch('patients/combo');
         const data = await response.json();   
         this.setState({ patients: data });
     }
@@ -326,8 +346,8 @@ export class TalonAction extends Component{
                 body: jsonTalon
             });
 
-        const res = await response.json(); 
+        return await response.json(); 
 
-        this.state.addedTalonId = res;           
+        //this.state.addedTalonId = res;           
     }
 }
