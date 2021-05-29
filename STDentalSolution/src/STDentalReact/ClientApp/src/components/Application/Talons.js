@@ -52,6 +52,26 @@ export class Talons extends Component{
         this.setState({selectedTalon: row && row})
     )
 
+    deleteRowTalon(talonId) {
+        try {
+            let www = this.deleteTalon(talonId);
+
+            console.log(www);
+
+            (www === true) ? (
+                //this.populateCountTalons(),
+                this.populateTalons(1)            
+            ) : (
+                alert(`Талон №${talonId} не может быть удален!`)
+            )
+
+            this.populateCountTalons();
+        } catch {
+            alert("Ошибка удаления талона!")
+        }
+        
+    }
+
     onPatientSelect = value => {
         this.setState({ selectedPatientId: value && value.id })
     }
@@ -183,7 +203,8 @@ export class Talons extends Component{
                                     </thead>           
                                         <tbody>
                                             {this.state.talons.map((talon, index) =>
-                                                <tr key={talon.talonId} className={talon.talonStatus} onClick={() => this.onRowSelect(talon)}>
+                                                //<tr key={talon.talonId} className={talon.talonStatus} onClick={() => this.onRowSelect(talon)}>
+                                                <tr key={talon.talonId} className={talon.talonStatus} >
                                                     <td>{talon.talonId}</td>
                                                     <td>{talon.patientName}</td>
                                                     <td>{talon.staffName}</td> 
@@ -201,8 +222,8 @@ export class Talons extends Component{
                                                             //className={classes.button}
                                                             startIcon={<EditIcon />}
                                                             height="15px"
-                                                            keyedit={index} 
-                                                            onClick={ () => (this.editRowTalon(index)) }
+                                                            keyedit={talon.talonId} 
+                                                            onClick={ () => (this.editRowTalon(talon.talonId)) }
                                                         ></Button>
                                                     </td>  
                                                     <td>
@@ -214,8 +235,8 @@ export class Talons extends Component{
                                                             //className={classes.button}
                                                             startIcon={<DeleteIcon />}
                                                             height="15px"
-                                                            keydel={index} 
-                                                            onClick={ () => (this.deleteRowTalon(index)) }
+                                                            keydel={talon.talonId} 
+                                                            onClick={ () => (this.deleteRowTalon(talon.talonId)) }
                                                         ></Button>
                                                     </td>                                           
                                                 </tr>
@@ -290,5 +311,25 @@ export class Talons extends Component{
 
         const data = await response.json();
         this.setState({ talonsCount: data });
+    }
+
+    async deleteTalon(talonId) {
+        const response = await fetch(`talons/delete?talonid=${talonId}`, 
+        {
+            method: 'DELETE',
+            mode: 'cors',
+            cache: 'no-cache',
+            credentials: 'same-origin',
+            headers: {
+                'Content-type': 'application/json'
+            },
+            redirect: 'follow',
+            referrerPolicy: 'no-referrer',
+            //body: jsonTalon
+        });
+
+        //const response = await fetch(`talons/delete?talonid=${talonId}`);
+
+        return await response.data;
     }
 }

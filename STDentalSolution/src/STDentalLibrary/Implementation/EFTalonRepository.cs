@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using STDentalLibrary.Context;
 using STDentalLibrary.Models;
+using STDentalLibrary.Models.Enums;
 using STDentalLibrary.Repositories;
 
 namespace STDentalLibrary.Implementation
@@ -84,21 +85,22 @@ namespace STDentalLibrary.Implementation
             {
                 await using (var context = CreateContext())
                 {
-                    var helper = new EFHelperRepository(context);
+                    //var helper = new EFHelperRepository(context);
 
-                    if ((await helper.CheckContainTalonInPayment(talonId)) == false) return false;
+                    //if ((await helper.CheckContainTalonInPayment(talonId)) == false) return false;
 
                     var delTalon = await context.Talons.FindAsync(talonId);
 
-                    if (delTalon == null) return false;
+                    if (delTalon.PaymentStatus != PaymentStatus.NotPaid) return false;
 
                     context.Talons.Remove(delTalon);
                     await context.SaveChangesAsync();
                     return true;
                 }
             }
-            catch
+            catch (Exception ex)
             {
+                Console.WriteLine($"Error in delete talon. Detail: ${ex.Message}, {ex.StackTrace}");
                 return false;
             } 
         }

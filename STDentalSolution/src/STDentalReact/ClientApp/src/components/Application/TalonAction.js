@@ -10,7 +10,8 @@ import Icon from '@material-ui/core/Icon';
 import DeleteIcon from '@material-ui/icons/Delete';
 import SaveIcon from '@material-ui/icons/Save';
 import TextField from '@material-ui/core/TextField';
-import { Redirect } from 'react-router'
+import { Redirect } from 'react-router';
+import HomeOutlinedIcon from '@material-ui/icons/HomeOutlined';
 
 export class TalonAction extends Component{
     constructor(props){
@@ -260,10 +261,12 @@ export class TalonAction extends Component{
                         Сохранить
                     </Button>
                     <Button
-                        variant="contained"
+                        //variant="contained"
+                        variant="outlined"
                         color="primary"
                         //className={classes.button}
-                        endIcon={<Icon>reply</Icon>}
+                        //endIcon={<Icon>reply</Icon>}
+                        endIcon={<HomeOutlinedIcon />}
                         //style={{ background: 'green' }}
                         //onClick={() => { alert('clicked') }}
                         href="/appdental/administrator/talons"

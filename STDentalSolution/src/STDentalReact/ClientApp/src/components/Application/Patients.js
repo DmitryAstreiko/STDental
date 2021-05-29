@@ -11,6 +11,18 @@ import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Button from '@material-ui/core/Button';
 import { green } from '@material-ui/core/colors';
+import PersonAddOutlinedIcon from '@material-ui/icons/PersonAddOutlined';
+import IconButton from '@material-ui/core/IconButton';
+import { makeStyles } from '@material-ui/core/styles';
+
+/*useStyles = makeStyles((theme) => ({
+    margin: {
+        margin: theme.spacing(1),
+    },
+    extendedIcon: {
+        marginRight: theme.spacing(1),
+    },
+}));*/
 
 export default class Patients extends Component{
 
@@ -31,6 +43,8 @@ export default class Patients extends Component{
             patientsCount: null
         }
     }
+
+
 
     componentDidMount() {
         this.populateCountPatients();
@@ -80,11 +94,29 @@ export default class Patients extends Component{
             <div>
                 <MenuAdministrator />                
 
-                <div>
-                    <TextField id="outlined-basic" label="Введите ФИО для поиска (не менее 3 символов)" variant="outlined" 
-                        style={{ width: "600px", marginBottom: "20px", left: "50px" }}
-                        onChange={(event) => this.onSearchFIOPatient(event)} />
+                <div className={"d-flex justify-content-around"}>
+                    <div >
+                        <div>
+                        <TextField id="outlined-basic" label="Введите ФИО для поиска (не менее 3 символов)" variant="outlined" 
+                            style={{ width: "600px", marginBottom: "20px" }}
+                            onChange={(event) => this.onSearchFIOPatient(event)} />
+                        </div>
+                    </div>                        
+                    <div > 
+                        <Button
+                            //variant="contained"
+                            variant="outlined"
+                            color="secondary"
+                            size="medium"
+                            style={{ top: "10px", justifyContent: "flex-end" }}
+                            //className={classes.button}
+                            startIcon={<PersonAddOutlinedIcon />}
+                            //height="15px" 
+                            onClick={ () => (this.createPatient()) }
+                        >Добавить пациента</Button>
+                    </div>
                 </div>
+                
 
                 {this.state.loadingPatients ? (
                     <Loader /> ) : 
@@ -125,6 +157,15 @@ export default class Patients extends Component{
                                                     <td>{(patient.nationality === "BY") ? ('Республика Беларусь') : ('Иное')}</td> 
                                                     <td>{patient.description}</td> 
                                                     <td>
+                                                        {/*<IconButton aria-label="delete" className={classes.margin}>*/}
+                                                        <IconButton 
+                                                            aria-label="edit" 
+                                                            style={{ color: green[500] }}
+                                                            onClick={ () => (this.deleteRowPatient(index)) }>
+                                                            <EditIcon fontSize="small" />
+                                                        </IconButton>
+                                                    </td>
+                                                    {/*<td>
                                                         <Button
                                                             //variant="contained"
                                                             variant="outlined"
@@ -137,8 +178,17 @@ export default class Patients extends Component{
                                                             keyedit={index} 
                                                             onClick={ () => (this.editRowPatient(index)) }
                                                         ></Button>
-                                                    </td>  
+                                                    </td>*/} 
                                                     <td>
+                                                        {/*<IconButton aria-label="delete" className={classes.margin}>*/}
+                                                        <IconButton 
+                                                            aria-label="delete" 
+                                                            color="secondary"
+                                                            onClick={ () => (this.deleteRowPatient(index)) }>
+                                                            <DeleteIcon fontSize="small" />
+                                                        </IconButton>
+                                                    </td> 
+                                                    {/*<td>
                                                         <Button
                                                             //variant="contained"
                                                             variant="outlined"
@@ -150,7 +200,7 @@ export default class Patients extends Component{
                                                             keydel={index} 
                                                             onClick={ () => (this.deleteRowPatient(index)) }
                                                         ></Button>
-                                                    </td>                                         
+                                                    </td>*/}                                         
                                                 </tr>
                                             )}
                                         </tbody>                  

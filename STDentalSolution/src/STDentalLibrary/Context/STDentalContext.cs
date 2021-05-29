@@ -370,7 +370,7 @@ namespace STDentalLibrary.Context
                 talonService.HasOne(s => s.Talon)
                     .WithMany(t => t.TalonServices)
                     .HasForeignKey(s => s.TalonId)
-                    .OnDelete(DeleteBehavior.NoAction);
+                    .OnDelete(DeleteBehavior.Cascade);
 
                 talonService.Property(p => p.Price)
                     .HasColumnType("decimal(18,2)")

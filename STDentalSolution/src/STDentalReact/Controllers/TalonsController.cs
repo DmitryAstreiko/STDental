@@ -63,7 +63,20 @@ namespace STDentalReact.Controllers
                 Console.WriteLine($"Talon didn`t add. Detail: {e.StackTrace}");
                 return 0;
             }
-           
+        }
+
+        [HttpDelete("delete")]
+        public async Task<bool> DeleteTalonAsync(int talonId)
+        {
+            try
+            {
+                return await _talonRepository.DeleteTalonAsync(talonId);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Talon didn`t add. Detail: {e.StackTrace}");
+                return false;
+            }
         }
 
     }
