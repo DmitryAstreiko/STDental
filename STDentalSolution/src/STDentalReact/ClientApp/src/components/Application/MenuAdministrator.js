@@ -61,7 +61,7 @@ export class MenuAdministrator extends Component{
                   </div>
                 </div>
                 </NavItem>
-                <NavItem>
+                {/*<NavItem>
                 <div className="dropdown">
                   <button className="btn dropdown-toggle" type="button" id="dropdownMenuVocabulary" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Оплата
@@ -72,7 +72,7 @@ export class MenuAdministrator extends Component{
                     <a className="dropdown-item" href="/">История платежей</a>
                   </div>
                 </div>
-                </NavItem>
+                </NavItem>*/}
                 <NavItem>
                   <NavLink tag={Link} className="text-dark" to="/">Прейскурант</NavLink>
                 </NavItem>

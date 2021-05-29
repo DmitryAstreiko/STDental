@@ -10,9 +10,14 @@ import DatePicker from './Picker.component';
 import * as moment  from 'moment';
 import Error from './Error';
 import PaginationControlled from './Pagination.component';
-import { green } from '@material-ui/core/colors';
+import { green, purple, red, yellow } from '@material-ui/core/colors';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
+import AssignmentOutlinedIcon from '@material-ui/icons/AssignmentOutlined';
+import IconButton from '@material-ui/core/IconButton';
+import ContactlessOutlinedIcon from '@material-ui/icons/ContactlessOutlined';
+import ContactsOutlinedIcon from '@material-ui/icons/ContactsOutlined';
+import SearchOutlinedIcon from '@material-ui/icons/SearchOutlined';
 
 export class Talons extends Component{
 
@@ -120,6 +125,14 @@ export class Talons extends Component{
         this.populateTalons(1);
     }
 
+    viewTalonServices(talonId) {
+
+    }
+
+    payTalonServices(talonId) {
+
+    }
+
     renderTalonsTable() {      
         const paginate = pageNum => { this.populateTalons(pageNum, this.state.filterTalons) };
 
@@ -162,15 +175,41 @@ export class Talons extends Component{
                             <DatePicker labelvalue={"Окончание периода"} onSelected={ (value) => this.onDateEndSelect(value) } />
                         </div>
                         <div className={"col"} style={{position: "relative"}}>
-                            <Button style={{position: "absolute", top: "50%", transform: "translate(0, -50%)"}} 
-                                variant="contained" onClick={ () => this.onGenerateFilter()}>Поиск</Button>
+                            <Button 
+                                style={{position: "absolute", top: "50%", transform: "translate(0, -50%)", color: purple[900]}} 
+                                //variant="contained" 
+                                variant="outlined"
+                                size="medium"
+                                startIcon={<SearchOutlinedIcon />}
+                                onClick={ () => this.onGenerateFilter()}>Поиск</Button>
                             {/*https://www.w3.org/Style/Examples/007/center.ru.html - позиционирование*/}
                         </div>
                         <div className={"col"} style={{position: "relative"}}>
-                            <Button style={{position: "absolute", top: "50%", transform: "translate(0, -50%)"}} 
-                                variant="contained" onClick={ () => this.onCancelFilter()}>Сбросить</Button>                            
+                            <Button 
+                                style={{position: "absolute", top: "50%", transform: "translate(0, -50%)", color: purple[900]}} 
+                                //variant="contained" 
+                                variant="outlined"
+                                //color="secondary"
+                                size="medium"
+                                startIcon={<ContactsOutlinedIcon />}
+                                onClick={ () => this.onCancelFilter()}>Сбросить</Button>                            
                         </div>
-                                </div>
+                        <div className={"col"} style={{position: "relative"}}> 
+                        <Button
+                            //variant="contained"
+                            variant="outlined"
+                            color="secondary"
+                            size="medium"
+                            style={{position: "absolute", top: "50%", transform: "translate(0, -50%)"}} 
+                            //className={classes.button}
+                            startIcon={<ContactsOutlinedIcon />}
+                            //height="15px" 
+                            //onClick={ () => (this.createPatient()) }
+                            href='/appdental/administrator/talons/add'
+                        >Создать талон</Button>
+                    </div>
+                        </div>
+                                
                     </div>
                 <div>
                 <div style={{height: "20px"}}>
@@ -191,10 +230,12 @@ export class Talons extends Component{
                                     <thead>
                                         <tr>
                                             <th>№ талона</th>
+                                            <th></th>
                                             <th>ФИО пациента</th>
                                             <th>ФИО врача</th>
                                             <th>Стоимость</th>
                                             <th>Со скидкой</th>
+                                            <th></th>
                                             <th>Дата талона</th>
                                             <th>Комментарий</th>
                                             <th></th>
@@ -206,13 +247,40 @@ export class Talons extends Component{
                                                 //<tr key={talon.talonId} className={talon.talonStatus} onClick={() => this.onRowSelect(talon)}>
                                                 <tr key={talon.talonId} className={talon.talonStatus} >
                                                     <td>{talon.talonId}</td>
+                                                    <td>
+                                                        {/*<IconButton aria-label="delete" className={classes.margin}>*/}
+                                                        <IconButton 
+                                                            aria-label="view" 
+                                                            style={{ color: yellow[900] }}
+                                                            onClick={ () => (this.viewTalonServices(talon.talonId)) }>
+                                                            <AssignmentOutlinedIcon fontSize="small" />
+                                                        </IconButton>
+                                                    </td>
                                                     <td>{talon.patientName}</td>
                                                     <td>{talon.staffName}</td> 
                                                     <td>{talon.summa.toFixed(2)}</td>   
                                                     <td>{talon.cost.toFixed(2)}</td>
+                                                    <td>
+                                                        {/*<IconButton aria-label="delete" className={classes.margin}>*/}
+                                                        <IconButton 
+                                                            aria-label="pay" 
+                                                            style={{ color: purple[500] }}
+                                                            onClick={ () => (this.payTalonServices(talon.talonId)) }>
+                                                            <ContactlessOutlinedIcon fontSize="small" />
+                                                        </IconButton>
+                                                    </td>
                                                     <td>{moment(talon.createDate).format('DD.MM.YYYY')}</td>
                                                     <td>{talon.description}</td> 
                                                     <td>
+                                                        {/*<IconButton aria-label="delete" className={classes.margin}>*/}
+                                                        <IconButton 
+                                                            aria-label="edit" 
+                                                            style={{ color: green[500] }}
+                                                            onClick={ () => (this.editRowTalon(index)) }>
+                                                            <EditIcon fontSize="small" />
+                                                        </IconButton>
+                                                    </td>
+                                                    {/*<td>
                                                         <Button
                                                             //variant="contained"
                                                             variant="outlined"
@@ -225,8 +293,17 @@ export class Talons extends Component{
                                                             keyedit={talon.talonId} 
                                                             onClick={ () => (this.editRowTalon(talon.talonId)) }
                                                         ></Button>
-                                                    </td>  
+                                                    </td>*/} 
                                                     <td>
+                                                        {/*<IconButton aria-label="delete" className={classes.margin}>*/}
+                                                        <IconButton 
+                                                            aria-label="delete" 
+                                                            color="secondary"
+                                                            onClick={ () => (this.deleteRowTalon(talon.talonId)) }>
+                                                            <DeleteIcon fontSize="small" />
+                                                        </IconButton>
+                                                    </td> 
+                                                    {/*<td>
                                                         <Button
                                                             //variant="contained"
                                                             variant="outlined"
@@ -238,7 +315,7 @@ export class Talons extends Component{
                                                             keydel={talon.talonId} 
                                                             onClick={ () => (this.deleteRowTalon(talon.talonId)) }
                                                         ></Button>
-                                                    </td>                                           
+                                                    </td>*/}                                           
                                                 </tr>
                                             )}
                                         </tbody>                  
