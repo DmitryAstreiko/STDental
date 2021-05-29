@@ -6,7 +6,7 @@ import Button from '@material-ui/core/Button';
 import './TalonAction.css';
 import DatePicker from './Picker.component';
 import * as moment  from 'moment';
-import Icon from '@material-ui/core/Icon';
+//import Icon from '@material-ui/core/Icon';
 import DeleteIcon from '@material-ui/icons/Delete';
 import SaveIcon from '@material-ui/icons/Save';
 import TextField from '@material-ui/core/TextField';

@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using STDentalLibrary.Context;
 using STDentalLibrary.Models;
 using STDentalLibrary.Models.Enums;
+using STDentalLibrary.Models.ModelsResponse;
 using STDentalLibrary.Repositories;
 
 namespace STDentalLibrary.Implementation
@@ -164,8 +165,9 @@ namespace STDentalLibrary.Implementation
             await using (var context = CreateContext())
             {
                 return await context.TalonServices
-                    .Where(w => w.ServiceId == talonId)
-                    .OrderBy(s => s.TalonServiceId)
+                    .Include(e => e.Service)
+                    .Where(w => w.TalonId == talonId)
+                    .OrderBy(s => s.Service.Shifr)
                     .ToListAsync();
             }
         }

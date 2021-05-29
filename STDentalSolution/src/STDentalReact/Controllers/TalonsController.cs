@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Logging;
 using STDentalLibrary.Models;
 using STDentalLibrary.Models.ModelsResponse;
@@ -30,6 +31,23 @@ namespace STDentalReact.Controllers
         public async Task<int> GetCountTalonsAsync(int? patientId, int? doctorId, DateTime? startDate, DateTime? endDate)
         {
             return await _talonRepository.GetCountTalonsAsync(patientId, doctorId, startDate, endDate);
+        }
+
+        [HttpGet("services")]
+        public async Task<IEnumerable<TalonServicesInfo>> GetTalonServicesAsync(int talonId)
+        {
+            var talonServicesList = await _talonRepository.GetTalonServicesAsync(talonId);
+
+            return talonServicesList.Select(service => new TalonServicesInfo()
+                {
+                    Id = service.TalonServiceId,
+                    Shifr = service.Service.Shifr,
+                    ServiceName = service.Service.Name,
+                    Cost = service.Cost,
+                    Amount = service.Amount,
+                    Price = service.Price
+                })
+                .ToArray();
         }
 
         [HttpGet]

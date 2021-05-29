@@ -240,7 +240,6 @@ export default class Patients extends Component{
     }
 
     async populateCountPatients(filter=null) {
-        console.log(filter)
         let response;
         (!filter) ? response = await fetch('patients/count') :
             response = await fetch(`patients/count?${filter}`);

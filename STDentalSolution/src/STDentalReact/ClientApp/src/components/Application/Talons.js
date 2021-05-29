@@ -10,14 +10,15 @@ import DatePicker from './Picker.component';
 import * as moment  from 'moment';
 import Error from './Error';
 import PaginationControlled from './Pagination.component';
-import { green, purple, red, yellow } from '@material-ui/core/colors';
+import { green, purple} from '@material-ui/core/colors';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
-import AssignmentOutlinedIcon from '@material-ui/icons/AssignmentOutlined';
+//import AssignmentOutlinedIcon from '@material-ui/icons/AssignmentOutlined';
 import IconButton from '@material-ui/core/IconButton';
 import ContactlessOutlinedIcon from '@material-ui/icons/ContactlessOutlined';
 import ContactsOutlinedIcon from '@material-ui/icons/ContactsOutlined';
 import SearchOutlinedIcon from '@material-ui/icons/SearchOutlined';
+import ViewTalonServices from './ViewTalonServices';
 
 export class Talons extends Component{
 
@@ -126,7 +127,7 @@ export class Talons extends Component{
     }
 
     viewTalonServices(talonId) {
-
+        //<CustomizedDialogs />
     }
 
     payTalonServices(talonId) {
@@ -135,6 +136,8 @@ export class Talons extends Component{
 
     renderTalonsTable() {      
         const paginate = pageNum => { this.populateTalons(pageNum, this.state.filterTalons) };
+
+
 
         return (
             <div>
@@ -249,19 +252,13 @@ export class Talons extends Component{
                                                     <td>{talon.talonId}</td>
                                                     <td>
                                                         {/*<IconButton aria-label="delete" className={classes.margin}>*/}
-                                                        <IconButton 
-                                                            aria-label="view" 
-                                                            style={{ color: yellow[900] }}
-                                                            onClick={ () => (this.viewTalonServices(talon.talonId)) }>
-                                                            <AssignmentOutlinedIcon fontSize="small" />
-                                                        </IconButton>
+                                                        <ViewTalonServices talonNumber={talon.talonId} patinetN={talon.patientName}/>
                                                     </td>
                                                     <td>{talon.patientName}</td>
                                                     <td>{talon.staffName}</td> 
                                                     <td>{talon.summa.toFixed(2)}</td>   
                                                     <td>{talon.cost.toFixed(2)}</td>
                                                     <td>
-                                                        {/*<IconButton aria-label="delete" className={classes.margin}>*/}
                                                         <IconButton 
                                                             aria-label="pay" 
                                                             style={{ color: purple[500] }}
@@ -321,6 +318,10 @@ export class Talons extends Component{
                                         </tbody>                  
                                 </Table> 
                                 )
+                                //------------------------------------
+                                
+
+                                //------------------------------------
                         )
                     )
                 }   
@@ -408,5 +409,12 @@ export class Talons extends Component{
         //const response = await fetch(`talons/delete?talonid=${talonId}`);
 
         return await response.data;
+    }
+
+    async populateTalonServices(talonId) {  
+        console.log(`populateTalonServices`);      
+        const response = await fetch(`talons/services?talonid=${talonId}`);
+        const data = await response.json();   
+        this.setState({ services: data });
     }
 }
