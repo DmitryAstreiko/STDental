@@ -11,15 +11,7 @@ import Typography from '@material-ui/core/Typography';
 import AssignmentOutlinedIcon from '@material-ui/icons/AssignmentOutlined';
 import { yellow } from '@material-ui/core/colors';
 import { Component } from 'react';
-//import { Table } from 'reactstrap';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
-import { makeStyles } from '@material-ui/core/styles';
+import { Table } from 'reactstrap';
 
 const styles = (theme) => ({
   root: {
@@ -73,7 +65,6 @@ export default class ViewTalonServices extends Component {
 }
 
   render() {
-
     return (
       <div>
         <IconButton 
@@ -82,41 +73,38 @@ export default class ViewTalonServices extends Component {
             onClick={() => (this.populateTalonServices(this.props.talonNumber), this.setState({ open: true }))}>
             <AssignmentOutlinedIcon fontSize="small" />
         </IconButton>
-        <Dialog onClose={() => this.setState({ open: false })} aria-labelledby="customized-dialog-title" 
-          open={this.state.open} 
-          maxWidth="true">
+        <Dialog onClose={() => this.setState({ open: false })} aria-labelledby="customized-dialog-title" open={this.state.open}>
           <DialogTitle id="customized-dialog-title" 
             onClose={() => this.setState({ open: false })} 
             style={{ fontSize: "5px" }}>
-              Услуги, используемые в талоне № {this.props.talonNumber}. Пациент - {this.props.patinetN}
+              Услуги используемые в талоне № {this.props.talonNumber}. Пациент - {this.props.patinetN}
           </DialogTitle>
           <DialogContent dividers>
-            <TableContainer component={Paper}>
-              <Table size="small" aria-label="customized table">
-                <TableHead>
-                  <TableRow>
-                    <TableCell align="center">№&nbsp;п.п.</TableCell>
-                    <TableCell align="center">Шифр</TableCell>
-                    <TableCell align="center">Наименование</TableCell>
-                    <TableCell align="center">Стоимость&nbsp;(руб.)</TableCell>
-                    <TableCell align="center">Количество&nbsp;(шт.)</TableCell>
-                    <TableCell align="center">Сумма&nbsp;(руб.)</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {this.state.services.map((service, index) => (
-                    <TableRow key={service.Id} >
-                      <TableCell align="center">{index + 1}</TableCell>
-                      <TableCell align="center">{service.shifr}</TableCell>
-                      <TableCell align="left">{service.serviceName}</TableCell>
-                      <TableCell align="center">{service.price.toFixed(2)}</TableCell>
-                      <TableCell align="center">{service.amount}</TableCell>
-                      <TableCell align="center">{service.cost.toFixed(2)}</TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>          
+            <Table className='table' aria-labelledby="tabelLabel">
+              <thead>
+                  <tr>
+                    <th>№ п.п.</th>
+                    <th>Шифр</th>
+                    <th>Наименование</th>
+                    <th>Стоимость</th>
+                    <th>Количество</th>
+                    <th>Сумма</th>
+                  </tr>
+              </thead>           
+                  <tbody>
+                      {this.state.services.map((service, index) =>
+                        <tr key={service.Id}  >
+                              <td>{index + 1}</td>
+                              <td>{service.shifr}</td>
+                              <td>{service.serviceName}</td> 
+                              <td>{service.price.toFixed(2)}</td>
+                              <td>{service.amount}</td>  
+                              <td>{service.cost.toFixed(2)}</td>                                                                                
+                          </tr>
+                      )}
+                  </tbody>                  
+          </Table> 
+
           </DialogContent>
           <DialogActions>
             <Button onClick={() => this.setState({ open: false })} color="primary">
