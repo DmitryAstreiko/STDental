@@ -318,10 +318,6 @@ export class Talons extends Component{
                                         </tbody>                  
                                 </Table> 
                                 )
-                                //------------------------------------
-                                
-
-                                //------------------------------------
                         )
                     )
                 }   
@@ -405,8 +401,6 @@ export class Talons extends Component{
             referrerPolicy: 'no-referrer',
             //body: jsonTalon
         });
-
-        //const response = await fetch(`talons/delete?talonid=${talonId}`);
 
         return await response.data;
     }

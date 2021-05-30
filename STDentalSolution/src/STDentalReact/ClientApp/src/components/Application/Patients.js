@@ -13,6 +13,8 @@ import Button from '@material-ui/core/Button';
 import { green } from '@material-ui/core/colors';
 import PersonAddOutlinedIcon from '@material-ui/icons/PersonAddOutlined';
 import IconButton from '@material-ui/core/IconButton';
+import PatientCUD from './PatientCUD';
+
 //import { makeStyles } from '@material-ui/core/styles';
 
 /*useStyles = makeStyles((theme) => ({
@@ -43,8 +45,6 @@ export default class Patients extends Component{
             patientsCount: null
         }
     }
-
-
 
     componentDidMount() {
         this.populateCountPatients();
@@ -102,21 +102,8 @@ export default class Patients extends Component{
                             onChange={(event) => this.onSearchFIOPatient(event)} />
                         </div>
                     </div>                        
-                    <div > 
-                        <Button
-                            //variant="contained"
-                            variant="outlined"
-                            color="secondary"
-                            size="medium"
-                            style={{ top: "10px", justifyContent: "flex-end" }}
-                            //className={classes.button}
-                            startIcon={<PersonAddOutlinedIcon />}
-                            //height="15px" 
-                            onClick={ () => (this.createPatient()) }
-                        >Добавить пациента</Button>
-                    </div>
-                </div>
-                
+                    <PatientCUD />
+                </div>               
 
                 {this.state.loadingPatients ? (
                     <Loader /> ) : 

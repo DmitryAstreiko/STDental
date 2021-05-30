@@ -11,7 +11,6 @@ import Typography from '@material-ui/core/Typography';
 import AssignmentOutlinedIcon from '@material-ui/icons/AssignmentOutlined';
 import { yellow } from '@material-ui/core/colors';
 import { Component } from 'react';
-//import { Table } from 'reactstrap';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -19,7 +18,6 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import { makeStyles } from '@material-ui/core/styles';
 
 const styles = (theme) => ({
   root: {
@@ -82,10 +80,12 @@ export default class ViewTalonServices extends Component {
             onClick={() => (this.populateTalonServices(this.props.talonNumber), this.setState({ open: true }))}>
             <AssignmentOutlinedIcon fontSize="small" />
         </IconButton>
-        <Dialog onClose={() => this.setState({ open: false })} aria-labelledby="customized-dialog-title" 
+        <Dialog onClose={() => this.setState({ open: false })}  
           open={this.state.open} 
-          maxWidth="true">
-          <DialogTitle id="customized-dialog-title" 
+          maxWidth="true"
+          aria-labelledby="customized-dialog-title">
+          <DialogTitle 
+            id="customized-dialog-title" 
             onClose={() => this.setState({ open: false })} 
             style={{ fontSize: "5px" }}>
               Услуги, используемые в талоне № {this.props.talonNumber}. Пациент - {this.props.patinetN}
