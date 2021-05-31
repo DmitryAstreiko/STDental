@@ -46,12 +46,12 @@ namespace STDentalReact.Controllers
                 };
         }
 
-        [HttpGet("comboservices")]
-        public async Task<IEnumerable<ServiceComboBox>> GetServicesComboAsync()
+        [HttpGet("serviceNames")]
+        public async Task<IEnumerable<ServiceNames>> GetServiceNamesAsync()
         {
-            var services = await _serviceRepository.GetServicesComboAsync();
+            var services = await _serviceRepository.GetServiceNamesAsync();
 
-            return services.Select(service => new ServiceComboBox()
+            return services.Select(service => new ServiceNames()
             {
                 Id = service.ServiceId.ToString(),
                 Name = $"{service.Shifr} {service.Name}"

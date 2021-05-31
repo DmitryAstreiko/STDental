@@ -27,7 +27,7 @@ namespace STDentalReact.Controllers
             _talonRepository = talonRepository;
         }
         
-        [HttpGet("count")]
+        [HttpGet("talonCount")]
         public async Task<int> GetCountTalonsAsync(int? patientId, int? doctorId, DateTime? startDate, DateTime? endDate)
         {
             return await _talonRepository.GetCountTalonsAsync(patientId, doctorId, startDate, endDate);

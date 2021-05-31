@@ -24,6 +24,7 @@ import * as moment  from 'moment';
 import DatePicker from './Picker.component';
 import SaveIcon from '@material-ui/icons/Save';
 import HomeOutlinedIcon from '@material-ui/icons/HomeOutlined';
+import { ApiClient } from './APIClient';
 
 const styles = (theme) => ({
   root: {
@@ -77,21 +78,25 @@ export default class PatientCUD extends Component {
     selectedStreet: null,
     selectedPhone: null,
     selectedEmail: null,
-    selectedDateBorn: null,
-    selectedNationality: null,
+    selectedDateBorn: moment(new Date()).format('YYYY-MM-DD'),
+    selectedNationality: "1",
     selectedDescription: null,
     errorFio: false,
     errorDateBorn: false,
     errorCity: false,
     errorStreet: false,
     errorPhone: false,
+    errorEmail: false,
+    errorDescription: false,
+    errorNationality: false,
     canAdd: false
   }
+
+  this.apiClient = new ApiClient();
 }
 
 onDateBornSelect = value => {
-  let res = moment(value).format('YYYY-MM-DD')
-  this.setState({ selectedBornDate: res })
+  this.setState({ selectedBornDate: moment(value).format('YYYY-MM-DD') })
 }
 
 onFioInput(event) {  
@@ -99,54 +104,39 @@ onFioInput(event) {
 }
 
 onCityInput(event) {
-  this.setState({ selectedCity: event.target.value })
+  this.setState({ selectedCity: event.target.value, errorCity: !event.target.value })
 }
 
 onStreetInput(event) {
-  this.setState({ selectedStreet: event.target.value })
+  this.setState({ selectedStreet: event.target.value, errorStreet: !event.target.value })
 }
 
 onPhoneInput(event) {
-  this.setState({ selectedPhone: event.target.value })
+  this.setState({ selectedPhone: event.target.value, errorPhone: !event.target.value })
 }
 
 onEmailInput(event) {
-  this.setState({ selectedEmail: event.target.value })
+  this.setState({ selectedEmail: event.target.value, errorEmail: !event.target.value })
 }
 
 onDescriptionInput(event) {
-  this.setState({ selectedDescription: event.target.value })
+  this.setState({ selectedDescription: event.target.value, errorDescription: !event.target.value })
 }
 
-onNationalityInput(value) {
-  this.setState({ selectedNationality: value && value })
+onNationalityInput(event) {
+  this.setState({ selectedNationality: event.target.value, errorNationality: !event.target.value})
 }
 
-onSavePatient() {   
+async onSavePatient() {   
 
-    /*if (!!this.state.selectedName === false) 
-    {
-      this.setState({ errorFio: true });
-      this.setState({ canAdd: false })
-    }
-      else this.setState({ canAdd: true });
-    
-    /*  if (!!this.state.selectedCity === false) {this.setState({ errorCity: true }), this.setState({ canAdd: true })}
-      else this.setState({ canAdd: false });
-    if (!!this.state.selectedStreet === false) this.setState({ errorStreet: true }), this.setState({ canAdd: true })
-      else this.setState({ canAdd: false });
-    if (!!this.state.selectedBornDate === false) this.setState({ errorDateBorn: true }), this.setState({ canAdd: true })
-      else this.setState({ canAdd: false });
-    if (!!this.state.selectedPhone === false) this.setState({ errorPhone: true }), this.setState({ canAdd: true })
-      else this.setState({ canAdd: false });
-    */
+
    console.log(`this.state.canAdd = ${this.state.canAdd}`);
 //прогнать все statе, потом проверить статусы и добавлять пациента
 
-    (this.state.errorDateBorn !== false) && 
+    
 
-    if (this.state.canAdd === true) {
-      console.log(`asdsadsads`);
+   
+      console.log(`this.state.selectedNationality = ${this.state.selectedNationality}`);
       let newPatient = {
         name: this.state.selectedName,
         city: this.state.selectedCity,
@@ -154,19 +144,24 @@ onSavePatient() {
         phone: this.state.selectedPhone,
         email: this.state.selectedEmail,
         dateborn: this.state.selectedDateBorn,
-        nationality: this.state.selectedNationality,
+        //nationality: (this.state.selectedNationality === '1') ? ("BY") : ("Other"),
+        nationality: "BY",
         description: this.state.selectedDescription
       }
       
       let newjson = JSON.stringify(newPatient, null, '\t')
 
       try{
-          this.addPatient(newjson);
+
+          const res = await this.addPatient(newjson);
+
+          if(res.status === 200) alert(`Пациент успешно добавлен!`);
+
+          if(res.status === 400) alert("Пациент не добавлен в систему!");
       }
       catch {
           alert("Не удалось добавить пациента.");
-      }
-    }
+      }  
 }
 
   render() {
@@ -230,7 +225,8 @@ onSavePatient() {
               </div>
               <div>
               <FormLabel component="legend">Национальность</FormLabel>
-              <RadioGroup aria-label="gender" name="gender1" onChange={(value) => this.onNationalityInput(value)}>
+              <RadioGroup aria-label="gender" name="gender1" value={this.state.selectedNationality} 
+                  onChange={(event) => this.onNationalityInput(event)} error={this.state.errorNationality}>
                 <FormControlLabel value="1" control={<Radio style={{ color: "green" }} />} label="Республика Беларусь" />
                 <FormControlLabel value="0" control={<Radio style={{ color: "green" }} />} label="Иностранное государство" />
               </RadioGroup>
@@ -271,20 +267,7 @@ onSavePatient() {
   }
 
   async addPatient(jsonTalon) {     
-    const response = await fetch(`patients/addpatient`, 
-        {
-            method: 'POST',
-            mode: 'cors',
-            cache: 'no-cache',
-            credentials: 'same-origin',
-            headers: {
-                'Content-type': 'application/json'
-            },
-            redirect: 'follow',
-            referrerPolicy: 'no-referrer',
-            body: jsonTalon
-        });
-
-    return await response.json();        
+    const res = await this.apiClient.addPatient(jsonTalon);    
+    return res;
   }
 }

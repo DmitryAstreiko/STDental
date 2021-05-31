@@ -13,7 +13,7 @@ namespace STDentalLibrary.Repositories
 
         Task<int> GetCountPatientsAsync(string? fioSearch);
 
-        Task<IEnumerable<Patient>> GetPatientsComboAsync();
+        Task<IEnumerable<Patient>> GetPatientNamesAsync();
 
         Task<Patient> GetPatientAsync(int patientId);
 

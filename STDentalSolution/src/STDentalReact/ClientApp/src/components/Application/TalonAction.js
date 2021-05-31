@@ -12,6 +12,7 @@ import SaveIcon from '@material-ui/icons/Save';
 import TextField from '@material-ui/core/TextField';
 import { Redirect } from 'react-router';
 import HomeOutlinedIcon from '@material-ui/icons/HomeOutlined';
+import {ApiClient} from './APIClient';
 
 export class TalonAction extends Component{
     constructor(props){
@@ -29,6 +30,8 @@ export class TalonAction extends Component{
             addedTalonId: null,
             redirect: false
             }
+
+        this.apiClient = new ApiClient();
     }
 
     componentDidMount() {
@@ -282,21 +285,18 @@ export class TalonAction extends Component{
     }
 
     async populateDoctors() {        
-        const response = await fetch('staffs');
-        const data = await response.json();   
-        this.setState({ doctors: data });
+        const res = await this.apiClient.getDoctorNames();   
+        this.setState({ doctors: res });
     }
 
     async populatePatients() {        
-        const response = await fetch('patients/combo');
-        const data = await response.json();   
-        this.setState({ patients: data });
+        const res = await this.apiClient.getPatientNames();  
+        this.setState({ patients: res });
     }
 
     async populatePrices() {        
-        const response = await fetch('services/comboservices');
-        const data = await response.json();   
-        this.setState({ prices: data });
+        const res = await this.apiClient.GetServiceNames()  
+        this.setState({ prices: res });
     }
 
     async populateSelectedPrice(serviceid) {  

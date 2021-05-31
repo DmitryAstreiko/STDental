@@ -64,7 +64,7 @@ namespace STDentalLibrary.Implementation
             }
         }
 
-        public async Task<IEnumerable<Patient>> GetPatientsComboAsync()
+        public async Task<IEnumerable<Patient>> GetPatientNamesAsync()
         {
             await using (var context = CreateContext())
             {

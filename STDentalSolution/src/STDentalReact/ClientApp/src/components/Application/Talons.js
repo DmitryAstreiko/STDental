@@ -126,10 +126,6 @@ export class Talons extends Component{
         this.populateTalons(1);
     }
 
-    viewTalonServices(talonId) {
-        //<CustomizedDialogs />
-    }
-
     payTalonServices(talonId) {
 
     }
@@ -364,26 +360,18 @@ export class Talons extends Component{
     }
 
     async populatePatients() {        
-        //const response = await fetch('patients/combo');
-        //const data = await response.json();  
         const res = await this.apiClient.getPatientNames(); 
         this.setState({ patients: res });
     }
     
     async populateDoctors() {        
-        const response = await fetch('staffs');
-        const data = await response.json();   
-        this.setState({ doctors: data });
+        const res = await this.apiClient.getDoctorNames();
+        this.setState({ doctors: res });
     }
 
-    async populateCountTalons(filter=null) {
-        
-        let response;
-        (!filter) ? response = await fetch('talons/count') :
-            response = await fetch(`talons/count?${filter}`);
-
-        const data = await response.json();
-        this.setState({ talonsCount: data });
+    async populateCountTalons(filter=null) {       
+        const res = await this.apiClient.GetCountTalons(filter);
+        this.setState({ talonsCount: res });
     }
 
     async deleteTalon(talonId) {
@@ -403,8 +391,7 @@ export class Talons extends Component{
         return response.status;
     }
 
-    async populateTalonServices(talonId) {  
-        console.log(`populateTalonServices`);      
+    async populateTalonServices(talonId) {       
         const response = await fetch(`talons/services?talonid=${talonId}`);
         const data = await response.json();   
         this.setState({ services: data });

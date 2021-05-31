@@ -24,12 +24,12 @@ namespace STDentalReact.Controllers
             _patientRepository = patientRepository;
         }
 
-        [HttpGet("combo")]
-        public async Task<IEnumerable<PatientComboBox>> GetComboAsync()
+        [HttpGet("patientNames")]
+        public async Task<IEnumerable<PatientNames>> GetNamesAsync()
         {
-            var patients = await _patientRepository.GetPatientsComboAsync();
+            var patients = await _patientRepository.GetPatientNamesAsync();
 
-            return patients.Select(patient => new PatientComboBox()
+            return patients.Select(patient => new PatientNames()
                 {
                     Id = patient.PatientId.ToString(),
                     Name = patient.Name
@@ -63,16 +63,16 @@ namespace STDentalReact.Controllers
         }
 
         [HttpPost]
-        public async Task<int> PostPatientAsync([FromBody] Patient patient)
+        public async Task<IActionResult> PostPatientAsync([FromBody] Patient patient)
         {
             try
             {
-                return await _patientRepository.AddPatientAsync(patient);
+                var res = await _patientRepository.AddPatientAsync(patient);
+                return Ok(res);
             }
-            catch (Exception e)
+            catch 
             {
-                Console.WriteLine($"Patient didn`t add. Detail: {e.StackTrace}");
-                return 0;
+                return BadRequest();
             }
         }
     }

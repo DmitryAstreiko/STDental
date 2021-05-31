@@ -12,7 +12,7 @@ namespace STDentalLibrary.Repositories
     {
         Task<IEnumerable<Staff>> GetActualStaffsAsync();
 
-        Task<IEnumerable<DoctorComboBox>> GetFoundedStaffsInTalonsAsync();
+        Task<IEnumerable<DoctorNames>> GetFoundedStaffsInTalonsAsync();
 
         Task<Staff> GetStaffAsync(int staffId);
 

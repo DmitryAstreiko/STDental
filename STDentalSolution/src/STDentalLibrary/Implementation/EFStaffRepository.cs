@@ -64,13 +64,13 @@ namespace STDentalLibrary.Implementation
             }
         }
 
-        public async Task<IEnumerable<DoctorComboBox>> GetFoundedStaffsInTalonsAsync()
+        public async Task<IEnumerable<DoctorNames>> GetFoundedStaffsInTalonsAsync()
         {
             await using (var context = CreateContext())
             {
                 return await context.Talons
                     .Include(e => e.Staff)
-                    .Select(x => new DoctorComboBox { Id = x.StaffId.ToString(), Name = x.Staff.Name })
+                    .Select(x => new DoctorNames { Id = x.StaffId.ToString(), Name = x.Staff.Name })
                     .Distinct()
                     .ToListAsync();
             }

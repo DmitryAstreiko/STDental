@@ -618,7 +618,7 @@ namespace STDentalWeb
                     else await context.Response.WriteAsync("0");
                 });
                 
-                endpoints.MapGet("/deltalon", async context =>
+                /*endpoints.MapGet("/deltalon", async context =>
                 {
                     if (int.TryParse(context.Request.Query["id"], out var serviceId))
                     {
@@ -631,7 +631,7 @@ namespace STDentalWeb
                     {
                         await context.Response.WriteAsync("False");
                     }
-                });
+                });*/
 
                 endpoints.MapGet("/updtalon", async context =>
                 {

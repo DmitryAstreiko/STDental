@@ -22,12 +22,12 @@ namespace STDentalReact.Controllers
             _staffRepository = staffRepository;
         }
 
-        [HttpGet]
-        public async Task<IEnumerable<DoctorComboBox>> GetAsync()
+        [HttpGet("doctorNames")]
+        public async Task<IEnumerable<DoctorNames>> GetDoctorNamesAsync()
         {
             var doctors = await _staffRepository.GetFoundedStaffsInTalonsAsync();
 
-            return doctors.Select(doctor => new DoctorComboBox()
+            return doctors.Select(doctor => new DoctorNames()
                 {
                     Id = doctor.Id,
                     Name = doctor.Name

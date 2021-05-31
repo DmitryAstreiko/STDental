@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace STDentalLibrary.Models.ModelsResponse
 {
-    public class ServiceComboBox
+    public class DoctorNames
     {
         public string Id { get; set; }
 
