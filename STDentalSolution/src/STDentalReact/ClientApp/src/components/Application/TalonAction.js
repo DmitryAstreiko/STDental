@@ -250,7 +250,8 @@ export class TalonAction extends Component{
 
                     <div className={"d-flex justify-content-around"} style={{ marginTop: "20px" }}>
                     <Button
-                        variant="contained"
+                        //variant="contained"
+                        variant="outlined"
                         color="primary"
                         size="small"
                         //className={classes.button}
@@ -313,7 +314,7 @@ export class TalonAction extends Component{
     }
 
     async addTalon(jsonTalon) {     
-        const response = await fetch(`talons/addtalon`, 
+        const response = await fetch(`talons`, 
             {
                 method: 'POST',
                 mode: 'cors',

@@ -80,30 +80,21 @@ namespace STDentalLibrary.Implementation
             
         }
 
-        public async Task<bool> DeleteTalonAsync(int talonId)
-        {
-            try
+        public async Task DeleteTalonAsync(int talonId)
+        {            
+            await using (var context = CreateContext())
             {
-                await using (var context = CreateContext())
-                {
-                    //var helper = new EFHelperRepository(context);
+                //var helper = new EFHelperRepository(context);
 
-                    //if ((await helper.CheckContainTalonInPayment(talonId)) == false) return false;
+                //if ((await helper.CheckContainTalonInPayment(talonId)) == false) return false;
 
-                    var delTalon = await context.Talons.FindAsync(talonId);
+                var delTalon = await context.Talons.FindAsync(talonId);
 
-                    if (delTalon.PaymentStatus != PaymentStatus.NotPaid) return false;
+                //if (delTalon.PaymentStatus != PaymentStatus.NotPaid) return false;
 
-                    context.Talons.Remove(delTalon);
-                    await context.SaveChangesAsync();
-                    return true;
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error in delete talon. Detail: ${ex.Message}, {ex.StackTrace}");
-                return false;
-            } 
+                context.Talons.Remove(delTalon);
+                await context.SaveChangesAsync();
+            }            
         }
 
         public async Task<int> GetCountTalonsAsync(int? patientId, int? doctorId, DateTime? startDate, DateTime? endDate)
@@ -155,9 +146,10 @@ namespace STDentalLibrary.Implementation
         {
             await using (var context = CreateContext())
             {
-                return (Talon)context.Talons
+                return await context.Talons
                     .Include(d => d.TalonServices)
-                    .Where(w => w.TalonId == talonId);
+                    .Where(w => w.TalonId == talonId)
+                    .FirstOrDefaultAsync();
             }
         }
         public async Task<IEnumerable<TalonService>> GetTalonServicesAsync(int talonId)

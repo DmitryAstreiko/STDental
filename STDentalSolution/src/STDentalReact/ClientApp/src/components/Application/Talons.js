@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 import { Table } from 'reactstrap';
 import './Talons.css';
 import ComboBox from './Combobox.component';
@@ -19,6 +19,7 @@ import ContactlessOutlinedIcon from '@material-ui/icons/ContactlessOutlined';
 import ContactsOutlinedIcon from '@material-ui/icons/ContactsOutlined';
 import SearchOutlinedIcon from '@material-ui/icons/SearchOutlined';
 import ViewTalonServices from './ViewTalonServices';
+import {ApiClient} from './APIClient';
 
 export class Talons extends Component{
 
@@ -42,6 +43,8 @@ export class Talons extends Component{
             errorLoad: null
         }
 
+        this.apiClient = new ApiClient();
+
         this.onRowSelect = this.onRowSelect.bind(this);
         this.onClickPatient = this.onClickPatient.bind(this);
         this.onPatientSelect = this.onPatientSelect.bind(this);
@@ -58,20 +61,17 @@ export class Talons extends Component{
         this.setState({selectedTalon: row && row})
     )
 
-    deleteRowTalon(talonId) {
+    async deleteRowTalon(talonId) {
         try {
-            let www = this.deleteTalon(talonId);
+            let res = await this.deleteTalon(talonId); 
 
-            console.log(www);
+            if(res === 200) alert(`Талон №${talonId} удален!`);
 
-            (www === true) ? (
-                //this.populateCountTalons(),
-                this.populateTalons(1)            
-            ) : (
-                alert(`Талон №${talonId} не может быть удален!`)
-            )
+            if(res === 400) alert("Талон для удаления не найден!");
 
+            this.populateTalons(1);        
             this.populateCountTalons();
+
         } catch {
             alert("Ошибка удаления талона!")
         }
@@ -136,8 +136,6 @@ export class Talons extends Component{
 
     renderTalonsTable() {      
         const paginate = pageNum => { this.populateTalons(pageNum, this.state.filterTalons) };
-
-
 
         return (
             <div>
@@ -366,9 +364,10 @@ export class Talons extends Component{
     }
 
     async populatePatients() {        
-        const response = await fetch('patients/combo');
-        const data = await response.json();   
-        this.setState({ patients: data });
+        //const response = await fetch('patients/combo');
+        //const data = await response.json();  
+        const res = await this.apiClient.getPatientNames(); 
+        this.setState({ patients: res });
     }
     
     async populateDoctors() {        
@@ -388,7 +387,7 @@ export class Talons extends Component{
     }
 
     async deleteTalon(talonId) {
-        const response = await fetch(`talons/delete?talonid=${talonId}`, 
+        const response = await fetch(`talons?talonid=${talonId}`, 
         {
             method: 'DELETE',
             mode: 'cors',
@@ -398,11 +397,10 @@ export class Talons extends Component{
                 'Content-type': 'application/json'
             },
             redirect: 'follow',
-            referrerPolicy: 'no-referrer',
-            //body: jsonTalon
+            referrerPolicy: 'no-referrer'
         });
-
-        return await response.data;
+        console.log(response.status);
+        return response.status;
     }
 
     async populateTalonServices(talonId) {  

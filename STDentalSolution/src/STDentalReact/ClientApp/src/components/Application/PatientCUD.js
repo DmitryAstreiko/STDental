@@ -1,5 +1,5 @@
 import React from 'react';
-import { withStyles } from '@material-ui/core/styles';
+import { ThemeProvider, withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import MuiDialogTitle from '@material-ui/core/DialogTitle';
@@ -79,7 +79,13 @@ export default class PatientCUD extends Component {
     selectedEmail: null,
     selectedDateBorn: null,
     selectedNationality: null,
-    selectedDescription: null
+    selectedDescription: null,
+    errorFio: false,
+    errorDateBorn: false,
+    errorCity: false,
+    errorStreet: false,
+    errorPhone: false,
+    canAdd: false
   }
 }
 
@@ -88,57 +94,79 @@ onDateBornSelect = value => {
   this.setState({ selectedBornDate: res })
 }
 
-onFioInput(event) {
-  this.setState({ selectedName: event.target.value && event.target.value })
+onFioInput(event) {  
+  this.setState({ selectedName: event.target.value, errorFio: !event.target.value})
 }
 
 onCityInput(event) {
-  this.setState({ selectedCity: event.target.value && event.target.value })
+  this.setState({ selectedCity: event.target.value })
 }
 
 onStreetInput(event) {
-  this.setState({ selectedStreet: event.target.value && event.target.value })
+  this.setState({ selectedStreet: event.target.value })
 }
 
 onPhoneInput(event) {
-  this.setState({ selectedPhone: event.target.value && event.target.value })
+  this.setState({ selectedPhone: event.target.value })
 }
 
 onEmailInput(event) {
-  this.setState({ selectedEmail: event.target.value && event.target.value })
+  this.setState({ selectedEmail: event.target.value })
 }
 
 onDescriptionInput(event) {
-  this.setState({ selectedDescription: event.target.value && event.target.value })
+  this.setState({ selectedDescription: event.target.value })
 }
 
 onNationalityInput(value) {
   this.setState({ selectedNationality: value && value })
 }
 
-onSaveTalon() {   
-        
-  //check doctor, patient, tablesservices
+onSavePatient() {   
 
-  let newPatient = {
-      /*createdate: this.state.selectedTalonDate,
-      summa: this.state.selectedCost,
-      sale: 0,
-      summasales: 0,
-      cost: this.state.selectedCost,
-      paymentstatus: 1,
-      description: this.state.descriptionTalon*/
-  }
-  
-  let newjson = JSON.stringify(newPatient, null, '\t')
+    /*if (!!this.state.selectedName === false) 
+    {
+      this.setState({ errorFio: true });
+      this.setState({ canAdd: false })
+    }
+      else this.setState({ canAdd: true });
+    
+    /*  if (!!this.state.selectedCity === false) {this.setState({ errorCity: true }), this.setState({ canAdd: true })}
+      else this.setState({ canAdd: false });
+    if (!!this.state.selectedStreet === false) this.setState({ errorStreet: true }), this.setState({ canAdd: true })
+      else this.setState({ canAdd: false });
+    if (!!this.state.selectedBornDate === false) this.setState({ errorDateBorn: true }), this.setState({ canAdd: true })
+      else this.setState({ canAdd: false });
+    if (!!this.state.selectedPhone === false) this.setState({ errorPhone: true }), this.setState({ canAdd: true })
+      else this.setState({ canAdd: false });
+    */
+   console.log(`this.state.canAdd = ${this.state.canAdd}`);
+//прогнать все statе, потом проверить статусы и добавлять пациента
 
-  try{
-      //this.addPatient(newjson);
+    (this.state.errorDateBorn !== false) && 
 
-  }
-  catch {
-      alert("Не удалось добавить пациента. Попытайтесь повторить операцию.");
-  }
+    if (this.state.canAdd === true) {
+      console.log(`asdsadsads`);
+      let newPatient = {
+        name: this.state.selectedName,
+        city: this.state.selectedCity,
+        street: this.state.selectedStreet,
+        phone: this.state.selectedPhone,
+        email: this.state.selectedEmail,
+        dateborn: this.state.selectedDateBorn,
+        nationality: this.state.selectedNationality,
+        description: this.state.selectedDescription
+      }
+      
+      let newjson = JSON.stringify(newPatient, null, '\t')
+
+      try{
+          this.addPatient(newjson);
+      }
+      catch {
+          alert("Не удалось добавить пациента.");
+      }
+    }
 }
 
   render() {
@@ -165,32 +193,38 @@ onSaveTalon() {
           <DialogContent dividers>
             <FormGroup>
               <div>
-                <TextField id="outlined-basic" label="Введите ФИО пациента" variant="outlined" 
+                <TextField id="outlined-basic-fio" label="Введите ФИО пациента" variant="outlined" 
                     style={{ width: "500px", marginBottom: "20px" }}
-                    onChange={(event) => this.onFioInput(event)}/>
+                    onChange={(event) => this.onFioInput(event)}
+                    error={this.state.errorFio}/>
               </div>
               <div>
-                <TextField id="outlined-basic" label="Введите город проживания" variant="outlined" 
+                <TextField id="outlined-basic-city" label="Введите город проживания" variant="outlined" 
                     style={{ width: "500px", marginBottom: "20px" }}
-                    onChange={(event) => this.onCityInput(event)}/>
+                    onChange={(event) => this.onCityInput(event)}
+                    error={this.state.errorCity}/>
               </div>
               <div>
-                <TextField id="outlined-basic" label="Введите адрес проживания" variant="outlined" 
+                <TextField id="outlined-basic-street" label="Введите адрес проживания" variant="outlined" 
                     style={{ width: "500px", marginBottom: "20px" }}
-                    onChange={(event) => this.onStreetInput(event)}/>
+                    onChange={(event) => this.onStreetInput(event)}
+                    error={this.state.errorStreet}/>
               </div>
               <div>
-                <TextField id="outlined-basic" label="Введите контактный телефон" variant="outlined" 
+                <TextField id="outlined-basic-phone" label="Введите контактный телефон" variant="outlined" 
                     style={{ width: "500px", marginBottom: "20px" }}
-                    onChange={(event) => this.onPhoneInput(event)}/>
+                    onChange={(event) => this.onPhoneInput(event)}
+                    error={this.state.errorPhone}/>
               </div>
               <div>
-                <TextField id="outlined-basic" label="Введите адрес электронной почты" variant="outlined" 
+                <TextField id="outlined-basic-email" label="Введите адрес электронной почты" variant="outlined" 
                     style={{ width: "500px", marginBottom: "20px" }}
                     onChange={(event) => this.onEmailInput(event)}/>
               </div>
               <div>
-                <DatePicker labelvalue={"Введите дату рождения"} onSelected={ (value) => this.onDateBornSelect(value) } />
+                <DatePicker id="date-born" labelvalue={"Введите дату рождения"} 
+                  onSelected={ (value) => this.onDateBornSelect(value) } 
+                  error={this.state.errorDateBorn} />
               </div>
               <div style={{ height: "20px" }}>                
               </div>
@@ -209,35 +243,48 @@ onSaveTalon() {
             </FormGroup>
 
           </DialogContent>
-          <DialogActions>
-            <Button
-              variant="outlined"
-              color="primary"
-              size="small"
-              //className={classes.button}
-              startIcon={<SaveIcon />}
-              //style={{ background: "yellow" }}
-              onClick={() => this.onSavePatient()}
-              >Сохранить
-            </Button>
+          
+            <div className={"d-flex justify-content-around"} style={{ marginTop: "20px", marginBottom: "20px" }}>
+              <Button
+                variant="outlined"
+                color="primary"
+                size="small"
+                //className={classes.button}
+                startIcon={<SaveIcon />}
+                //style={{ background: "yellow" }}
+                onClick={() => this.onSavePatient()}
+                >Сохранить
+              </Button>
 
-            <Button
-              variant="outlined"
-              color="primary"
-              endIcon={<HomeOutlinedIcon />}
-              onClick={() => this.setState({ open: false })}
-              >Закрыть
-            </Button>
-          </DialogActions>
+              <Button
+                variant="outlined"
+                color="primary"
+                endIcon={<HomeOutlinedIcon />}
+                onClick={() => this.setState({ open: false })}
+                >Закрыть
+              </Button>
+            </div>
+                  
         </Dialog>
       </div>
     )
   }
 
-  /*async populateTalonServices(talonId) {  
-    console.log(`populateTalonServices`);      
-    const response = await fetch(`talons/services?talonid=${talonId}`);
-    const data = await response.json();   
-    this.setState({ services: data });
-}*/
+  async addPatient(jsonTalon) {     
+    const response = await fetch(`patients/addpatient`, 
+        {
+            method: 'POST',
+            mode: 'cors',
+            cache: 'no-cache',
+            credentials: 'same-origin',
+            headers: {
+                'Content-type': 'application/json'
+            },
+            redirect: 'follow',
+            referrerPolicy: 'no-referrer',
+            body: jsonTalon
+        });
+
+    return await response.json();        
+  }
 }

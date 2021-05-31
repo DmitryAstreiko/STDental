@@ -61,5 +61,19 @@ namespace STDentalReact.Controllers
         {
             return await _patientRepository.GetCountPatientsAsync(fioSearch);
         }
+
+        [HttpPost]
+        public async Task<int> PostPatientAsync([FromBody] Patient patient)
+        {
+            try
+            {
+                return await _patientRepository.AddPatientAsync(patient);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Patient didn`t add. Detail: {e.StackTrace}");
+                return 0;
+            }
+        }
     }
 }

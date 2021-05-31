@@ -69,12 +69,14 @@ namespace STDentalReact.Controllers
                 .ToArray();
         }
 
-        [HttpPost("addtalon")]
-        public async Task<int> AddTalonAsync([FromBody] Talon talon)
+        [HttpPost]
+        public async Task<int> PostTalonAsync([FromBody] Talon talon)
         {
             try
             {
                 return await _talonRepository.AddTalonAsync(talon);
+                //var res = await _talonRepository.AddTalonAsync(talon);
+                
             }
             catch (Exception e)
             {
@@ -83,19 +85,18 @@ namespace STDentalReact.Controllers
             }
         }
 
-        [HttpDelete("delete")]
-        public async Task<bool> DeleteTalonAsync(int talonId)
+        [HttpDelete]
+        public async Task<IActionResult> DeleteTalonAsync(int talonId)
         {
-            try
-            {
-                return await _talonRepository.DeleteTalonAsync(talonId);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine($"Talon didn`t add. Detail: {e.StackTrace}");
-                return false;
-            }
-        }
 
+            var delTalon = await _talonRepository.GetTalonAsync(talonId);
+
+            if (delTalon == null) return BadRequest();            
+            
+            await _talonRepository.DeleteTalonAsync(talonId);
+
+            //Response.StatusCode = StatusCodes.Status200OK;
+            return Ok();
+        }
     }
 }

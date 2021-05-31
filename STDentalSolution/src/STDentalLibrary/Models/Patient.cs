@@ -16,6 +16,8 @@ namespace STDentalLibrary.Models
 
         public string Phone { get; set; }
 
+        public string Email { get; set; }
+
         public DateTime DateBorn { get; set; }
 
         public Nationality Nationality { get; set; }

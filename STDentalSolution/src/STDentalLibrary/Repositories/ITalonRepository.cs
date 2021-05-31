@@ -28,7 +28,7 @@ namespace STDentalLibrary.Repositories
 
         Task<bool> UpdateTalonAsync(Talon talon);
 
-        Task<bool> DeleteTalonAsync(int talonId);
+        Task DeleteTalonAsync(int talonId);
         
         Task<int> AddPaymentAsync(Payment payment);
     }
