@@ -25,6 +25,7 @@ namespace STDentalLibrary.Implementation
             await using (var context = CreateContext())
             {
                 var res = await context.Patients.AddAsync(patient);
+                await context.SaveChangesAsync();
                 return res.Entity.PatientId;
             }
         }
@@ -99,8 +100,6 @@ namespace STDentalLibrary.Implementation
                if (fioSearch != null)
                 {
                     query = query.Where(a => a.Name.ToLower().StartsWith(fioSearch.ToLower()));
-
-                    //query.Where(a => );
                 }
 
                 return await query.OrderBy(w => w.Name)

@@ -48,25 +48,15 @@ export default class Patients extends Component{
 
     componentDidMount() {
         this.populateCountPatients();
-        this.populatePatients(this.state.currentPage);      
+        this.populatePatients(this.state.currentPage, this.state.patientsPerPage);      
     } 
 
     onSearchFIOPatient(event) {
 
         let fioSearch = `&fiosearch=${event.target.value}`;
         
-        this.populatePatients(1, fioSearch);
-        this.populateCountPatients(fioSearch);
-
-        /*!(inputText) ? 
-        (
-            this.populatePatients(this.state.currentPage, fioSearch),
-            this.populateCountPatients(fioSearch)
-        ) : 
-        (
-            this.populatePatients(this.state.currentPage),
-            this.populateCountPatients()
-        ) */               
+        this.populatePatients(1, this.state.patientsPerPage, fioSearch);
+        this.populateCountPatients(fioSearch);              
     }
 
     deleteRowPatient = value => {
@@ -88,7 +78,7 @@ export default class Patients extends Component{
     }
 
     render() {
-        const paginate = pageNum => { this.populatePatients(pageNum) };
+        const paginate = pageNum => { this.populatePatients(pageNum, this.state.patientsPerPage) };
 
         return(
             <div>
@@ -213,17 +203,14 @@ export default class Patients extends Component{
         )
     }
 
-    async populatePatients(page, filter=null) {
-        try{
-            let filterRow = `patients?page=${page}&itemsPerPage=${this.state.patientsPerPage}${filter}`.replace('null','');
+    async populatePatients(page, perPage, filter=null) {
+       
+        let filterRow = `patients?page=${page}&itemsPerPage=${perPage}${filter}`.replace('null','');
 
-            const response = await fetch(filterRow);
-            const data = await response.json();   
-            this.setState({ patients: data, loadingPatients: false, currentPage: page });
-        }
-        catch (error) {
-            this.setState({ errorLoad: error });
-        }
+        const response = await fetch(filterRow);
+        const data = await response.json();   
+        this.setState({ patients: data, loadingPatients: false, currentPage: page });
+
     }
 
     async populateCountPatients(filter=null) {

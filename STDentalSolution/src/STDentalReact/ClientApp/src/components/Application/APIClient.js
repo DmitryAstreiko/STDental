@@ -23,6 +23,12 @@ export class ApiClient {
         return await response.json();
     };
 
+    async getPatients(page, filter, perPage){
+        let filterRow = `patients?page=${page}&itemsPerPage=${perPage}${filter}`.replace('null','');
+
+        const response = await fetch(filterRow);
+        return await response.json();   
+    }
     //------staffs-------------------
     async getDoctorNames() {
         const response = await fetch('staffs/doctorNames');

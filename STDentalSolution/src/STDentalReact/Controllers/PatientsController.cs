@@ -67,8 +67,8 @@ namespace STDentalReact.Controllers
         {
             try
             {
-                var res = await _patientRepository.AddPatientAsync(patient);
-                return Ok(res);
+                await _patientRepository.AddPatientAsync(patient);
+                return Ok();
             }
             catch 
             {
