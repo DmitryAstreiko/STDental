@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using STDentalLibrary.Implementation;
 using STDentalLibrary.Models;
 using STDentalLibrary.Models.Enums;
 using STDentalLibrary.Models.ModelsResponse;
@@ -17,11 +18,13 @@ namespace STDentalReact.Controllers
     {
         private readonly ILogger<PatientsController> _logger;
         private readonly IPatientRepository _patientRepository;
+        private readonly IHelper _helper;
 
-        public PatientsController(ILogger<PatientsController> logger, IPatientRepository patientRepository)
+        public PatientsController(ILogger<PatientsController> logger, IPatientRepository patientRepository, IHelper helper)
         {
             _logger = logger;
             _patientRepository = patientRepository;
+            _helper = helper;
         }
 
         [HttpGet("patientNames")]
@@ -71,6 +74,25 @@ namespace STDentalReact.Controllers
                 return Ok();
             }
             catch 
+            {
+                return BadRequest();
+            }
+        }
+
+        [HttpDelete]
+        public async Task<IActionResult> DeletePatientAsync(int patientId)
+        {
+            try
+            {
+                //var delTalon = _patientRepository.GetPatientAsync(patientId);
+                var www = await _helper.CheckContainPatientInTalon(patientId);
+
+                if (www > 0) return BadRequest();
+
+                await _patientRepository.DeletePatientAsync(patientId);
+                return Ok();
+            }
+            catch
             {
                 return BadRequest();
             }

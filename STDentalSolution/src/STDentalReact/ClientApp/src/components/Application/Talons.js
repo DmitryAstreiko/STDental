@@ -74,8 +74,7 @@ export class Talons extends Component{
 
         } catch {
             alert("Ошибка удаления талона!")
-        }
-        
+        }        
     }
 
     onPatientSelect = value => {
@@ -387,7 +386,6 @@ export class Talons extends Component{
             redirect: 'follow',
             referrerPolicy: 'no-referrer'
         });
-        console.log(response.status);
         return response.status;
     }
 

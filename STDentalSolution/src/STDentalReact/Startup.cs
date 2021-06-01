@@ -36,6 +36,7 @@ namespace STDentalReact
             services.AddTransient<IPatientRepository, EFPatientRepository>();
             services.AddTransient<IStaffRepository, EFStaffRepository>();
             services.AddTransient<IServiceRepository, EFServiceRepository>();
+            services.AddTransient<IHelper, EFHelper>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

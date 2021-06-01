@@ -20,7 +20,7 @@ export class ApiClient {
             referrerPolicy: 'no-referrer',
             body: jsonTalon
         });
-        return await response.json();
+        return response.status;
     };
 
     async getPatients(page, perPage, filter){
@@ -30,6 +30,23 @@ export class ApiClient {
         response = await fetch(`patients?page=${page}&itemsPerPage=${perPage}${filter}`)
 
         return await response.json();   
+    }
+
+    async delPatient(patientId){
+        const response = await fetch(`patients?patientId=${patientId}`, 
+        {
+            method: 'DELETE',
+            mode: 'cors',
+            cache: 'no-cache',
+            credentials: 'same-origin',
+            headers: {
+                'Content-type': 'application/json'
+            },
+            redirect: 'follow',
+            referrerPolicy: 'no-referrer'
+        });
+        console.log(response.status);
+        return response.status;
     }
     //------staffs-------------------
     async getDoctorNames() {

@@ -286,7 +286,7 @@ namespace STDentalWeb
                     else await context.Response.WriteAsync("0");
                 });
 
-                endpoints.MapGet("/delpatient", async context =>
+                /*endpoints.MapGet("/delpatient", async context =>
                 {
                     if (int.TryParse(context.Request.Query["id"], out var patientId))
                     {
@@ -299,7 +299,7 @@ namespace STDentalWeb
                     {
                         await context.Response.WriteAsync("False");
                     }
-                });
+                });*/
 
                 endpoints.MapGet("/updatepatient", async context =>
                 {

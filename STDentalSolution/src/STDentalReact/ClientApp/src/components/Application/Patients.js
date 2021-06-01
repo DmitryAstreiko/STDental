@@ -15,6 +15,7 @@ import PersonAddOutlinedIcon from '@material-ui/icons/PersonAddOutlined';
 import IconButton from '@material-ui/core/IconButton';
 import PatientCUD from './PatientCUD';
 import { ApiClient } from './APIClient';
+import { ThemeProvider } from '@material-ui/styles';
 
 //import { makeStyles } from '@material-ui/core/styles';
 
@@ -62,13 +63,23 @@ export default class Patients extends Component{
         this.populateCountPatients(fioSearch);              
     }
 
-    deleteRowPatient = value => {
-        /*let rows = this.state.tableServices;
+    async deleteRowPatient(patientId) {
+        try {
 
-        rows.splice(value, 1); 
-        this.setState({tableServices: rows});
+            let res = await this.deletePatient(patientId); 
+            console.log(res);
+            if(res === 200) alert(`Пациент №${patientId} удален!`);
 
-        this.CountCostAllTalons();*/
+            if(res === 400) alert("Пациент для удаления не найден!");
+
+            if(res === 405) alert("Ошибка. Method Not Allowed!");
+
+            this.populatePatients(this.state.currentPage, this.state.patientsPerPage);        
+            this.populateCountPatients();
+
+        } catch {
+            alert("Ошибка удаления пациента!")
+        }
     }
 
     editRowPatient = value => {
@@ -95,7 +106,7 @@ export default class Patients extends Component{
                             onChange={(event) => this.onSearchFIOPatient(event)} />
                         </div>
                     </div>                        
-                    <PatientCUD />
+                    <PatientCUD recountPatient={ () => this.populateCountPatients() }/>
                 </div>               
 
                 {this.state.loadingPatients ? (
@@ -141,7 +152,7 @@ export default class Patients extends Component{
                                                         <IconButton 
                                                             aria-label="edit" 
                                                             style={{ color: green[500] }}
-                                                            onClick={ () => (this.deleteRowPatient(index)) }>
+                                                            onClick={ () => (this.editPatient(patient.id)) }>
                                                             <EditIcon fontSize="small" />
                                                         </IconButton>
                                                     </td>
@@ -164,7 +175,7 @@ export default class Patients extends Component{
                                                         <IconButton 
                                                             aria-label="delete" 
                                                             color="secondary"
-                                                            onClick={ () => (this.deleteRowPatient(index)) }>
+                                                            onClick={ () => (this.deletePatient(patient.id)) }>
                                                             <DeleteIcon fontSize="small" />
                                                         </IconButton>
                                                     </td> 
@@ -215,7 +226,6 @@ export default class Patients extends Component{
         //const res = this.apiClient.getPatients(page, perPage, filter);
 
         this.setState({ patients: res, loadingPatients: false, currentPage: page });
-
     }
 
     async populateCountPatients(filter=null) {
@@ -225,5 +235,10 @@ export default class Patients extends Component{
 
         const data = await response.json();
         this.setState({ patientsCount: data });
+    }
+
+    async deletePatient(patientId) {
+        const res = this.apiClient.delPatient(patientId);
+        return res;
     }
 }

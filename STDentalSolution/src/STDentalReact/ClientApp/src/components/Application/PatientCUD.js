@@ -129,14 +129,11 @@ onNationalityInput(event) {
 
 async onSavePatient() {   
 
+//прогнать все statе, потом проверить статусы 
 
-   console.log(`this.state.canAdd = ${this.state.canAdd}`);
-//прогнать все statе, потом проверить статусы и добавлять пациента
 
-    
-
+    console.log(`errorFio = ${this.state.errorFio}`);
    
-      console.log(`this.state.selectedNationality = ${this.state.selectedNationality}`);
       let newPatient = {
         name: this.state.selectedName,
         city: this.state.selectedCity,
@@ -144,20 +141,22 @@ async onSavePatient() {
         phone: this.state.selectedPhone,
         email: this.state.selectedEmail,
         dateborn: this.state.selectedDateBorn,
-        //nationality: (this.state.selectedNationality === '1') ? ("BY") : ("Other"),
-        nationality: "BY",
+        nationality: (this.state.selectedNationality === '1') ? 1 : 0,
         description: this.state.selectedDescription
       }
       
       let newjson = JSON.stringify(newPatient, null, '\t')
 
       try{
-
           const res = await this.addPatient(newjson);
 
-          if(res.status === 200) alert(`Пациент успешно добавлен!`);
+          if(res === 200) {
+            alert(`Пациент успешно добавлен!`);
+            this.setState({ open: false });
+            //() => props.recountPatient();
+          }
 
-          if(res.status === 400) alert("Пациент не добавлен в систему!");
+          if(res === 400) alert("Пациент не добавлен в систему!");
       }
       catch {
           alert("Не удалось добавить пациента.");
@@ -165,6 +164,8 @@ async onSavePatient() {
 }
 
   render() {
+    //const { recountPatient } = this.props;
+
     return (
       <div>
           <Button

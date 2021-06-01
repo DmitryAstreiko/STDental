@@ -30,28 +30,21 @@ namespace STDentalLibrary.Implementation
             }
         }
         
-        public async Task<bool> DeletePatientAsync(int patientId)
+        public async Task DeletePatientAsync(int patientId)
         {
-            try
+            await using (var context = CreateContext())
             {
-                await using (var context = CreateContext())
-                {
-                    var helper = new EFHelperRepository(context);
+                    //var helper = new EFHelperRepository(context);
 
-                    if (await helper.CheckContainPatientInTalons(patientId)) return false;
+                    //if (await helper.CheckContainPatientInTalons(patientId)) return false;
 
                     var delPatient = await context.Patients.FindAsync(patientId);
 
-                    if (delPatient == null) return false;
+                    //if (delPatient == null) return false;
 
                     context.Patients.Remove(delPatient);
                     await context.SaveChangesAsync();
-                    return true;
-                }
-            }
-            catch
-            {
-                return false;
+                    //return true;
             }
         }
 
