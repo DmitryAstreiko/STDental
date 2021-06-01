@@ -14,6 +14,7 @@ import { green } from '@material-ui/core/colors';
 import PersonAddOutlinedIcon from '@material-ui/icons/PersonAddOutlined';
 import IconButton from '@material-ui/core/IconButton';
 import PatientCUD from './PatientCUD';
+import { ApiClient } from './APIClient';
 
 //import { makeStyles } from '@material-ui/core/styles';
 
@@ -44,6 +45,8 @@ export default class Patients extends Component{
             imputPhone: null,
             patientsCount: null
         }
+
+        this.apiClient = new ApiClient();
     }
 
     componentDidMount() {
@@ -203,13 +206,15 @@ export default class Patients extends Component{
         )
     }
 
-    async populatePatients(page, perPage, filter=null) {
-       
-        let filterRow = `patients?page=${page}&itemsPerPage=${perPage}${filter}`.replace('null','');
+    async populatePatients(page, perPage, filter=null) {       
+        let response;
+        (!filter) ? response = await fetch(`patients?page=${page}&itemsPerPage=${perPage}`) :
+        response = await fetch(`patients?page=${page}&itemsPerPage=${perPage}${filter}`)
 
-        const response = await fetch(filterRow);
-        const data = await response.json();   
-        this.setState({ patients: data, loadingPatients: false, currentPage: page });
+        const res = await response.json(); 
+        //const res = this.apiClient.getPatients(page, perPage, filter);
+
+        this.setState({ patients: res, loadingPatients: false, currentPage: page });
 
     }
 
