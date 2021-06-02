@@ -23,11 +23,34 @@ export class ApiClient {
         return response.status;
     };
 
+    async editPatient(jsonTalon) {
+        const response = await fetch(`patients`, 
+        {
+            method: 'PUT',
+            mode: 'cors',
+            cache: 'no-cache',
+            credentials: 'same-origin',
+            headers: {
+                'Content-type': 'application/json'
+            },
+            redirect: 'follow',
+            referrerPolicy: 'no-referrer',
+            body: jsonTalon
+        });
+        return response.status;
+    };
+
     async getPatients(page, perPage, filter){
 
         let response;
         (!filter) ? response = await fetch(`patients?page=${page}&itemsPerPage=${perPage}`) :
         response = await fetch(`patients?page=${page}&itemsPerPage=${perPage}${filter}`)
+
+        return await response.json();   
+    };
+
+    async getPatient(patientId){
+        const response = await fetch(`patients/patient?patientId=${patientId}`);
 
         return await response.json();   
     }

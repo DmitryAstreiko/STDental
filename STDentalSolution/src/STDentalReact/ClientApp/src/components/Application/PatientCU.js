@@ -66,13 +66,14 @@ const DialogActions = withStyles((theme) => ({
   },
 }))(MuiDialogActions);
 
-export default class PatientCUD extends Component {
+export default class PatientCU extends Component {
   
   constructor(props){
     super(props);
 
     this.state = {
-    open: false,
+    //open: false,
+    open: this.props.visibleModal,
     selectedName: null,
     selectedCity: null,
     selectedStreet: null,
@@ -89,7 +90,6 @@ export default class PatientCUD extends Component {
     errorEmail: false,
     errorDescription: false,
     errorNationality: false,
-    canAdd: false
   }
 
   this.apiClient = new ApiClient();
@@ -127,12 +127,13 @@ onNationalityInput(event) {
   this.setState({ selectedNationality: event.target.value, errorNationality: !event.target.value})
 }
 
-async onSavePatient() {   
+componentDidMount(){
+  console.log(this.props.selectedPatientId);
+  this.fillFields(this.props.selectedPatientId);
+}
 
-//прогнать все statе, потом проверить статусы 
-
-
-    console.log(`errorFio = ${this.state.errorFio}`);
+async onSavePatient() {
+  console.log(`errorFio = ${this.state.errorFio}`);
    
       let newPatient = {
         name: this.state.selectedName,
@@ -152,23 +153,85 @@ async onSavePatient() {
 
           if(res === 200) {
             alert(`Пациент успешно добавлен!`);
-            this.setState({ open: false });
-            //() => props.recountPatient();
+            this.onClose();
           }
 
           if(res === 400) alert("Пациент не добавлен в систему!");
       }
       catch {
           alert("Не удалось добавить пациента.");
-      }  
+      }
+}
+
+async onEditPatient() {
+  let newPatient = {
+    name: this.state.selectedName,
+    city: this.state.selectedCity,
+    street: this.state.selectedStreet,
+    phone: this.state.selectedPhone,
+    email: this.state.selectedEmail,
+    dateborn: this.state.selectedDateBorn,
+    nationality: (this.state.selectedNationality === '1') ? 1 : 0,
+    description: this.state.selectedDescription
+  }
+  
+  let newjson = JSON.stringify(newPatient, null, '\t')
+
+  try{
+      const res = await this.editPatient(newjson);
+
+      if(res === 200) {
+        alert(`Пациент успешно обновлен!`);
+        this.onClose();
+      }
+
+      if(res === 400) alert("Пациент не обновлен!");
+  }
+  catch {
+      alert("Не удалось обновить реквизиты пациента.");
+  }
+}
+
+onButtonSave() {   
+
+//прогнать все statе, потом проверить статусы 
+
+  (this.props.operationInsert) && this.onSavePatient();
+
+  (this.props.operationEdit) && this.onEditPatient();
+}
+
+onClose() {
+  this.setState({ open: false });
+  this.props.changeState();
+  this.props.selectCountPatients();
+  this.props.selectPatients();
+}
+
+async fillFields(patientId) {
+  const selectedPatient = await this.apiClient.getPatient(patientId);
+
+  this.setState({ selectedName: selectedPatient.name });
+  this.setState({ selectedCity: selectedPatient.city });
+  this.setState({ selectedStreet: selectedPatient.street });
+  this.setState({ selectedEmail: selectedPatient.email });
+  this.setState({ selectedDateBorn: selectedPatient.dateBorn });
+  this.setState({ selectedPhone: selectedPatient.phone });
+  this.setState({ selectedNationality: (selectedPatient.nationality === 'BY') ? 1 : 0 });
+  this.setState({ selectedDescription: selectedPatient.description });
+
+  console.log(selectedPatient);
+
 }
 
   render() {
-    //const { recountPatient } = this.props;
+    //const { visibleModal } = this.props;
+
+    //(this.props.operationEdit) && (this.fillFields(this.props.selectedPatientd));
 
     return (
       <div>
-          <Button
+        { /* <Button
               //variant="contained"
               variant="outlined"
               color="secondary"
@@ -178,13 +241,14 @@ async onSavePatient() {
               startIcon={<PersonAddOutlinedIcon />}
               //height="15px" 
               onClick={() => (this.setState({ open: true }))}>
-          Добавить пациента</Button>        
-        <Dialog onClose={() => this.setState({ open: false })} aria-labelledby="customized-dialog-title" open={this.state.open}>
+        Добавить пациента</Button> */     }  
+        <Dialog onClose={() => this.onClose()} aria-labelledby="customized-dialog-title" open={this.state.open}>
           <DialogTitle id="customized-dialog-title" 
-            onClose={() => this.setState({ open: false })} 
+            onClose={() => this.onClose()} 
             style={{ fontSize: "5px" }}
-            maxWidth="true">
-              Добавление пациента
+            //maxWidth="true"
+            >
+              {this.props.valueForm}
           </DialogTitle>
           <DialogContent dividers>
             <FormGroup>
@@ -192,35 +256,41 @@ async onSavePatient() {
                 <TextField id="outlined-basic-fio" label="Введите ФИО пациента" variant="outlined" 
                     style={{ width: "500px", marginBottom: "20px" }}
                     onChange={(event) => this.onFioInput(event)}
+                    value={this.state.selectedName}
                     error={this.state.errorFio}/>
               </div>
               <div>
                 <TextField id="outlined-basic-city" label="Введите город проживания" variant="outlined" 
                     style={{ width: "500px", marginBottom: "20px" }}
                     onChange={(event) => this.onCityInput(event)}
+                    value={this.state.selectedCity}
                     error={this.state.errorCity}/>
               </div>
               <div>
                 <TextField id="outlined-basic-street" label="Введите адрес проживания" variant="outlined" 
                     style={{ width: "500px", marginBottom: "20px" }}
                     onChange={(event) => this.onStreetInput(event)}
+                    value={this.state.selectedStreet}
                     error={this.state.errorStreet}/>
               </div>
               <div>
                 <TextField id="outlined-basic-phone" label="Введите контактный телефон" variant="outlined" 
                     style={{ width: "500px", marginBottom: "20px" }}
                     onChange={(event) => this.onPhoneInput(event)}
+                    value={this.state.selectedPhone}
                     error={this.state.errorPhone}/>
               </div>
               <div>
                 <TextField id="outlined-basic-email" label="Введите адрес электронной почты" variant="outlined" 
                     style={{ width: "500px", marginBottom: "20px" }}
-                    onChange={(event) => this.onEmailInput(event)}/>
+                    onChange={(event) => this.onEmailInput(event)}
+                    value={this.state.selectedEmail}/>
               </div>
               <div>
                 <DatePicker id="date-born" labelvalue={"Введите дату рождения"} 
                   onSelected={ (value) => this.onDateBornSelect(value) } 
-                  error={this.state.errorDateBorn} />
+                  error={this.state.errorDateBorn} 
+                  value={this.state.selectedDateBorn} />
               </div>
               <div style={{ height: "20px" }}>                
               </div>
@@ -235,7 +305,8 @@ async onSavePatient() {
               <div>
                 <TextField id="outlined-basic" label="Введите комментарий" variant="outlined" 
                     style={{ width: "500px", marginBottom: "20px" }}
-                    onChange={(event) => this.onDescriptionInput(event)}/>
+                    onChange={(event) => this.onDescriptionInput(event)}
+                    value={this.state.selectedDescription}/>
               </div>
             </FormGroup>
 
@@ -249,7 +320,7 @@ async onSavePatient() {
                 //className={classes.button}
                 startIcon={<SaveIcon />}
                 //style={{ background: "yellow" }}
-                onClick={() => this.onSavePatient()}
+                onClick={() => this.onButtonSave()}
                 >Сохранить
               </Button>
 
@@ -257,7 +328,8 @@ async onSavePatient() {
                 variant="outlined"
                 color="primary"
                 endIcon={<HomeOutlinedIcon />}
-                onClick={() => this.setState({ open: false })}
+                //onClick={() => this.setState({ open: false })}
+                onClick={() => this.onClose()}
                 >Закрыть
               </Button>
             </div>
@@ -269,6 +341,11 @@ async onSavePatient() {
 
   async addPatient(jsonTalon) {     
     const res = await this.apiClient.addPatient(jsonTalon);    
+    return res;
+  }
+
+  async editPatient(jsonTalon) {     
+    const res = await this.apiClient.editPatient(jsonTalon);    
     return res;
   }
 }

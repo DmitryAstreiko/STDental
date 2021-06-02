@@ -13,7 +13,7 @@ import Button from '@material-ui/core/Button';
 import { green } from '@material-ui/core/colors';
 import PersonAddOutlinedIcon from '@material-ui/icons/PersonAddOutlined';
 import IconButton from '@material-ui/core/IconButton';
-import PatientCUD from './PatientCUD';
+import PatientCU from './PatientCU';
 import { ApiClient } from './APIClient';
 import { ThemeProvider } from '@material-ui/styles';
 
@@ -44,7 +44,10 @@ export default class Patients extends Component{
             inputDateBorn: null,
             inputNationality: null,
             imputPhone: null,
-            patientsCount: null
+            patientsCount: null,
+            patientInsert: false,
+            patientEdut: false,
+            selectedPatient: []
         }
 
         this.apiClient = new ApiClient();
@@ -91,12 +94,31 @@ export default class Patients extends Component{
         this.CountCostAllTalons();*/
     }
 
+    onInsertPatient(){
+        this.setState({ patientInsert: true });
+        this.setState({ patientEdit: false });
+    }
+
+    async onEditPatient(patientId){
+        this.setState({ selectedPatientId: patientId });
+        this.setState({ patientEdit: true });
+        this.setState({ patientInsert: false })              
+    }
+
+    closePatient(){
+        this.setState({ patientInsert: false });
+        this.setState({ patientIEdit: false });
+    }
+
     render() {
         const paginate = pageNum => { this.populatePatients(pageNum, this.state.patientsPerPage) };
+        const changeState = () => { this.closePatient() };
+        const selectCountPatients = () => { this.populateCountPatients() };
+        const selectPatients = () => { this.populatePatients(1, this.state.patientsPerPage) };
 
         return(
             <div>
-                <MenuAdministrator />                
+                <MenuAdministrator />
 
                 <div className={"d-flex justify-content-around"}>
                     <div >
@@ -105,8 +127,25 @@ export default class Patients extends Component{
                             style={{ width: "600px", marginBottom: "20px" }}
                             onChange={(event) => this.onSearchFIOPatient(event)} />
                         </div>
-                    </div>                        
-                    <PatientCUD recountPatient={ () => this.populateCountPatients() }/>
+                    </div>                      
+                    {this.state.patientInsert && <PatientCU visibleModal="true" changeState={ changeState } valueForm={"Добавление пациента"} 
+                        operationInsert={true} operationEdit={false} selectCountPatients={ selectCountPatients } selectPatients={ selectPatients } 
+                        patient={null}/>}
+
+                    {this.state.patientEdit && <PatientCU visibleModal="true" changeState={ changeState } valueForm={"Редактирование пациента"} 
+                        operationInsert={false} operationEdit={true} selectCountPatients={ selectCountPatients } selectPatients={ selectPatients } 
+                        selectedPatientId={this.state.selectedPatientId}/>}
+                    <Button
+                        //variant="contained"
+                        variant="outlined"
+                        color="secondary"
+                        size="small"
+                        //style={{ top: "10px", justifyContent: "flex-end" }}
+                        //className={classes.button}
+                        startIcon={<PersonAddOutlinedIcon />}
+                        height="50px" 
+                        onClick={() => this.onInsertPatient()}>
+                    Добавить пациента</Button>
                 </div>               
 
                 {this.state.loadingPatients ? (
@@ -144,7 +183,7 @@ export default class Patients extends Component{
                                                     <td>{patient.city}</td> 
                                                     <td>{patient.street}</td> 
                                                     <td>{patient.phone}</td> 
-                                                    <td>{moment(patient.dateborn).format("DD.MM.YYYY")}</td> 
+                                                    <td>{moment(patient.dateBorn).format("DD.MM.YYYY")}</td> 
                                                     <td>{(patient.nationality === "BY") ? ('Республика Беларусь') : ('Иное')}</td> 
                                                     <td>{patient.description}</td> 
                                                     <td>
@@ -152,7 +191,7 @@ export default class Patients extends Component{
                                                         <IconButton 
                                                             aria-label="edit" 
                                                             style={{ color: green[500] }}
-                                                            onClick={ () => (this.editPatient(patient.id)) }>
+                                                            onClick={ () => (this.onEditPatient(patient.id)) }>
                                                             <EditIcon fontSize="small" />
                                                         </IconButton>
                                                     </td>

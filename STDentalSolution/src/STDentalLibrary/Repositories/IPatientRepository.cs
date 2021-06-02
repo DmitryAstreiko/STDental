@@ -21,7 +21,7 @@ namespace STDentalLibrary.Repositories
 
         Task<int> AddPatientAsync(Patient patient);
 
-        Task<bool> UpdatePatientAsync(Patient patient);
+        Task UpdatePatientAsync(Patient patient);
 
         Task DeletePatientAsync(int patientId);
     }

@@ -102,21 +102,13 @@ namespace STDentalLibrary.Implementation
             }
         }
 
-        public async Task<bool> UpdatePatientAsync(Patient patient)
+        public async Task UpdatePatientAsync(Patient patient)
         {
-            try
+            await using (var context = CreateContext())
             {
-                await using var context = CreateContext();
-
                 context.Patients.Attach(patient);
 
                 await context.SaveChangesAsync();
-
-                return true;
-            }
-            catch
-            {
-                return false;
             }
         }
 

@@ -19,10 +19,12 @@ namespace STDentalLibrary.Models.ModelsResponse
 
         public string Phone { get; set; }
 
+        public string Email { get; set; }
+
         public DateTime DateBorn { get; set; }
 
         public string Nationality { get; set; }
 
-        public string Desription { get; set; }
+        public string Description { get; set; }
     }
 }

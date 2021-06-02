@@ -54,9 +54,28 @@ namespace STDentalReact.Controllers
                     DateBorn = patient.DateBorn,
                     Phone = patient.Phone,
                     Nationality = patient.Nationality.ToString(),
-                    Desription = patient.Description
+                    Description = patient.Description
                 })
                 .ToArray();
+        }
+
+        [HttpGet("patient")]
+        public async Task<PatientInfo> GetPatientAsync(int patientId)
+        {
+            var patient = await _patientRepository.GetPatientAsync(patientId);
+
+            return new PatientInfo()
+            {
+                Id = patient.PatientId,
+                Name = patient.Name,
+                City = patient.City,
+                Street = patient.Street,
+                DateBorn = patient.DateBorn,
+                Phone = patient.Phone,
+                Email = patient.Email,
+                Nationality = patient.Nationality.ToString(),
+                Description = patient.Description
+            };
         }
 
         [HttpGet("count")]
@@ -90,6 +109,20 @@ namespace STDentalReact.Controllers
                 if (www > 0) return BadRequest();
 
                 await _patientRepository.DeletePatientAsync(patientId);
+                return Ok();
+            }
+            catch
+            {
+                return BadRequest();
+            }
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> PutPatientAsync([FromBody] Patient patient)
+        {
+            try
+            {
+                await _patientRepository.UpdatePatientAsync(patient);
                 return Ok();
             }
             catch
