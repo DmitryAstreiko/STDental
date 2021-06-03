@@ -90,8 +90,6 @@ export class TalonAction extends Component{
     }
 
     onDateStartSelect = value => {
-        //let res = moment(value).format('DD.MM.YYYY')
-        //this.setState({ selectedTalonDate: moment(value).format('DD.MM.YYYY') })
         this.setState({ selectedTalonDate: moment(value).format('YYYY-MM-DD') })
     }
 

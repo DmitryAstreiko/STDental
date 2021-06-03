@@ -15,7 +15,7 @@ import PersonAddOutlinedIcon from '@material-ui/icons/PersonAddOutlined';
 import IconButton from '@material-ui/core/IconButton';
 import PatientCU from './PatientCU';
 import { ApiClient } from './APIClient';
-import { ThemeProvider } from '@material-ui/styles';
+//import { ThemeProvider } from '@material-ui/styles';
 
 //import { makeStyles } from '@material-ui/core/styles';
 
@@ -46,8 +46,8 @@ export default class Patients extends Component{
             imputPhone: null,
             patientsCount: null,
             patientInsert: false,
-            patientEdut: false,
-            selectedPatient: []
+            patientEdit: false,
+            selectedPatientId: null
         }
 
         this.apiClient = new ApiClient();
@@ -81,17 +81,8 @@ export default class Patients extends Component{
             this.populateCountPatients();
 
         } catch {
-            alert("Ошибка удаления пациента!")
+            alert("Ошибка удаления пациента!");
         }
-    }
-
-    editRowPatient = value => {
-        /*let rows = this.state.tableServices;
-
-        rows.splice(value, 1); 
-        this.setState({tableServices: rows});
-
-        this.CountCostAllTalons();*/
     }
 
     onInsertPatient(){
@@ -99,15 +90,16 @@ export default class Patients extends Component{
         this.setState({ patientEdit: false });
     }
 
-    async onEditPatient(patientId){
+    onEditPatient(patientId){
         this.setState({ selectedPatientId: patientId });
         this.setState({ patientEdit: true });
-        this.setState({ patientInsert: false })              
+        this.setState({ patientInsert: false });
+                   
     }
 
     closePatient(){
         this.setState({ patientInsert: false });
-        this.setState({ patientIEdit: false });
+        this.setState({ patientEdit: false });
     }
 
     render() {
@@ -127,25 +119,32 @@ export default class Patients extends Component{
                             style={{ width: "600px", marginBottom: "20px" }}
                             onChange={(event) => this.onSearchFIOPatient(event)} />
                         </div>
-                    </div>                      
-                    {this.state.patientInsert && <PatientCU visibleModal="true" changeState={ changeState } valueForm={"Добавление пациента"} 
-                        operationInsert={true} operationEdit={false} selectCountPatients={ selectCountPatients } selectPatients={ selectPatients } 
-                        patient={null}/>}
 
-                    {this.state.patientEdit && <PatientCU visibleModal="true" changeState={ changeState } valueForm={"Редактирование пациента"} 
-                        operationInsert={false} operationEdit={true} selectCountPatients={ selectCountPatients } selectPatients={ selectPatients } 
-                        selectedPatientId={this.state.selectedPatientId}/>}
-                    <Button
-                        //variant="contained"
-                        variant="outlined"
-                        color="secondary"
-                        size="small"
-                        //style={{ top: "10px", justifyContent: "flex-end" }}
-                        //className={classes.button}
-                        startIcon={<PersonAddOutlinedIcon />}
-                        height="50px" 
-                        onClick={() => this.onInsertPatient()}>
-                    Добавить пациента</Button>
+                        {this.state.patientInsert && <PatientCU visibleModal={true} changeState={ changeState } valueForm={"Добавление пациента"} 
+                            operationInsert={true} operationEdit={false} selectCountPatients={ selectCountPatients } 
+                            selectPatients={ selectPatients } selectedPatientId={null}
+                            />
+                        }
+
+                        {this.state.patientEdit && <PatientCU visibleModal={true} changeState={ changeState } valueForm={"Редактирование пациента"} 
+                            operationInsert={false} operationEdit={true} selectCountPatients={ selectCountPatients } 
+                            selectPatients={ selectPatients } selectedPatientId={this.state.selectedPatientId}/>
+                        }
+
+                    </div>                        
+
+                    <div style={{position: "relative", width: "200px"}}>
+                        <Button
+                            //variant="contained"
+                            variant="outlined"
+                            color="secondary"
+                            size="small"
+                            style={{ position: "absolute", top: "35%", transform: "translate(0, -50%)" }}
+                            //className={classes.button}
+                            startIcon={<PersonAddOutlinedIcon />}
+                            onClick={() => this.onInsertPatient()}>
+                        Добавить пациента</Button>
+                    </div>
                 </div>               
 
                 {this.state.loadingPatients ? (
@@ -195,20 +194,6 @@ export default class Patients extends Component{
                                                             <EditIcon fontSize="small" />
                                                         </IconButton>
                                                     </td>
-                                                    {/*<td>
-                                                        <Button
-                                                            //variant="contained"
-                                                            variant="outlined"
-                                                            //color="secondary"
-                                                            style={{ color: green[500] }}
-                                                            size="small"
-                                                            //className={classes.button}
-                                                            startIcon={<EditIcon />}
-                                                            height="15px"
-                                                            keyedit={index} 
-                                                            onClick={ () => (this.editRowPatient(index)) }
-                                                        ></Button>
-                                                    </td>*/} 
                                                     <td>
                                                         {/*<IconButton aria-label="delete" className={classes.margin}>*/}
                                                         <IconButton 
@@ -217,20 +202,7 @@ export default class Patients extends Component{
                                                             onClick={ () => (this.deletePatient(patient.id)) }>
                                                             <DeleteIcon fontSize="small" />
                                                         </IconButton>
-                                                    </td> 
-                                                    {/*<td>
-                                                        <Button
-                                                            //variant="contained"
-                                                            variant="outlined"
-                                                            color="secondary"
-                                                            size="small"
-                                                            //className={classes.button}
-                                                            startIcon={<DeleteIcon />}
-                                                            height="15px"
-                                                            keydel={index} 
-                                                            onClick={ () => (this.deleteRowPatient(index)) }
-                                                        ></Button>
-                                                    </td>*/}                                         
+                                                    </td>                                       
                                                 </tr>
                                             )}
                                         </tbody>                  
@@ -240,8 +212,7 @@ export default class Patients extends Component{
                     )                    
                 } 
 
-                {/*{(this.state.patients.length === 0) && (!this.state.loadingPatients) && !!this.state.patientsCount && (*/}
-
+                {!(this.state.patients.length === 0) && !this.state.loadingPatients && !!this.state.patientsCount && (
                     <div className="row">
                         <div className={"d-flex justify-content-center"} style={{width: "350px"}} >Записей на странице: {this.state.patients.length}</div>
                         <div className="col" >
@@ -250,19 +221,21 @@ export default class Patients extends Component{
                         </div>
                         <div className={"d-flex justify-content-center"} style={{width: "350px"}} >Всего записей: {this.state.patientsCount}</div>
                     </div>
-                
-                {/*)}*/}                
+                )}                                
             </div>
         )
     }
 
     async populatePatients(page, perPage, filter=null) {       
-        let response;
-        (!filter) ? response = await fetch(`patients?page=${page}&itemsPerPage=${perPage}`) :
-        response = await fetch(`patients?page=${page}&itemsPerPage=${perPage}${filter}`)
+        let response =!filter 
+            ? await fetch(`patients?page=${page}&itemsPerPage=${perPage}`)
+            : await fetch(`patients?page=${page}&itemsPerPage=${perPage}${filter}`);
 
         const res = await response.json(); 
+        
         //const res = this.apiClient.getPatients(page, perPage, filter);
+
+        console.log(res);
 
         this.setState({ patients: res, loadingPatients: false, currentPage: page });
     }

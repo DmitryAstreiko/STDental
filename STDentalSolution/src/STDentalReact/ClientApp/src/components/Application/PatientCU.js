@@ -1,30 +1,32 @@
 import React from 'react';
-import { ThemeProvider, withStyles } from '@material-ui/core/styles';
+//import { ThemeProvider, withStyles } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import MuiDialogTitle from '@material-ui/core/DialogTitle';
 import MuiDialogContent from '@material-ui/core/DialogContent';
-import MuiDialogActions from '@material-ui/core/DialogActions';
+//import MuiDialogActions from '@material-ui/core/DialogActions';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import Typography from '@material-ui/core/Typography';
-import AssignmentOutlinedIcon from '@material-ui/icons/AssignmentOutlined';
-import { green, yellow } from '@material-ui/core/colors';
+//import AssignmentOutlinedIcon from '@material-ui/icons/AssignmentOutlined';
+//import { green, yellow } from '@material-ui/core/colors';
 import { Component } from 'react';
-import { Table } from 'reactstrap';
-import PersonAddOutlinedIcon from '@material-ui/icons/PersonAddOutlined';
+//import { Table } from 'reactstrap';
+//import PersonAddOutlinedIcon from '@material-ui/icons/PersonAddOutlined';
 import { FormGroup } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormControl from '@material-ui/core/FormControl';
+//import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
 import * as moment  from 'moment';
 import DatePicker from './Picker.component';
 import SaveIcon from '@material-ui/icons/Save';
 import HomeOutlinedIcon from '@material-ui/icons/HomeOutlined';
 import { ApiClient } from './APIClient';
+//import { validate } from '@material-ui/pickers';
 
 const styles = (theme) => ({
   root: {
@@ -59,12 +61,12 @@ const DialogContent = withStyles((theme) => ({
   },
 }))(MuiDialogContent);
 
-const DialogActions = withStyles((theme) => ({
+/*const DialogActions = withStyles((theme) => ({
   root: {
     margin: 0,
     padding: theme.spacing(1),
   },
-}))(MuiDialogActions);
+}))(MuiDialogActions);*/
 
 export default class PatientCU extends Component {
   
@@ -79,48 +81,70 @@ export default class PatientCU extends Component {
     selectedStreet: null,
     selectedPhone: null,
     selectedEmail: null,
-    selectedDateBorn: moment(new Date()).format('YYYY-MM-DD'),
+    selectedBornDate: moment(new Date()).format('YYYY-MM-DD'),
     selectedNationality: "1",
     selectedDescription: null,
-    errorFio: false,
+    errorName: false,
     errorDateBorn: false,
     errorCity: false,
     errorStreet: false,
     errorPhone: false,
-    errorEmail: false,
-    errorDescription: false,
     errorNationality: false,
   }
 
   this.apiClient = new ApiClient();
 }
 
-onDateBornSelect = value => {
+onDateBornSelect(value) {
   this.setState({ selectedBornDate: moment(value).format('YYYY-MM-DD') })
 }
 
 onFioInput(event) {  
-  this.setState({ selectedName: event.target.value, errorFio: !event.target.value})
+  this.setState({ selectedName: event.target.value }, () => this.validateFio());
+}
+
+validateFio() {
+  var isValid = !!this.state.selectedName;
+  this.setState({errorName: !isValid});
+  return isValid;
 }
 
 onCityInput(event) {
-  this.setState({ selectedCity: event.target.value, errorCity: !event.target.value })
+  this.setState({ selectedCity: event.target.value }, () => this.validateCity());
+}
+
+validateCity() {
+  var isValid = !!this.state.selectedCity;
+  this.setState({errorCity: !isValid});
+  return isValid;
 }
 
 onStreetInput(event) {
-  this.setState({ selectedStreet: event.target.value, errorStreet: !event.target.value })
+  this.setState({ selectedStreet: event.target.value }, () => this.validateStreet());
+}
+
+validateStreet() {
+  var isValid = !!this.state.selectedStreet;
+  this.setState({errorStreet: !isValid});
+  return isValid;
 }
 
 onPhoneInput(event) {
-  this.setState({ selectedPhone: event.target.value, errorPhone: !event.target.value })
+  this.setState({ selectedPhone: event.target.value }, () => this.validatePhone());
+}
+
+validatePhone() {
+  var isValid = !!this.state.selectedPhone;
+  this.setState({errorPhone: !isValid});
+  return isValid;
 }
 
 onEmailInput(event) {
-  this.setState({ selectedEmail: event.target.value, errorEmail: !event.target.value })
+  this.setState({ selectedEmail: event.target.value })
 }
 
 onDescriptionInput(event) {
-  this.setState({ selectedDescription: event.target.value, errorDescription: !event.target.value })
+  this.setState({ selectedDescription: event.target.value})
 }
 
 onNationalityInput(event) {
@@ -128,12 +152,10 @@ onNationalityInput(event) {
 }
 
 componentDidMount(){
-  console.log(this.props.selectedPatientId);
-  this.fillFields(this.props.selectedPatientId);
+ (this.props.selectedPatientId) && this.fillFields(this.props.selectedPatientId);
 }
 
 async onSavePatient() {
-  console.log(`errorFio = ${this.state.errorFio}`);
    
       let newPatient = {
         name: this.state.selectedName,
@@ -141,7 +163,7 @@ async onSavePatient() {
         street: this.state.selectedStreet,
         phone: this.state.selectedPhone,
         email: this.state.selectedEmail,
-        dateborn: this.state.selectedDateBorn,
+        dateborn: this.state.selectedBornDate,
         nationality: (this.state.selectedNationality === '1') ? 1 : 0,
         description: this.state.selectedDescription
       }
@@ -170,7 +192,7 @@ async onEditPatient() {
     street: this.state.selectedStreet,
     phone: this.state.selectedPhone,
     email: this.state.selectedEmail,
-    dateborn: this.state.selectedDateBorn,
+    dateborn: this.state.selectedBornDate,
     nationality: (this.state.selectedNationality === '1') ? 1 : 0,
     description: this.state.selectedDescription
   }
@@ -194,18 +216,24 @@ async onEditPatient() {
 
 onButtonSave() {   
 
-//прогнать все statе, потом проверить статусы 
+  const flagFio = this.validateFio();
+  const flagCity = this.validateCity();
+  const flagStreet = this.validateStreet();
+  const flagPhone = this.validatePhone();
 
-  (this.props.operationInsert) && this.onSavePatient();
+  if (flagFio && flagCity && flagStreet && flagPhone)
+  {    
+      (this.props.operationInsert) && this.onSavePatient();
 
-  (this.props.operationEdit) && this.onEditPatient();
+      (this.props.operationEdit) && this.onEditPatient();
+  }
 }
 
-onClose() {
-  this.setState({ open: false });
+onClose() {  
   this.props.changeState();
   this.props.selectCountPatients();
   this.props.selectPatients();
+  this.setState({ open: false });
 }
 
 async fillFields(patientId) {
@@ -215,38 +243,21 @@ async fillFields(patientId) {
   this.setState({ selectedCity: selectedPatient.city });
   this.setState({ selectedStreet: selectedPatient.street });
   this.setState({ selectedEmail: selectedPatient.email });
-  this.setState({ selectedDateBorn: selectedPatient.dateBorn });
+  this.setState({ selectedBornDate: selectedPatient.dateBorn });
   this.setState({ selectedPhone: selectedPatient.phone });
   this.setState({ selectedNationality: (selectedPatient.nationality === 'BY') ? 1 : 0 });
   this.setState({ selectedDescription: selectedPatient.description });
 
   console.log(selectedPatient);
-
 }
 
   render() {
-    //const { visibleModal } = this.props;
-
-    //(this.props.operationEdit) && (this.fillFields(this.props.selectedPatientd));
-
     return (
       <div>
-        { /* <Button
-              //variant="contained"
-              variant="outlined"
-              color="secondary"
-              size="medium"
-              style={{ top: "10px", justifyContent: "flex-end" }}
-              //className={classes.button}
-              startIcon={<PersonAddOutlinedIcon />}
-              //height="15px" 
-              onClick={() => (this.setState({ open: true }))}>
-        Добавить пациента</Button> */     }  
         <Dialog onClose={() => this.onClose()} aria-labelledby="customized-dialog-title" open={this.state.open}>
           <DialogTitle id="customized-dialog-title" 
             onClose={() => this.onClose()} 
             style={{ fontSize: "5px" }}
-            //maxWidth="true"
             >
               {this.props.valueForm}
           </DialogTitle>
@@ -257,7 +268,7 @@ async fillFields(patientId) {
                     style={{ width: "500px", marginBottom: "20px" }}
                     onChange={(event) => this.onFioInput(event)}
                     value={this.state.selectedName}
-                    error={this.state.errorFio}/>
+                    error={this.state.errorName}/>
               </div>
               <div>
                 <TextField id="outlined-basic-city" label="Введите город проживания" variant="outlined" 
@@ -289,15 +300,17 @@ async fillFields(patientId) {
               <div>
                 <DatePicker id="date-born" labelvalue={"Введите дату рождения"} 
                   onSelected={ (value) => this.onDateBornSelect(value) } 
-                  error={this.state.errorDateBorn} 
-                  value={this.state.selectedDateBorn} />
+                  value={this.state.selectedBornDate} 
+                  />
               </div>
               <div style={{ height: "20px" }}>                
               </div>
               <div>
               <FormLabel component="legend">Национальность</FormLabel>
-              <RadioGroup aria-label="gender" name="gender1" value={this.state.selectedNationality} 
-                  onChange={(event) => this.onNationalityInput(event)} error={this.state.errorNationality}>
+              <RadioGroup aria-label="gender" name="gender1" 
+                  value={this.state.selectedNationality} 
+                  onChange={(event) => this.onNationalityInput(event)} 
+                  error={this.state.errorNationality}>
                 <FormControlLabel value="1" control={<Radio style={{ color: "green" }} />} label="Республика Беларусь" />
                 <FormControlLabel value="0" control={<Radio style={{ color: "green" }} />} label="Иностранное государство" />
               </RadioGroup>

@@ -40,11 +40,11 @@ export class ApiClient {
         return response.status;
     };
 
-    async getPatients(page, perPage, filter){
+    async getPatients(page, perPage, filter=null){
 
-        let response;
-        (!filter) ? response = await fetch(`patients?page=${page}&itemsPerPage=${perPage}`) :
-        response = await fetch(`patients?page=${page}&itemsPerPage=${perPage}${filter}`)
+        let response = !filter 
+        ? await fetch(`patients?page=${page}&itemsPerPage=${perPage}`)
+        : await fetch(`patients?page=${page}&itemsPerPage=${perPage}${filter}`);
 
         return await response.json();   
     };
