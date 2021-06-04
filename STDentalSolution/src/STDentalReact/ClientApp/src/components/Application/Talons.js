@@ -20,6 +20,8 @@ import ContactsOutlinedIcon from '@material-ui/icons/ContactsOutlined';
 import SearchOutlinedIcon from '@material-ui/icons/SearchOutlined';
 import ViewTalonServices from './ViewTalonServices';
 import {ApiClient} from './APIClient';
+import {TalonCUD} from './TalonCUD';
+//import { ThemeProvider } from '@material-ui/styles';
 
 export class Talons extends Component{
 
@@ -40,7 +42,11 @@ export class Talons extends Component{
             talonsPerPage: 20,
             talonsCount: null,
             filterTalons: null,
-            errorLoad: null
+            errorLoad: null,
+            talonCreate: false,
+            talonEdit: false,
+            talonDelete: false,
+            talonList: true
         }
 
         this.apiClient = new ApiClient();
@@ -125,6 +131,11 @@ export class Talons extends Component{
         this.populateTalons(1);
     }
 
+    oncreatePatient() {
+        this.setState({ talonCreate: true });
+        this.setState({ talonList: false });
+    }
+
     payTalonServices(talonId) {
 
     }
@@ -134,24 +145,8 @@ export class Talons extends Component{
 
         return (
             <div>
-                <MenuAdministrator />
-                {/*<div className="input-group">
-                    <div className="input-group-prepend">
-                        <span className="input-group-text" id="valueshow" style={{ margin: "10px" }}>Выбран талон: </span>
-                    </div>
-                        <input type="text" value={this.state.selectedTalon.talonId ? `№ ${this.state.selectedTalon.talonId}` : ``} 
-                            style={{ width: "110px", textAlign: "center", margin: "10px" }} readOnly />                        
-                        <input type="text" value={this.state.selectedTalon.talonId ? `Пациент - ${this.state.selectedTalon.patientName}` : ``} 
-                            style={{ width: "350px", textAlign: "center", margin: "10px" }} readOnly />
-                        <input type="text" value={this.state.selectedTalon.talonId ? `Врач - ${this.state.selectedTalon.staffName}` : ``} 
-                            style={{ width: "350px", textAlign: "center", margin: "10px" }} readOnly />
-                        <input type="text" value={this.state.selectedTalon.talonId ? `Дата талона - ${moment(this.state.selectedTalon.createDate).format("DD.MM.YYYY")}` : ``} 
-                            style={{ width: "250px", textAlign: "center", margin: "10px" }} readOnly />
-                        <input type="text" value={this.state.selectedTalon.talonId ? `Итого по талону - ${this.state.selectedTalon.cost}` : ``} 
-                            style={{ width: "300px", textAlign: "center", margin: "10px" }} readOnly />
-                </div> 
-                <div style={{height: "20px"}}>
-                </div>*/}
+                {/*<MenuAdministrator />*/}
+
                 <div >
                     <div className={"d-flex justify-content-around"}>
                         <div className="col">
@@ -200,8 +195,8 @@ export class Talons extends Component{
                             //className={classes.button}
                             startIcon={<ContactsOutlinedIcon />}
                             //height="15px" 
-                            //onClick={ () => (this.createPatient()) }
-                            href='/appdental/administrator/talons/add'
+                            onClick={ () => (this.oncreatePatient()) }
+                            //href='/appdental/administrator/talons/add'
                         >Создать талон</Button>
                     </div>
                         </div>
@@ -269,43 +264,16 @@ export class Talons extends Component{
                                                             onClick={ () => (this.editRowTalon(index)) }>
                                                             <EditIcon fontSize="small" />
                                                         </IconButton>
-                                                    </td>
-                                                    {/*<td>
-                                                        <Button
-                                                            //variant="contained"
-                                                            variant="outlined"
-                                                            //color="secondary"
-                                                            style={{ color: green[500] }}
-                                                            size="small"
-                                                            //className={classes.button}
-                                                            startIcon={<EditIcon />}
-                                                            height="15px"
-                                                            keyedit={talon.talonId} 
-                                                            onClick={ () => (this.editRowTalon(talon.talonId)) }
-                                                        ></Button>
-                                                    </td>*/} 
+                                                    </td>                                                  
                                                     <td>
-                                                        {/*<IconButton aria-label="delete" className={classes.margin}>*/}
+                                                        
                                                         <IconButton 
                                                             aria-label="delete" 
                                                             color="secondary"
                                                             onClick={ () => (this.deleteRowTalon(talon.talonId)) }>
                                                             <DeleteIcon fontSize="small" />
                                                         </IconButton>
-                                                    </td> 
-                                                    {/*<td>
-                                                        <Button
-                                                            //variant="contained"
-                                                            variant="outlined"
-                                                            color="secondary"
-                                                            size="small"
-                                                            //className={classes.button}
-                                                            startIcon={<DeleteIcon />}
-                                                            height="15px"
-                                                            keydel={talon.talonId} 
-                                                            onClick={ () => (this.deleteRowTalon(talon.talonId)) }
-                                                        ></Button>
-                                                    </td>*/}                                           
+                                                    </td>                                           
                                                 </tr>
                                             )}
                                         </tbody>                  
@@ -337,9 +305,9 @@ export class Talons extends Component{
     render(){   
         return (
         <div>
-            {
-                this.renderTalonsTable()
-            }       
+            <MenuAdministrator />
+            {this.state.talonList && this.renderTalonsTable()}
+            {this.state.talonCreate && <TalonCUD flagTalonCreate={true}/>}
         </div>
         )
     }
@@ -347,7 +315,6 @@ export class Talons extends Component{
     async populateTalons(page, filter=null) {
         try{
             let filterRow = `talons?page=${page}&itemsPerPage=${this.state.talonsPerPage}${filter}`.replace('null','');
-            //console.log(`filterRow == = ${filterRow}`);
 
             const response = await fetch(filterRow);
             const data = await response.json();   

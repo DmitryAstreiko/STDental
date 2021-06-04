@@ -7,7 +7,7 @@ import { Counter } from './components/Counter';
 import {Services} from './components/Services';
 //import {AuthUser} from './components/Application/AuthUser';
 import { Talons } from './components/Application/Talons';
-import { TalonAction } from './components/Application/TalonAction'
+import { TalonCUD } from './components/Application/TalonCUD'
 //import {Contacts} from './components/Application/Contacts';
 //import { NavMenu } from './components/NavMenu';
 //import { MenuDental } from './components/Application/MenuDental';
@@ -213,7 +213,7 @@ export default class App extends Component {
             <Route exact path='/services' Component={Services}/>
             <Route exact path='/whyme' component={Counter} />
             <Route exact path='/appdental/administrator/talons' component={Talons} />
-            <Route exact path='/appdental/administrator/talons/add' component={TalonAction} />
+            <Route exact path='/appdental/administrator/talons/add' component={TalonCUD} />
             <Route exact path='/appdental/administrator' component={Administrator} />
             <Route exact path='/appdental/administrator/patients' component={Patients} />
             <Route path="/user" component={BoardUser} />

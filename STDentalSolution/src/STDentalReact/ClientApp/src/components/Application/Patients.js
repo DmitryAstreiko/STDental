@@ -13,7 +13,7 @@ import Button from '@material-ui/core/Button';
 import { green } from '@material-ui/core/colors';
 import PersonAddOutlinedIcon from '@material-ui/icons/PersonAddOutlined';
 import IconButton from '@material-ui/core/IconButton';
-import PatientCU from './PatientCU';
+import PatientCRUD from './PatientCRUD';
 import { ApiClient } from './APIClient';
 //import { ThemeProvider } from '@material-ui/styles';
 
@@ -130,18 +130,18 @@ export default class Patients extends Component{
                             onChange={(event) => this.onSearchFIOPatient(event)} />
                         </div>
 
-                        {this.state.patientInsert && <PatientCU visibleModal={true} changeState={ changeState } valueForm={"Добавление пациента"} 
+                        {this.state.patientInsert && <PatientCRUD visibleModal={true} changeState={ changeState } valueForm={"Добавление пациента"} 
                             operationInsert={true} operationEdit={false} operationDelete={false} selectCountPatients={ selectCountPatients } 
                             selectPatients={ selectPatients } selectedPatientId={null}
                             />
                         }
 
-                        {this.state.patientEdit && <PatientCU visibleModal={true} changeState={ changeState } valueForm={"Редактирование пациента"} 
+                        {this.state.patientEdit && <PatientCRUD visibleModal={true} changeState={ changeState } valueForm={"Редактирование пациента"} 
                             operationInsert={false} operationEdit={true} operationDelete={false} selectCountPatients={ selectCountPatients } 
                             selectPatients={ selectPatients } selectedPatientId={this.state.selectedPatientId}/>
                         }
 
-                        {this.state.patientDelete && <PatientCU visibleModal={true} changeState={ changeState } valueForm={"Удаление пациента"} 
+                        {this.state.patientDelete && <PatientCRUD visibleModal={true} changeState={ changeState } valueForm={"Удаление пациента"} 
                             operationInsert={false} operationEdit={false} operationDelete={true} selectCountPatients={ selectCountPatients } 
                             selectPatients={ selectPatients } selectedPatientId={this.state.selectedPatientId}/>
                         }

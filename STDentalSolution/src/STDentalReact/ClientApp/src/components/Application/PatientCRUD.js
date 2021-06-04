@@ -68,7 +68,7 @@ const DialogContent = withStyles((theme) => ({
   },
 }))(MuiDialogActions);*/
 
-export default class PatientCU extends Component {
+export default class PatientCRUD extends Component {
   
   constructor(props){
     super(props);

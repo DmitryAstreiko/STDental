@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { MenuAdministrator } from './MenuAdministrator';
+//import { MenuAdministrator } from './MenuAdministrator';
 import { Table } from 'reactstrap';
 import ComboBox from './Combobox.component';
 import Button from '@material-ui/core/Button';
-import './TalonAction.css';
+import './TalonCUD.css';
 import DatePicker from './Picker.component';
 import * as moment  from 'moment';
 //import Icon from '@material-ui/core/Icon';
@@ -14,7 +14,7 @@ import { Redirect } from 'react-router';
 import HomeOutlinedIcon from '@material-ui/icons/HomeOutlined';
 import {ApiClient} from './APIClient';
 
-export class TalonAction extends Component{
+export class TalonCUD extends Component{
     constructor(props){
         super(props);
 
@@ -160,7 +160,7 @@ export class TalonAction extends Component{
         }
         return (
             <div>
-                <MenuAdministrator />           
+                {/*<MenuAdministrator />*/}
                 <div >
                     <div className={"d-flex justify-content-around"} style={{ marginBottom: "20px" }}>
                         <div>
