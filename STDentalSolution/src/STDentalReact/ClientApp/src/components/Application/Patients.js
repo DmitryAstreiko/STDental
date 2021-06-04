@@ -47,6 +47,7 @@ export default class Patients extends Component{
             patientsCount: null,
             patientInsert: false,
             patientEdit: false,
+            patientDelete: false,
             selectedPatientId: null
         }
 
@@ -88,18 +89,27 @@ export default class Patients extends Component{
     onInsertPatient(){
         this.setState({ patientInsert: true });
         this.setState({ patientEdit: false });
+        this.setState({ patientDelete: false });
     }
 
     onEditPatient(patientId){
         this.setState({ selectedPatientId: patientId });
         this.setState({ patientEdit: true });
         this.setState({ patientInsert: false });
-                   
+        this.setState({ patientDelete: false });           
+    }
+
+    onDeletePatient(patientId){
+        this.setState({ selectedPatientId: patientId });
+        this.setState({ patientEdit: false });
+        this.setState({ patientInsert: false });
+        this.setState({ patientDelete: true });          
     }
 
     closePatient(){
         this.setState({ patientInsert: false });
         this.setState({ patientEdit: false });
+        this.setState({ patientDelete: false });
     }
 
     render() {
@@ -121,13 +131,18 @@ export default class Patients extends Component{
                         </div>
 
                         {this.state.patientInsert && <PatientCU visibleModal={true} changeState={ changeState } valueForm={"Добавление пациента"} 
-                            operationInsert={true} operationEdit={false} selectCountPatients={ selectCountPatients } 
+                            operationInsert={true} operationEdit={false} operationDelete={false} selectCountPatients={ selectCountPatients } 
                             selectPatients={ selectPatients } selectedPatientId={null}
                             />
                         }
 
                         {this.state.patientEdit && <PatientCU visibleModal={true} changeState={ changeState } valueForm={"Редактирование пациента"} 
-                            operationInsert={false} operationEdit={true} selectCountPatients={ selectCountPatients } 
+                            operationInsert={false} operationEdit={true} operationDelete={false} selectCountPatients={ selectCountPatients } 
+                            selectPatients={ selectPatients } selectedPatientId={this.state.selectedPatientId}/>
+                        }
+
+                        {this.state.patientDelete && <PatientCU visibleModal={true} changeState={ changeState } valueForm={"Удаление пациента"} 
+                            operationInsert={false} operationEdit={false} operationDelete={true} selectCountPatients={ selectCountPatients } 
                             selectPatients={ selectPatients } selectedPatientId={this.state.selectedPatientId}/>
                         }
 
@@ -169,6 +184,7 @@ export default class Patients extends Component{
                                             <th>Телефон</th>
                                             <th>Дата рождения</th>
                                             <th>Национальность</th>
+                                            <th>Электронный ящик</th>
                                             <th>Комментарий</th>
                                             <th></th>
                                             <th></th>
@@ -183,7 +199,8 @@ export default class Patients extends Component{
                                                     <td>{patient.street}</td> 
                                                     <td>{patient.phone}</td> 
                                                     <td>{moment(patient.dateBorn).format("DD.MM.YYYY")}</td> 
-                                                    <td>{(patient.nationality === "BY") ? ('Республика Беларусь') : ('Иное')}</td> 
+                                                    <td>{(patient.nationality === "BY") ? ('Республика Беларусь') : ('Иностранное государство')}</td> 
+                                                    <td>{patient.email}</td>
                                                     <td>{patient.description}</td> 
                                                     <td>
                                                         {/*<IconButton aria-label="delete" className={classes.margin}>*/}
@@ -199,7 +216,8 @@ export default class Patients extends Component{
                                                         <IconButton 
                                                             aria-label="delete" 
                                                             color="secondary"
-                                                            onClick={ () => (this.deletePatient(patient.id)) }>
+                                                            //onClick={ () => (this.deletePatient(patient.id)) }>
+                                                            onClick={ () => (this.onDeletePatient(patient.id)) }>
                                                             <DeleteIcon fontSize="small" />
                                                         </IconButton>
                                                     </td>                                       
@@ -235,8 +253,6 @@ export default class Patients extends Component{
         
         //const res = this.apiClient.getPatients(page, perPage, filter);
 
-        console.log(res);
-
         this.setState({ patients: res, loadingPatients: false, currentPage: page });
     }
 
@@ -247,10 +263,5 @@ export default class Patients extends Component{
 
         const data = await response.json();
         this.setState({ patientsCount: data });
-    }
-
-    async deletePatient(patientId) {
-        const res = this.apiClient.delPatient(patientId);
-        return res;
     }
 }

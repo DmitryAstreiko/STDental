@@ -81,6 +81,7 @@ export default class PatientCU extends Component {
     selectedStreet: null,
     selectedPhone: null,
     selectedEmail: null,
+    selectedId: null,
     selectedBornDate: moment(new Date()).format('YYYY-MM-DD'),
     selectedNationality: "1",
     selectedDescription: null,
@@ -187,6 +188,7 @@ async onSavePatient() {
 
 async onEditPatient() {
   let newPatient = {
+    patientId: this.state.selectedId,
     name: this.state.selectedName,
     city: this.state.selectedCity,
     street: this.state.selectedStreet,
@@ -197,6 +199,8 @@ async onEditPatient() {
     description: this.state.selectedDescription
   }
   
+  console.log(newPatient);
+
   let newjson = JSON.stringify(newPatient, null, '\t')
 
   try{
@@ -214,8 +218,24 @@ async onEditPatient() {
   }
 }
 
-onButtonSave() {   
+async onDeletePatient(patientId) {
+  try{
+    console.log(`onDeletePatient`);
+      const res = await this.deletePatient(patientId);
 
+      if(res === 200) {
+        alert(`Пациент успешно удален!`);
+        this.onClose();
+      }
+
+      if(res === 400) alert("Пациент не удален!");
+  }
+  catch {
+      alert("Не удалось удалить пациента.");
+  }
+}
+
+onButtonSave() { 
   const flagFio = this.validateFio();
   const flagCity = this.validateCity();
   const flagStreet = this.validateStreet();
@@ -223,9 +243,11 @@ onButtonSave() {
 
   if (flagFio && flagCity && flagStreet && flagPhone)
   {    
-      (this.props.operationInsert) && this.onSavePatient();
+      this.props.operationInsert && this.onSavePatient();
 
-      (this.props.operationEdit) && this.onEditPatient();
+      this.props.operationEdit && this.onEditPatient();
+
+      this.props.operationDelete && this.onDeletePatient(this.props.selectedPatientId);
   }
 }
 
@@ -239,13 +261,15 @@ onClose() {
 async fillFields(patientId) {
   const selectedPatient = await this.apiClient.getPatient(patientId);
 
+  this.setState({ selectedId: patientId });
   this.setState({ selectedName: selectedPatient.name });
   this.setState({ selectedCity: selectedPatient.city });
   this.setState({ selectedStreet: selectedPatient.street });
   this.setState({ selectedEmail: selectedPatient.email });
-  this.setState({ selectedBornDate: selectedPatient.dateBorn });
+  //this.setState({ selectedBornDate: moment(selectedPatient.dateBorn).format('YYYY-MM-DD') });
+  this.setState({ selectedBornDate: selectedPatient.dateBorn});
   this.setState({ selectedPhone: selectedPatient.phone });
-  this.setState({ selectedNationality: (selectedPatient.nationality === 'BY') ? 1 : 0 });
+  this.setState({ selectedNationality: (selectedPatient.nationality === 'BY') ? "1" : "0" });
   this.setState({ selectedDescription: selectedPatient.description });
 
   console.log(selectedPatient);
@@ -300,7 +324,9 @@ async fillFields(patientId) {
               <div>
                 <DatePicker id="date-born" labelvalue={"Введите дату рождения"} 
                   onSelected={ (value) => this.onDateBornSelect(value) } 
-                  value={this.state.selectedBornDate} 
+                  //value={this.state.selectedBornDate} 
+                  value={new Date("1986-02-10")}
+                  
                   />
               </div>
               <div style={{ height: "20px" }}>                
@@ -308,7 +334,8 @@ async fillFields(patientId) {
               <div>
               <FormLabel component="legend">Национальность</FormLabel>
               <RadioGroup aria-label="gender" name="gender1" 
-                  value={this.state.selectedNationality} 
+                  //value={this.state.selectedNationality} 
+                  value={this.state.selectedNationality}
                   onChange={(event) => this.onNationalityInput(event)} 
                   error={this.state.errorNationality}>
                 <FormControlLabel value="1" control={<Radio style={{ color: "green" }} />} label="Республика Беларусь" />
@@ -361,4 +388,9 @@ async fillFields(patientId) {
     const res = await this.apiClient.editPatient(jsonTalon);    
     return res;
   }
+
+  async deletePatient(patientId) {
+    const res = this.apiClient.delPatient(patientId);
+    return res;
+}
 }

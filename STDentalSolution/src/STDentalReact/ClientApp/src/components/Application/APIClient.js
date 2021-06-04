@@ -68,7 +68,6 @@ export class ApiClient {
             redirect: 'follow',
             referrerPolicy: 'no-referrer'
         });
-        console.log(response.status);
         return response.status;
     }
     //------staffs-------------------

@@ -301,7 +301,7 @@ namespace STDentalWeb
                     }
                 });*/
 
-                endpoints.MapGet("/updatepatient", async context =>
+                /*endpoints.MapGet("/updatepatient", async context =>
                 {
                     var repository = context.RequestServices.GetService<IPatientRepository>();
 
@@ -311,7 +311,7 @@ namespace STDentalWeb
 
                     if (await repository.UpdatePatientAsync(updPatient)) await context.Response.WriteAsync($"True");
                     else await context.Response.WriteAsync("False");
-                });
+                });*/
 
                 #endregion
 

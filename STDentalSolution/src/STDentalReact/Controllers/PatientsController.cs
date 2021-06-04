@@ -54,6 +54,7 @@ namespace STDentalReact.Controllers
                     DateBorn = patient.DateBorn,
                     Phone = patient.Phone,
                     Nationality = patient.Nationality.ToString(),
+                    Email = patient.Email,
                     Description = patient.Description
                 })
                 .ToArray();

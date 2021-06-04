@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using STDentalLibrary.Context;
 using STDentalLibrary.Models;
+using STDentalLibrary.Models.Enums;
 using STDentalLibrary.Repositories;
 
 namespace STDentalLibrary.Implementation
@@ -34,17 +35,10 @@ namespace STDentalLibrary.Implementation
         {
             await using (var context = CreateContext())
             {
-                    //var helper = new EFHelperRepository(context);
+                var delPatient = await context.Patients.FindAsync(patientId);
 
-                    //if (await helper.CheckContainPatientInTalons(patientId)) return false;
-
-                    var delPatient = await context.Patients.FindAsync(patientId);
-
-                    //if (delPatient == null) return false;
-
-                    context.Patients.Remove(delPatient);
-                    await context.SaveChangesAsync();
-                    //return true;
+                context.Patients.Remove(delPatient);
+                await context.SaveChangesAsync();
             }
         }
 
@@ -106,7 +100,19 @@ namespace STDentalLibrary.Implementation
         {
             await using (var context = CreateContext())
             {
-                context.Patients.Attach(patient);
+                //context.Patients.Attach(patient);
+
+                var oldPatient = await context.Patients.FindAsync(patient.PatientId);
+
+                oldPatient.Name = patient.Name;
+                oldPatient.City = patient.City;
+                oldPatient.Street = patient.Street;
+                oldPatient.Phone = patient.Phone;
+                oldPatient.DateBorn = patient.DateBorn;
+                oldPatient.Description = patient.Description;
+                oldPatient.Nationality = ((int) patient.Nationality == 1) ? Nationality.BY : Nationality.Other;
+
+                context.Patients.Update(oldPatient);
 
                 await context.SaveChangesAsync();
             }
