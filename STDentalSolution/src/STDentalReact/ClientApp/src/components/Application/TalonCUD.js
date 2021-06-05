@@ -13,6 +13,8 @@ import TextField from '@material-ui/core/TextField';
 import { Redirect } from 'react-router';
 import HomeOutlinedIcon from '@material-ui/icons/HomeOutlined';
 import {ApiClient} from './APIClient';
+import IconButton from '@material-ui/core/IconButton';
+import Loader from './Loader';
 
 export class TalonCUD extends Component{
     constructor(props){
@@ -28,7 +30,8 @@ export class TalonCUD extends Component{
             selectedCost: null,
             descriptionTalon: null,
             addedTalonId: null,
-            redirect: false
+            redirect: false,
+            loadingTalonService: true
             }
 
         this.apiClient = new ApiClient();
@@ -36,8 +39,18 @@ export class TalonCUD extends Component{
 
     componentDidMount() {
         this.populatePatients();
-        this.populateDoctors();
-        this.populatePrices();        
+        this.populateDoctors(); 
+        this.populatePrices();
+
+        if (this.props.flagTalonEdit) {            
+            this.populateTalonServices(this.props.talonId);          
+            this.fillFields(this.props.talonId);
+        }   
+        
+        if (this.props.flagTalonDelete) {            
+            this.populateTalonServices(this.props.talonId);          
+            this.fillFields(this.props.talonId);
+        }  
     } 
 
     onPatientSelect = value => {
@@ -58,9 +71,9 @@ export class TalonCUD extends Component{
 
     onPriceSelect(value) {     
         (value) && (
-            this.populateSelectedPrice(value.id))    
+            this.populateSelectedPrice(value.id));
 
-        this.CountCostAllTalons()
+        this.CountCostAllTalons();
     }
 
     onChangeCount(evt, index) {
@@ -102,7 +115,7 @@ export class TalonCUD extends Component{
         this.CountCostAllTalons();
     }
 
-    onSaveTalon() {   
+    onButtonSave() {   
         
         //check doctor, patient, tablesservices
 
@@ -137,19 +150,78 @@ export class TalonCUD extends Component{
             talonservices: newTalonService
         }
         
-        let newjson = JSON.stringify(newTalon, null, '\t')
+        let newjson = JSON.stringify(newTalon, null, '\t');
 
+        this.props.flagTalonCreate && this.onAddTalon(newjson);
+        this.props.flagTalonEdit && this.onAddEdit(newjson);
+        this.props.flagTalonDelete && this.onAddDelete(this.props.talonId);
+    }
+
+    async onAddTalon(newjson) {   
         try{
-            this.addTalon(newjson);
-            this.setState({ redirect: true });
+            const res = await this.addTalon(newjson);
+      
+            if(res === 200) {
+              alert(`Талон успешно добавлен!`);
+              this.onClose();
+            }
+      
+            if(res === 400) alert("Талон не добавлен в систему!");
         }
         catch {
-            alert("Не удалось добавить талон. Попытайтесь повторить операцию.");
+            alert("Не удалось добавить талон.");
         }
+      }
+
+      async onEditTalon(newjson) {
+        /*try{
+            const res = await this.editPatient(newjson);
+      
+            if(res === 200) {
+              alert(`Талон успешно обновлен!`);
+              this.onClose();
+            }
+      
+            if(res === 400) alert("Талон не обновлен!");
+        }
+        catch {
+            alert("Не удалось обновить реквизиты талона.");
+        }*/
+      }
+      
+      async onDeleteTalon(talonId) {
+        try{
+            const res = await this.deleteTalon(talonId);
+      
+            if(res === 200) {
+                alert(`Талон успешно удален!`);
+                this.onClose();
+            }
+    
+            if(res === 400) alert("Талон не удален!");
+        }
+        catch {
+            alert("Не удалось удалить талон.");
+        }
+    }
+
+    onClose() {
+        this.props.closingPatient();
+        this.props.countTalon();
+        this.props.getTalons();
     }
 
     onDescriptionChange(evt) {
         this.setState({ descriptionTalon: evt.target.value })
+    }
+
+    async fillFields(talonId) {
+        const response = await fetch(`talons/talon?talonid=${talonId}`);
+        const res = await response.json(); 
+
+        //const res = this.apiClient.GetTalon(talonId);
+        this.setState({ descriptionTalon: res.description });
+        this.setState({ selectedCost: res.cost });
     }
 
     render(){
@@ -182,11 +254,14 @@ export class TalonCUD extends Component{
                 </div>
 
                 <div >
+                    {this.state.loadingTalonService ? (
+                        <Loader />
+                    ) :
+                    (
                     <div className="row">
                         <Table className='table' aria-labelledby="tabelLabel">
                         <thead>
                             <tr>
-                                {/*<th>ID</th>*/}
                                 <th>№ п.п.</th>
                                 <th>Шифр</th>
                                 <th style={{width: "600px"}}>Наименование</th>
@@ -199,10 +274,9 @@ export class TalonCUD extends Component{
                             <tbody>
                                 {this.state.tableServices.map((service, index) =>
                                     <tr key={index} style={{ height: "50px" }}>
-                                        {/*<td>{service.id}</td>*/}
-                                        <td>{service.amount}</td>
+                                        <td style={{ width: "100px" }}>{index + 1}</td>
                                         <td>{service.shifr}</td>
-                                        <td>{service.name}</td> 
+                                        <td style={{ textAlign: "left", paddingLeft: "5px" }}>{service.serviceName}</td> 
                                         <td>{service.price.toFixed(2)}</td>   
                                         <td >
                                             <input type="number" defaultValue="1" min="1" max="50" keyin={index} onChange={ (evt) => this.onChangeCount(evt, index) }
@@ -210,29 +284,26 @@ export class TalonCUD extends Component{
                                         </td>
                                         <td>{service.cost.toFixed(2)}</td>
                                         <td>
-                                            <Button
-                                                //variant="contained"
-                                                variant="outlined"
+                                            <IconButton 
+                                                aria-label="delete" 
                                                 color="secondary"
-                                                size="small"
-                                                //className={classes.button}
-                                                startIcon={<DeleteIcon />}
-                                                height="15px"
-                                                keybut={index} 
-                                                onClick={ () => (this.deleteRowTalon(index)) }
-                                            ></Button>
+                                                onClick={ () => (this.deleteRowTalon(index)) }>
+                                                <DeleteIcon fontSize="small" />
+                                            </IconButton>
                                         </td>
                                     </tr>
                                 )}
                             </tbody>                  
                         </Table>
                     </div>
+                    )}
 
                     <div className={"d-flex justify-content-around"} style={{ marginTop: "20px" }}>
                         <div>
-                            <TextField id="outlined-basic" label="Комментарий" variant="outlined" 
-                                style={{ width: "600px", marginTop: "10px"  }}
-                                onChange={(event) => this.onDescriptionChange(event)} />
+                            <TextField id="outlined-basic-description" label="Комментарий" variant="outlined" 
+                                style={{ width: "600px", marginTop: "10px" }}                                
+                                onChange={(event) => this.onDescriptionChange(event)} 
+                                value={this.state.descriptionTalon}/>
                         </div>
                         <div className={"d-flex justify-content-center"} >
                             <div >
@@ -258,7 +329,7 @@ export class TalonCUD extends Component{
                         //className={classes.button}
                         startIcon={<SaveIcon />}
                         //style={{ background: "yellow" }}
-                        onClick={() => this.onSaveTalon()}
+                        onClick={() => this.onButtonSave()}
                     >
                         Сохранить
                     </Button>
@@ -270,8 +341,8 @@ export class TalonCUD extends Component{
                         //endIcon={<Icon>reply</Icon>}
                         endIcon={<HomeOutlinedIcon />}
                         //style={{ background: 'green' }}
-                        //onClick={() => { alert('clicked') }}
-                        href="/appdental/administrator/talons"
+                        onClick={() => { this.onClose() }}
+                        //href="/appdental/administrator/talons"
                     >
                         Закрыть
                     </Button>
@@ -327,5 +398,27 @@ export class TalonCUD extends Component{
             });
 
         return await response.json();        
+    }
+
+    async deleteTalon(talonId) {
+        const response = await fetch(`talons?talonid=${talonId}`, 
+        {
+            method: 'DELETE',
+            mode: 'cors',
+            cache: 'no-cache',
+            credentials: 'same-origin',
+            headers: {
+                'Content-type': 'application/json'
+            },
+            redirect: 'follow',
+            referrerPolicy: 'no-referrer'
+        });
+        return response.status;
+    }
+
+    async populateTalonServices(talonId) {
+        const response = await fetch(`talons/services?talonid=${talonId}`);
+        const res = await response.json(); 
+        this.setState({ tableServices: res, loadingTalonService: false });
     }
 }

@@ -156,53 +156,23 @@ componentDidMount(){
  (this.props.selectedPatientId) && this.fillFields(this.props.selectedPatientId);
 }
 
-async onSavePatient() {
-   
-      let newPatient = {
-        name: this.state.selectedName,
-        city: this.state.selectedCity,
-        street: this.state.selectedStreet,
-        phone: this.state.selectedPhone,
-        email: this.state.selectedEmail,
-        dateborn: this.state.selectedBornDate,
-        nationality: (this.state.selectedNationality === '1') ? 1 : 0,
-        description: this.state.selectedDescription
-      }
-      
-      let newjson = JSON.stringify(newPatient, null, '\t')
+async onAddPatient(newjson) {   
+  try{
+      const res = await this.addPatient(newjson);
 
-      try{
-          const res = await this.addPatient(newjson);
-
-          if(res === 200) {
-            alert(`Пациент успешно добавлен!`);
-            this.onClose();
-          }
-
-          if(res === 400) alert("Пациент не добавлен в систему!");
+      if(res === 200) {
+        alert(`Пациент успешно добавлен!`);
+        this.onClose();
       }
-      catch {
-          alert("Не удалось добавить пациента.");
-      }
+
+      if(res === 400) alert("Пациент не добавлен в систему!");
+  }
+  catch {
+      alert("Не удалось добавить пациента.");
+  }
 }
 
-async onEditPatient() {
-  let newPatient = {
-    patientId: this.state.selectedId,
-    name: this.state.selectedName,
-    city: this.state.selectedCity,
-    street: this.state.selectedStreet,
-    phone: this.state.selectedPhone,
-    email: this.state.selectedEmail,
-    dateborn: this.state.selectedBornDate,
-    nationality: (this.state.selectedNationality === '1') ? 1 : 0,
-    description: this.state.selectedDescription
-  }
-  
-  console.log(newPatient);
-
-  let newjson = JSON.stringify(newPatient, null, '\t')
-
+async onEditPatient(newjson) {
   try{
       const res = await this.editPatient(newjson);
 
@@ -243,11 +213,25 @@ onButtonSave() {
 
   if (flagFio && flagCity && flagStreet && flagPhone)
   {    
-      this.props.operationInsert && this.onSavePatient();
+    let newPatient = {
+      patientId: this.state.selectedId,
+      name: this.state.selectedName,
+      city: this.state.selectedCity,
+      street: this.state.selectedStreet,
+      phone: this.state.selectedPhone,
+      email: this.state.selectedEmail,
+      dateborn: this.state.selectedBornDate,
+      nationality: (this.state.selectedNationality === '1') ? 1 : 0,
+      description: this.state.selectedDescription
+    }
+  
+    const newjson = JSON.stringify(newPatient, null, '\t')
 
-      this.props.operationEdit && this.onEditPatient();
+    this.props.operationInsert && this.onAddPatient(newjson);
 
-      this.props.operationDelete && this.onDeletePatient(this.props.selectedPatientId);
+    this.props.operationEdit && this.onEditPatient(newjson);
+
+    this.props.operationDelete && this.onDeletePatient(this.props.selectedPatientId);
   }
 }
 
@@ -271,8 +255,6 @@ async fillFields(patientId) {
   this.setState({ selectedPhone: selectedPatient.phone });
   this.setState({ selectedNationality: (selectedPatient.nationality === 'BY') ? "1" : "0" });
   this.setState({ selectedDescription: selectedPatient.description });
-
-  console.log(selectedPatient);
 }
 
   render() {

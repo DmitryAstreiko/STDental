@@ -18,6 +18,7 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
+import { ApiClient } from './APIClient';
 
 const styles = (theme) => ({
   root: {
@@ -68,6 +69,8 @@ export default class ViewTalonServices extends Component {
     open: false,
     services: []
   }
+
+  this.apiClient = new ApiClient();
 }
 
   render() {
@@ -82,7 +85,7 @@ export default class ViewTalonServices extends Component {
         </IconButton>
         <Dialog onClose={() => this.setState({ open: false })}  
           open={this.state.open} 
-          maxWidth="true"
+          maxWidth="xl"
           aria-labelledby="customized-dialog-title">
           <DialogTitle 
             id="customized-dialog-title" 
@@ -105,7 +108,7 @@ export default class ViewTalonServices extends Component {
                 </TableHead>
                 <TableBody>
                   {this.state.services.map((service, index) => (
-                    <TableRow key={service.Id} >
+                    <TableRow key={index} >
                       <TableCell align="center">{index + 1}</TableCell>
                       <TableCell align="center">{service.shifr}</TableCell>
                       <TableCell align="left">{service.serviceName}</TableCell>
@@ -128,10 +131,12 @@ export default class ViewTalonServices extends Component {
     )
   }
 
-  async populateTalonServices(talonId) {  
-    console.log(`populateTalonServices`);      
+  async populateTalonServices(talonId) {       
     const response = await fetch(`talons/services?talonid=${talonId}`);
-    const data = await response.json();   
-    this.setState({ services: data });
+    const res = await response.json();   
+
+    //const res = this.apiClient.GetTalonServices(talonId);
+
+    this.setState({ services: res });
 }
 }

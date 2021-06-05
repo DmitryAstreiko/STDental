@@ -21,6 +21,7 @@ import SearchOutlinedIcon from '@material-ui/icons/SearchOutlined';
 import ViewTalonServices from './ViewTalonServices';
 import {ApiClient} from './APIClient';
 import {TalonCUD} from './TalonCUD';
+import { ThemeProvider } from '@material-ui/styles';
 //import { ThemeProvider } from '@material-ui/styles';
 
 export class Talons extends Component{
@@ -46,7 +47,8 @@ export class Talons extends Component{
             talonCreate: false,
             talonEdit: false,
             talonDelete: false,
-            talonList: true
+            talonList: true,
+            selectedTalonId: null
         }
 
         this.apiClient = new ApiClient();
@@ -67,7 +69,7 @@ export class Talons extends Component{
         this.setState({selectedTalon: row && row})
     )
 
-    async deleteRowTalon(talonId) {
+    /*async deleteRowTalon(talonId) {
         try {
             let res = await this.deleteTalon(talonId); 
 
@@ -81,7 +83,7 @@ export class Talons extends Component{
         } catch {
             alert("Ошибка удаления талона!")
         }        
-    }
+    }*/
 
     onPatientSelect = value => {
         this.setState({ selectedPatientId: value && value.id })
@@ -131,17 +133,43 @@ export class Talons extends Component{
         this.populateTalons(1);
     }
 
-    oncreatePatient() {
+    onCreateTalon() {
         this.setState({ talonCreate: true });
         this.setState({ talonList: false });
+        this.setState({ talonEdit: false });
+        this.setState({ talonDelete: false });
+        this.setState({ selectedTalonId: null });
+    }
+
+    onEditTalon(talonId) {
+        this.setState({ talonList: false });
+        this.setState({ talonCreate: false });
+        this.setState({ talonEdit: true });
+        this.setState({ talonDelete: false });
+        this.setState({ selectedTalonId: talonId });
+    }
+
+    onDeleteTalon(talonId) {
+        this.setState({ talonList: false });
+        this.setState({ talonCreate: false });
+        this.setState({ talonEdit: false });
+        this.setState({ talonDelete: true });
+        this.setState({ selectedTalonId: talonId });
     }
 
     payTalonServices(talonId) {
 
     }
 
+    closePatientCUD(){
+        this.setState({ talonCreate: false });
+        this.setState({ talonList: true });
+        this.setState({ talonEdit: false });
+        this.setState({ talonDelete: false });
+    }
+
     renderTalonsTable() {      
-        const paginate = pageNum => { this.populateTalons(pageNum, this.state.filterTalons) };
+        const paginate = pageNum => { this.populateTalons(pageNum, this.state.filterTalons) };        
 
         return (
             <div>
@@ -195,7 +223,7 @@ export class Talons extends Component{
                             //className={classes.button}
                             startIcon={<ContactsOutlinedIcon />}
                             //height="15px" 
-                            onClick={ () => (this.oncreatePatient()) }
+                            onClick={ () => (this.onCreateTalon()) }
                             //href='/appdental/administrator/talons/add'
                         >Создать талон</Button>
                     </div>
@@ -261,16 +289,15 @@ export class Talons extends Component{
                                                         <IconButton 
                                                             aria-label="edit" 
                                                             style={{ color: green[500] }}
-                                                            onClick={ () => (this.editRowTalon(index)) }>
+                                                            onClick={ () => (this.onEditTalon(talon.talonId)) }>
                                                             <EditIcon fontSize="small" />
                                                         </IconButton>
                                                     </td>                                                  
-                                                    <td>
-                                                        
+                                                    <td>                                                        
                                                         <IconButton 
                                                             aria-label="delete" 
                                                             color="secondary"
-                                                            onClick={ () => (this.deleteRowTalon(talon.talonId)) }>
+                                                            onClick={ () => (this.onDeleteTalon(talon.talonId)) }>
                                                             <DeleteIcon fontSize="small" />
                                                         </IconButton>
                                                     </td>                                           
@@ -302,12 +329,20 @@ export class Talons extends Component{
         );
     }
 
-    render(){   
+    render(){ 
+        const closingPatient = () => { this.closePatientCUD() };  
+        const countTalon = () => { this.populateCountTalons() };
+        const getTalons = () => { this.populateTalons(1) }
         return (
         <div>
             <MenuAdministrator />
             {this.state.talonList && this.renderTalonsTable()}
-            {this.state.talonCreate && <TalonCUD flagTalonCreate={true}/>}
+            {this.state.talonCreate && <TalonCUD flagTalonCreate={true} flagTalonEdit={false} flagTalonDelete={false} 
+                closingPatient={ closingPatient } countTalon={ countTalon } getTalons={ getTalons }/>}
+            {this.state.talonEdit && <TalonCUD flagTalonCreate={false} flagTalonEdit={true} flagTalonDelete={false} 
+                talonId={this.state.selectedTalonId} closingPatient={ closingPatient } countTalon={ countTalon } getTalons={ getTalons }/>}
+            {this.state.talonDelete && <TalonCUD flagTalonCreate={false} flagTalonEdit={false} flagTalonDelete={true} 
+                talonId={this.state.selectedTalonId} closingPatient={ closingPatient } countTalon={ countTalon } getTalons={ getTalons }/>}
         </div>
         )
     }
@@ -338,23 +373,7 @@ export class Talons extends Component{
     async populateCountTalons(filter=null) {       
         const res = await this.apiClient.GetCountTalons(filter);
         this.setState({ talonsCount: res });
-    }
-
-    async deleteTalon(talonId) {
-        const response = await fetch(`talons?talonid=${talonId}`, 
-        {
-            method: 'DELETE',
-            mode: 'cors',
-            cache: 'no-cache',
-            credentials: 'same-origin',
-            headers: {
-                'Content-type': 'application/json'
-            },
-            redirect: 'follow',
-            referrerPolicy: 'no-referrer'
-        });
-        return response.status;
-    }
+    }    
 
     async populateTalonServices(talonId) {       
         const response = await fetch(`talons/services?talonid=${talonId}`);

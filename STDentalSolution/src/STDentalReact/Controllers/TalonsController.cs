@@ -50,6 +50,24 @@ namespace STDentalReact.Controllers
                 .ToArray();
         }
 
+        [HttpGet("talon")]
+        public async Task<TalonInfo> GetTalonAsync(int talonId)
+        {
+            var talon = await _talonRepository.GetTalonAsync(talonId);
+
+            return new TalonInfo()
+            {
+                TalonId = talon.TalonId,
+                PatientName = talon.Patient.Name,
+                StaffName = talon.Staff.Name,
+                Summa = talon.Summa,
+                Cost = talon.Cost,
+                CreateDate = talon.CreateDate,
+                TalonStatus = talon.PaymentStatus.ToString(),
+                Description = talon.Description
+            };
+        }
+
         [HttpGet]
         public async Task<IEnumerable<TalonInfo>> TalonsFilterAsync(int page, int itemsPerPage, int? patientId, int? doctorId, DateTime? startDate, DateTime? endDate)
         {

@@ -84,6 +84,16 @@ export class ApiClient {
             response = await fetch(`talons/talonCount?${filter}`);
 
         return await response.json();
+    };
+
+    async GetTalonServices(talonId) {
+        const response = await fetch(`talons/services?talonid=${talonId}`);
+        return await response.json();
+    } 
+
+    async GetTalon(talonId) {
+        const response = await fetch(`talons/talon?talonid=${talonId}`);
+        return await response.json(); 
     }
 
     //------services-----------------

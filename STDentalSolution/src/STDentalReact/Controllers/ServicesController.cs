@@ -38,7 +38,7 @@ namespace STDentalReact.Controllers
             return new ServiceAction()
                 {
                     Id = service.ServiceId,
-                    Name = service.Name,
+                    ServiceName = service.Name,
                     Shifr = service.Shifr,
                     Price = service.ServiceCostCalculation?.Cost,
                     Amount = 1,

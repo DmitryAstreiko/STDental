@@ -147,7 +147,8 @@ namespace STDentalLibrary.Implementation
             await using (var context = CreateContext())
             {
                 return await context.Talons
-                    .Include(d => d.TalonServices)
+                    .Include(d => d.Staff)
+                    .Include(w => w.Patient)
                     .Where(w => w.TalonId == talonId)
                     .FirstOrDefaultAsync();
             }
