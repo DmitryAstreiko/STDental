@@ -40,7 +40,7 @@ namespace STDentalReact.Controllers
 
             return talonServicesList.Select(service => new TalonServicesInfo()
                 {
-                    Id = service.TalonServiceId,
+                    Id = service.ServiceId,
                     Shifr = service.Service.Shifr,
                     ServiceName = service.Service.Name,
                     Cost = service.Cost,

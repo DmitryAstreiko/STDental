@@ -156,7 +156,7 @@ export class TalonCUD extends Component{
                 newTalonService.push(rowService);
             });
 
-            let newTalon = {
+            /*let newTalon = {                
                 createdate: this.state.selectedTalonDate,
                 summa: this.state.selectedCost,
                 sale: 0,
@@ -167,21 +167,36 @@ export class TalonCUD extends Component{
                 patientid: this.state.selectedPatientId,
                 staffid: this.state.selectedDoctorId,
                 talonservices: newTalonService
-            }
+            }*/
             
-            let newjson = JSON.stringify(newTalon, null, '\t');
+            //let newjson = JSON.stringify(newTalon, null, '\t');
 
-            this.props.flagTalonCreate && this.onAddTalon(newjson);
+            this.props.flagTalonCreate && this.onAddTalon(newTalonService);
 
-            this.props.flagTalonEdit && this.onAddEdit(newjson);
+            this.props.flagTalonEdit && this.onEditTalon(newTalonService, this.props.talonId);
 
             this.props.flagTalonDelete && this.onDeleteTalon(this.props.talonId);
         //}
     }
 
-    async onAddTalon(newjson) {   
+    async onAddTalon(services) {   
         try{
+            let newTalon = {                
+                createdate: this.state.selectedTalonDate,
+                summa: this.state.selectedCost,
+                sale: 0,
+                summasales: 0,
+                cost: this.state.selectedCost,
+                paymentstatus: 1,
+                description: this.state.descriptionTalon,
+                patientid: this.state.selectedPatientId,
+                staffid: this.state.selectedDoctorId,
+                talonservices: services
+            }
+
+            let newjson = JSON.stringify(newTalon, null, '\t');
             //const res = await this.addTalon(newjson);
+
             const res = await this.apiClient.addTalon(newjson)
             console.log(res);
             if(res === 200) {
@@ -195,10 +210,27 @@ export class TalonCUD extends Component{
         }
     }
 
-    async onEditTalon(newjson) {
+    async onEditTalon(services, talonid) {
         try{
-            const res = await this.editPatient(newjson);
-    
+            let newTalon = { 
+                talonid: talonid,               
+                createdate: this.state.selectedTalonDate,
+                summa: this.state.selectedCost,
+                sale: 0,
+                summasales: 0,
+                cost: this.state.selectedCost,
+                paymentstatus: 1,
+                description: this.state.descriptionTalon,
+                patientid: this.state.selectedPatientId,
+                staffid: this.state.selectedDoctorId,
+                talonservices: services
+            }
+            let newjson = JSON.stringify(newTalon, null, '\t');
+            
+            console.log(newjson);
+            const res = await this.apiClient.editTalon(newjson);
+            console.log(res);
+
             if(res === 200) {
             alert(`Талон успешно обновлен!`);
             this.onClose();
@@ -298,6 +330,7 @@ export class TalonCUD extends Component{
                         <Table className='table' aria-labelledby="tabelLabel">
                         <thead>
                             <tr>
+                                <th>sads</th>
                                 <th>№ п.п.</th>
                                 <th>Шифр</th>
                                 <th style={{width: "600px"}}>Наименование</th>
@@ -310,6 +343,7 @@ export class TalonCUD extends Component{
                             <tbody>
                                 {this.state.tableServices.map((service, index) =>
                                     <tr key={index} style={{ height: "50px" }}>
+                                        <td>{service.id}</td>
                                         <td style={{ width: "100px" }}>{index + 1}</td>
                                         <td>{service.shifr}</td>
                                         <td style={{ textAlign: "left", paddingLeft: "5px" }}>{service.serviceName}</td> 
@@ -411,6 +445,7 @@ export class TalonCUD extends Component{
             const data = await response.json(); 
             var tableServices = this.state.tableServices;            
             tableServices.push(data);
+
             this.setState({ tableServices: tableServices });
             this.CountCostAllTalons();
         }
@@ -422,6 +457,7 @@ export class TalonCUD extends Component{
     async populateTalonServices(talonId) {
         const response = await fetch(`talons/services?talonid=${talonId}`);
         const res = await response.json(); 
+        console.log(res);
         this.setState({ tableServices: res, loadingTalonService: false });
     }
 }

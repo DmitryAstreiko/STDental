@@ -167,9 +167,9 @@ namespace STDentalLibrary.Implementation
         {
             await using (var context = CreateContext())
             {
-                //context.Patients.Attach(patient);
+                context.Talons.Attach(talon);
 
-                var oldTalon = await context.Talons.FindAsync(talon.TalonId);
+                /*var oldTalon = await context.Talons.FindAsync(talon.TalonId);
 
                 oldTalon.PatientId = talon.PatientId;
                 oldTalon.StaffId = talon.StaffId;
@@ -177,7 +177,7 @@ namespace STDentalLibrary.Implementation
                 oldTalon.Description = talon.Description;
 
 
-                context.Talons.Update(oldTalon);
+                context.Talons.Update(oldTalon);*/
 
                 await context.SaveChangesAsync();
             }

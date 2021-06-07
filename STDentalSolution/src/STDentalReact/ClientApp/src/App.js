@@ -28,6 +28,9 @@ import BoardModerator from "./components/board-moderator.component";
 import BoardAdmin from "./components/board-admin.component";
 import Administrator from "./components/Application/Administrator";
 import Patients from "./components/Application/Patients";
+import Doctor from "./components/Application/Doctor";
+import Accountant from "./components/Application/Accountant";
+import Head from "./components/Application/Head";
 
 import './custom.css'
 
@@ -75,12 +78,12 @@ export default class App extends Component {
               </Link>
             </li>
             <li className="nav-item">
-              <Link to={"/register"} className="nav-link">
+              <Link to={"/appdental/doctor"} className="nav-link">
                 Врач
               </Link>
             </li>
             <li className="nav-item">
-              <Link to={"/login"} className="nav-link">
+              <Link to={"/appdental/accountant"} className="nav-link">
                 Бухгалтер
               </Link>
             </li>
@@ -89,11 +92,17 @@ export default class App extends Component {
                 Руководитель
               </Link>
             </li>
+            {/*<li className="nav-item">
+              <Link to={"/register"} className="nav-link">
+                Register
+              </Link>
+            </li>*/}
             <li className="nav-item">
-              <Link to={"/appdental/guest"} className="nav-link">
-                Пациент
+              <Link to={"/login"} className="nav-link">
+                Login
               </Link>
             </li>
+            
             {/*<li className="nav-item">
               <Link to={"/home"} className="nav-link">
                 Home
@@ -215,6 +224,9 @@ export default class App extends Component {
             <Route exact path='/appdental/administrator/talons' component={Talons} />
             <Route exact path='/appdental/administrator/talons/add' component={TalonCUD} />
             <Route exact path='/appdental/administrator' component={Administrator} />
+            <Route exact path='/appdental/doctor' component={Doctor} />
+            <Route exact path='/appdental/accountant' component={Accountant} />
+            <Route exact path='/appdental/head' component={Head} />
             <Route exact path='/appdental/administrator/patients' component={Patients} />
             <Route path="/user" component={BoardUser} />
             <Route path="/mod" component={BoardModerator} />

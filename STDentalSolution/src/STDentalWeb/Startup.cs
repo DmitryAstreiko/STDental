@@ -633,7 +633,7 @@ namespace STDentalWeb
                     }
                 });*/
 
-                endpoints.MapGet("/updtalon", async context =>
+                /*endpoints.MapGet("/updtalon", async context =>
                 {
                     var repository = context.RequestServices.GetService<ITalonRepository>();
 
@@ -643,7 +643,7 @@ namespace STDentalWeb
 
                     if (await repository.UpdateTalonAsync(updTalon)) await context.Response.WriteAsync($"True");
                     else await context.Response.WriteAsync("False");
-                });
+                });*/
 
                 #endregion
 
