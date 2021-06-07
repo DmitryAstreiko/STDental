@@ -21,8 +21,6 @@ import SearchOutlinedIcon from '@material-ui/icons/SearchOutlined';
 import ViewTalonServices from './ViewTalonServices';
 import {ApiClient} from './APIClient';
 import {TalonCUD} from './TalonCUD';
-import { ThemeProvider } from '@material-ui/styles';
-//import { ThemeProvider } from '@material-ui/styles';
 
 export class Talons extends Component{
 
@@ -69,22 +67,6 @@ export class Talons extends Component{
         this.setState({selectedTalon: row && row})
     )
 
-    /*async deleteRowTalon(talonId) {
-        try {
-            let res = await this.deleteTalon(talonId); 
-
-            if(res === 200) alert(`Талон №${talonId} удален!`);
-
-            if(res === 400) alert("Талон для удаления не найден!");
-
-            this.populateTalons(1);        
-            this.populateCountTalons();
-
-        } catch {
-            alert("Ошибка удаления талона!")
-        }        
-    }*/
-
     onPatientSelect = value => {
         this.setState({ selectedPatientId: value && value.id })
     }
@@ -94,8 +76,6 @@ export class Talons extends Component{
     }
 
     onDateStartSelect = value => {
-        //const result = new Date(value);
-        //let res = Date.parse(value)
         let res = moment(value).format('YYYY-MM-DD')
         this.setState({ selectedStartDate: res })
     }
@@ -173,8 +153,6 @@ export class Talons extends Component{
 
         return (
             <div>
-                {/*<MenuAdministrator />*/}
-
                 <div >
                     <div className={"d-flex justify-content-around"}>
                         <div className="col">
@@ -201,7 +179,6 @@ export class Talons extends Component{
                                 size="medium"
                                 startIcon={<SearchOutlinedIcon />}
                                 onClick={ () => this.onGenerateFilter()}>Поиск</Button>
-                            {/*https://www.w3.org/Style/Examples/007/center.ru.html - позиционирование*/}
                         </div>
                         <div className={"col"} style={{position: "relative"}}>
                             <Button 
@@ -220,15 +197,11 @@ export class Talons extends Component{
                             color="secondary"
                             size="medium"
                             style={{position: "absolute", top: "50%", transform: "translate(0, -50%)"}} 
-                            //className={classes.button}
                             startIcon={<ContactsOutlinedIcon />}
-                            //height="15px" 
                             onClick={ () => (this.onCreateTalon()) }
-                            //href='/appdental/administrator/talons/add'
                         >Создать талон</Button>
                     </div>
-                        </div>
-                                
+                    </div>                                
                     </div>
                 <div>
                 <div style={{height: "20px"}}>

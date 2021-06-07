@@ -23,16 +23,18 @@ export class TalonCUD extends Component{
 
         this.state = {
             selectedPatient: null,
-            selectedDoctorId: null,
+            selectedDoctor: [],
+            selectedPrice: [],
             patients: [],
             doctors: [],
+            prices: [],
             tableServices: [],
             selectedTalonDate: moment(new Date()).format('YYYY-MM-DD'),
             changeDateTalon: moment(new Date()).format('YYYY-MM-DD'),
             selectedCost: null,
             descriptionTalon: null,
             addedTalonId: null,
-            redirect: false,
+            //redirect: false,
             loadingTalonService: true,
             errorPatient: false,
             errorDoctor: false,
@@ -64,26 +66,21 @@ export class TalonCUD extends Component{
     } 
 
     onPatientSelect = value => {
-        this.setState({ selectedPatientId: value && value.id })
+        this.setState({ selectedPatient: value && value })
     }
 
     onDoctorSelect = value => {
-        this.setState({ selectedDoctorId: value && value.id })
+        this.setState({ selectedDoctor: value && value })
     }
 
-    /*onPriceSelect = value => {     
-        //this.setState({ selectedServiceId: value && value.id });
-        (value) && (
-            this.populateSelectedPrice(value.id),
-            this.CountCostAllTalons()
-        )        
-    }*/
+    onPriceSelect = value => {
+        this.state({ selectedPrice: value && value });
 
-    onPriceSelect(value) {     
+        /*console.log(value);    
         (value) && (
             this.populateSelectedPrice(value.id));
 
-        this.CountCostAllTalons();
+        this.CountCostAllTalons();*/
     }
 
     onChangeCount(evt, index) {
@@ -126,13 +123,13 @@ export class TalonCUD extends Component{
     }
 
     validateDoctor() {
-        let isValid = !!this.state.selectedDoctorId;
+        let isValid = !!this.state.selectedDoctor.Id;
         this.setState({errorDoctor: !isValid});
         return isValid;
     }
 
     validatePatient() {
-        let isValid = !!this.state.selectedPatientId;
+        let isValid = !!this.state.selectedPatient.id;
         this.setState({errorPatient: !isValid});
         return isValid;
     }
@@ -157,27 +154,11 @@ export class TalonCUD extends Component{
                 newTalonService.push(rowService);
             });
 
-            /*let newTalon = {                
-                createdate: this.state.selectedTalonDate,
-                summa: this.state.selectedCost,
-                sale: 0,
-                summasales: 0,
-                cost: this.state.selectedCost,
-                paymentstatus: 1,
-                description: this.state.descriptionTalon,
-                patientid: this.state.selectedPatientId,
-                staffid: this.state.selectedDoctorId,
-                talonservices: newTalonService
-            }*/
-            
-            //let newjson = JSON.stringify(newTalon, null, '\t');
-
             this.props.flagTalonCreate && this.onAddTalon(newTalonService);
 
             this.props.flagTalonEdit && this.onEditTalon(newTalonService, this.props.talonId);
 
             this.props.flagTalonDelete && this.onDeleteTalon(this.props.talonId);
-        //}
     }
 
     async onAddTalon(services) {   
@@ -190,8 +171,8 @@ export class TalonCUD extends Component{
                 cost: this.state.selectedCost,
                 paymentstatus: 1,
                 description: this.state.descriptionTalon,
-                patientid: this.state.selectedPatientId,
-                staffid: this.state.selectedDoctorId,
+                patientid: this.state.selectedPatient.id,
+                staffid: this.state.selectedDoctor.id,
                 talonservices: services
             }
 
@@ -199,9 +180,9 @@ export class TalonCUD extends Component{
             //const res = await this.addTalon(newjson);
 
             const res = await this.apiClient.addTalon(newjson)
-            console.log(res);
+          
             if(res === 200) {
-            alert(`Талон успешно добавлен!`);
+                alert(`Талон успешно добавлен!`);
             this.onClose();
             }
             if(res === 400) alert("Талон не добавлен в систему!");
@@ -223,18 +204,16 @@ export class TalonCUD extends Component{
                 cost: this.state.selectedCost,
                 paymentstatus: 1,
                 description: this.state.descriptionTalon,
-                patientid: this.state.selectedPatientId,
-                staffid: this.state.selectedDoctorId,
+                patientid: this.state.selectedPatient.id,
+                staffid: this.state.selectedDoctor.id,
                 talonservices: services
             }
             let newjson = JSON.stringify(newTalon, null, '\t');
             
-            console.log(newjson);
             const res = await this.apiClient.editTalon(newjson);
-            console.log(res);
 
             if(res === 200) {
-            alert(`Талон успешно обновлен!`);
+                alert(`Талон успешно обновлен!`);
             this.onClose();
             }
     
@@ -247,7 +226,6 @@ export class TalonCUD extends Component{
     
     async onDeleteTalon(talonId) {
         try{
-            //const res = await this.deleteTalon(talonId);
             const res = await this.apiClient.deleteTalon(talonId);
     
             if(res === 200) {
@@ -298,24 +276,21 @@ export class TalonCUD extends Component{
                         <div>
                             <ComboBox labelvalue={"Выберите пациента"} lists={this.state.patients} 
                                 onSelected={ (value) => this.onPatientSelect(value) } nameid={"combopatientprice"} 
-                                widthValue={350} 
-                                //error={this.state.errorPatient}
+                                widthValue={300} 
                                 selectedValue={this.state.selectedPatient}
-                                error={true}
                                 />
                         </div>
                         <div className={"d-flex justify-content-center"} >
                             <ComboBox labelvalue={"Выберите услугу"} lists={this.state.prices} 
                                 onSelected={ (value) => this.onPriceSelect(value) } nameid={"comboprice"} 
-                                widthValue={800} />
+                                widthValue={500} 
+                                />
                     </div>
                         <div >
                             <ComboBox labelvalue={"Выберите врача"} lists={this.state.doctors} 
                                 onSelected={ (value) => this.onDoctorSelect(value) } nameid={"combodoctorprice"} 
                                 widthValue={300} 
-                                error={false}
-                                //error={this.state.errorDoctor}
-                                //value={this.state.selectedDoctorId} 
+                                selectedValue={this.state.selectedDoctor}
                                 />                                
                         </div>
                     </div>                       
@@ -370,7 +345,7 @@ export class TalonCUD extends Component{
                     <div className={"d-flex justify-content-around"} style={{ marginTop: "20px" }}>
                         <div>
                             <TextField id="outlined-basic-description" label="Комментарий" variant="outlined" 
-                                style={{ width: "600px", marginTop: "10px" }}                                
+                                style={{ width: "400px", marginTop: "10px" }}                                
                                 onChange={(event) => this.onDescriptionChange(event)} 
                                 value={this.state.descriptionTalon}/>
                         </div>
@@ -439,9 +414,9 @@ export class TalonCUD extends Component{
         this.setState({ prices: res });
     }
 
-    async populateSelectedPrice(serviceid) {  
+    async populateSelectedPrice(serviceId) {  
         try{ 
-            const response = await fetch(`services/service?serviceid=${serviceid}`);
+            const response = await fetch(`services/service?serviceid=${serviceId}`);
             const data = await response.json(); 
             var tableServices = this.state.tableServices;            
             tableServices.push(data);
@@ -457,7 +432,6 @@ export class TalonCUD extends Component{
     async populateTalonServices(talonId) {
         const response = await fetch(`talons/services?talonid=${talonId}`);
         const res = await response.json(); 
-        console.log(res);
         this.setState({ tableServices: res, loadingTalonService: false });
     }
 }

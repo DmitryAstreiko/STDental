@@ -6,11 +6,9 @@ import ruLocale from "date-fns/locale/ru";
 import enLocale from "date-fns/locale/en-US";
 import DateFnsUtils from "@date-io/date-fns";
 import MoreIcon from "@material-ui/icons/MoreVert";
-import React, { setState, useState, useCallback } from "react";
+import React, { useState, useCallback } from "react";
 import { IconButton, Menu, MenuItem } from "@material-ui/core";
 import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
-import { Component } from "react";
-import * as moment  from 'moment';
 
 const localeMap = {
   en: enLocale,
@@ -55,15 +53,8 @@ const localeCancelLabelMap = {
 function DateFnsLocalizationExample(props) {
   const [locale, setLocale] = useState("ru");
   const [anchorEl, setAnchorEl] = useState(null);
-  let [selectedDate, handleDateChange] = useState(new Date());
+  //let [selectedDate, handleDateChange] = useState(new Date());
 
-  //setState({ selectedDate: props.selectedDate });
-
-  //useState({})
-
-    //console.log(`props.selectedTalonDate = ${props.selectedDate}`);
-    //console.log(`---------------`)
-    //console.log(selectedDate);
 
   const handleMenuOpen = useCallback(e => {
     e.stopPropagation();
@@ -73,9 +64,7 @@ function DateFnsLocalizationExample(props) {
   const selectLocale = useCallback(locale => {
     setLocale(locale);
     setAnchorEl(null);
-  }, []);
-
-  
+  }, []);  
 
   return (
     <MuiPickersUtilsProvider utils={localeUtilsMap[locale]} locale={localeMap[locale]} >

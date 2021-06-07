@@ -190,7 +190,6 @@ async onEditPatient(newjson) {
 
 async onDeletePatient(patientId) {
   try{
-    console.log(`onDeletePatient`);
       const res = await this.deletePatient(patientId);
 
       if(res === 200) {
@@ -212,24 +211,41 @@ onButtonSave() {
   const flagPhone = this.validatePhone();
 
   if (flagFio && flagCity && flagStreet && flagPhone)
-  {    
-    let newPatient = {
-      patientId: this.state.selectedId,
-      name: this.state.selectedName,
-      city: this.state.selectedCity,
-      street: this.state.selectedStreet,
-      phone: this.state.selectedPhone,
-      email: this.state.selectedEmail,
-      dateborn: this.state.selectedBornDate,
-      nationality: (this.state.selectedNationality === '1') ? 1 : 0,
-      description: this.state.selectedDescription
-    }
-  
-    const newjson = JSON.stringify(newPatient, null, '\t')
+  {       
+    if (this.props.operationInsert) {
+      let newPatient = {
+        name: this.state.selectedName,
+        city: this.state.selectedCity,
+        street: this.state.selectedStreet,
+        phone: this.state.selectedPhone,
+        email: this.state.selectedEmail,
+        dateborn: this.state.selectedBornDate,
+        nationality: (this.state.selectedNationality === '1') ? 1 : 0,
+        description: this.state.selectedDescription
+      };
 
-    this.props.operationInsert && this.onAddPatient(newjson);
+      const newjson = JSON.stringify(newPatient, null, '\t');
 
-    this.props.operationEdit && this.onEditPatient(newjson);
+      this.onAddPatient(newjson);
+    };
+
+    if (this.props.operationEdit) {
+      let newPatient = {
+        patientId: this.state.selectedId,
+        name: this.state.selectedName,
+        city: this.state.selectedCity,
+        street: this.state.selectedStreet,
+        phone: this.state.selectedPhone,
+        email: this.state.selectedEmail,
+        dateborn: this.state.selectedBornDate,
+        nationality: (this.state.selectedNationality === '1') ? 1 : 0,
+        description: this.state.selectedDescription
+      };
+
+      const newjson = JSON.stringify(newPatient, null, '\t');
+
+      this.onEditPatient(newjson);
+    };
 
     this.props.operationDelete && this.onDeletePatient(this.props.selectedPatientId);
   }
@@ -306,9 +322,7 @@ async fillFields(patientId) {
               <div>
                 <DatePicker id="date-born" labelvalue={"Введите дату рождения"} 
                   onSelected={ (value) => this.onDateBornSelect(value) } 
-                  //value={this.state.selectedBornDate} 
-                  value={new Date("1986-02-10")}
-                  
+                  selectedDate={this.state.selectedBornDate}                  
                   />
               </div>
               <div style={{ height: "20px" }}>                
@@ -343,7 +357,7 @@ async fillFields(patientId) {
                 startIcon={<SaveIcon />}
                 //style={{ background: "yellow" }}
                 onClick={() => this.onButtonSave()}
-                >Сохранить
+                >{this.props.valueButtonSave}
               </Button>
 
               <Button

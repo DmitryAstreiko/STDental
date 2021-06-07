@@ -71,7 +71,7 @@ export default class Patients extends Component{
         try {
 
             let res = await this.deletePatient(patientId); 
-            console.log(res);
+            
             if(res === 200) alert(`Пациент №${patientId} удален!`);
 
             if(res === 400) alert("Пациент для удаления не найден!");
@@ -132,18 +132,17 @@ export default class Patients extends Component{
 
                         {this.state.patientInsert && <PatientCRUD visibleModal={true} changeState={ changeState } valueForm={"Добавление пациента"} 
                             operationInsert={true} operationEdit={false} operationDelete={false} selectCountPatients={ selectCountPatients } 
-                            selectPatients={ selectPatients } selectedPatientId={null}
-                            />
+                            selectPatients={ selectPatients } selectedPatientId={null} valueButtonSave={"Сохранить"} />
                         }
 
                         {this.state.patientEdit && <PatientCRUD visibleModal={true} changeState={ changeState } valueForm={"Редактирование пациента"} 
                             operationInsert={false} operationEdit={true} operationDelete={false} selectCountPatients={ selectCountPatients } 
-                            selectPatients={ selectPatients } selectedPatientId={this.state.selectedPatientId}/>
+                            selectPatients={ selectPatients } selectedPatientId={this.state.selectedPatientId} valueButtonSave={"Изменить"} />
                         }
 
                         {this.state.patientDelete && <PatientCRUD visibleModal={true} changeState={ changeState } valueForm={"Удаление пациента"} 
                             operationInsert={false} operationEdit={false} operationDelete={true} selectCountPatients={ selectCountPatients } 
-                            selectPatients={ selectPatients } selectedPatientId={this.state.selectedPatientId}/>
+                            selectPatients={ selectPatients } selectedPatientId={this.state.selectedPatientId} valueButtonSave={"Удалить"} />
                         }
 
                     </div>                        
