@@ -25,8 +25,10 @@ export default function ComboBox(props) {
           //disableCloseOnSelectid={props.nameid}
           options={props.lists}
           getOptionLabel={(option) => option.name}
-          style={{ width: props.widthValue }}
-          //getOptionSelected={(option, value) => {return option.id === value.id}}
+          style={{ width: props.widthValue }}          
+          getOptionSelected={(option, value) => {return option.id == value.id;}}
+          value={props.selectedValue}
+          //inputValue={props.selectedLabel}
           renderInput={(params) => <TextField {...params} label={props.labelvalue} variant="outlined" />}
         />
         {/*<Autocomplete

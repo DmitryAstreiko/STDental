@@ -10,24 +10,25 @@ import * as moment  from 'moment';
 import DeleteIcon from '@material-ui/icons/Delete';
 import SaveIcon from '@material-ui/icons/Save';
 import TextField from '@material-ui/core/TextField';
-import { Redirect } from 'react-router';
+//import { Redirect } from 'react-router';
 import HomeOutlinedIcon from '@material-ui/icons/HomeOutlined';
 import {ApiClient} from './APIClient';
 import IconButton from '@material-ui/core/IconButton';
 import Loader from './Loader';
-import { InputBase, InputLabel } from '@material-ui/core';
+import { InputLabel } from '@material-ui/core';
 
 export class TalonCUD extends Component{
     constructor(props){
         super(props);
 
         this.state = {
-            selectedPatientId: null,
+            selectedPatient: null,
             selectedDoctorId: null,
-            patients: null,
-            doctors: null,
+            patients: [],
+            doctors: [],
             tableServices: [],
             selectedTalonDate: moment(new Date()).format('YYYY-MM-DD'),
+            changeDateTalon: moment(new Date()).format('YYYY-MM-DD'),
             selectedCost: null,
             descriptionTalon: null,
             addedTalonId: null,
@@ -215,6 +216,7 @@ export class TalonCUD extends Component{
             let newTalon = { 
                 talonid: talonid,               
                 createdate: this.state.selectedTalonDate,
+                changedate: this.state.changeDateTalon,
                 summa: this.state.selectedCost,
                 sale: 0,
                 summasales: 0,
@@ -275,19 +277,17 @@ export class TalonCUD extends Component{
         const res = await response.json(); 
 
         //const res = this.apiClient.GetTalon(talonId);
+
         this.setState({ descriptionTalon: res.description });
         this.setState({ selectedCost: res.cost });
+        this.setState({ selectedPatient: {id: res.patientId, name: res.patientName}});
+        this.setState({ selectedDoctor: {id: res.staffId, name: res.staffName} });
+        this.setState({ selectedTalonDate: res.createDate });
     }
 
     render(){
-        {/*const { redirect } = this.state;
-
-        if (redirect) {
-            return <Redirect to='/appdental/administrator/talons'/>;
-        }*/}
         return (
             <div>
-                {/*<MenuAdministrator />*/}
                 <div >
                     <div>
                         <InputLabel style={{ textAlign: "center", marginBottom: "15px", color: "blue" }}
@@ -300,7 +300,7 @@ export class TalonCUD extends Component{
                                 onSelected={ (value) => this.onPatientSelect(value) } nameid={"combopatientprice"} 
                                 widthValue={350} 
                                 //error={this.state.errorPatient}
-                                //value={this.state.selectedPatientId} 
+                                selectedValue={this.state.selectedPatient}
                                 error={true}
                                 />
                         </div>
@@ -376,7 +376,9 @@ export class TalonCUD extends Component{
                         </div>
                         <div className={"d-flex justify-content-center"} >
                             <div >
-                                <DatePicker onSelected={ (value) => this.onDateStartSelect(value) } labelvalue={"Дата выписки талона"}/>
+                                <DatePicker onSelected={ (value) => this.onDateStartSelect(value) } 
+                                labelvalue={"Дата выписки талона"}
+                                selectedDate={this.state.selectedTalonDate}/>
                             </div>            
                         </div>
                         <div className={"d-flex justify-content-center"} style={{ marginTop: "20px" }}>
@@ -413,7 +415,7 @@ export class TalonCUD extends Component{
                         onClick={() => { this.onClose() }}
                         //href="/appdental/administrator/talons"
                     >
-                        Закрыть
+                        Отмена
                     </Button>
                     </div>
 

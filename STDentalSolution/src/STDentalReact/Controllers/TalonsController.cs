@@ -64,7 +64,9 @@ namespace STDentalReact.Controllers
                 Cost = talon.Cost,
                 CreateDate = talon.CreateDate,
                 TalonStatus = talon.PaymentStatus.ToString(),
-                Description = talon.Description
+                Description = talon.Description,
+                PatientId = talon.PatientId,
+                StaffId = talon.StaffId
             };
         }
 

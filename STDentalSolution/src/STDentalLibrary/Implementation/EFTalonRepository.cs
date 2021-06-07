@@ -176,8 +176,7 @@ namespace STDentalLibrary.Implementation
                 foreach(var serv in talonServs)
                 {
                     context.TalonServices.Remove(serv);
-                }
-                
+                }                
 
                 talonBase.PatientId = talon.PatientId;
                 talonBase.StaffId = talon.StaffId;
@@ -185,17 +184,10 @@ namespace STDentalLibrary.Implementation
                 talonBase.Description = talon.Description;
                 talonBase.Summa = talon.Summa;
                 talonBase.TalonServices = talon.TalonServices;
+                talonBase.CreateDate = talon.CreateDate;
+                talonBase.ChangeDate = talon.ChangeDate;
 
                 //context.Talons.Attach(talon);
-
-                /*var oldTalon = await context.Talons.FindAsync(talon.TalonId);
-
-                oldTalon.PatientId = talon.PatientId;
-                oldTalon.StaffId = talon.StaffId;
-                oldTalon.Cost = talon.Cost;
-                oldTalon.Description = talon.Description;
-
-                context.Talons.Update(oldTalon);*/
 
                 await context.SaveChangesAsync();
             }
