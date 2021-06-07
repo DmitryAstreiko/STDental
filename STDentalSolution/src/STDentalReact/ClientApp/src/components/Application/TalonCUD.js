@@ -330,7 +330,6 @@ export class TalonCUD extends Component{
                         <Table className='table' aria-labelledby="tabelLabel">
                         <thead>
                             <tr>
-                                <th>sads</th>
                                 <th>№ п.п.</th>
                                 <th>Шифр</th>
                                 <th style={{width: "600px"}}>Наименование</th>
@@ -343,7 +342,6 @@ export class TalonCUD extends Component{
                             <tbody>
                                 {this.state.tableServices.map((service, index) =>
                                     <tr key={index} style={{ height: "50px" }}>
-                                        <td>{service.id}</td>
                                         <td style={{ width: "100px" }}>{index + 1}</td>
                                         <td>{service.shifr}</td>
                                         <td style={{ textAlign: "left", paddingLeft: "5px" }}>{service.serviceName}</td> 

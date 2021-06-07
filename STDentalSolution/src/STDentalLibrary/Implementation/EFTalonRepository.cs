@@ -167,7 +167,26 @@ namespace STDentalLibrary.Implementation
         {
             await using (var context = CreateContext())
             {
-                context.Talons.Attach(talon);
+                var talonBase = await context.Talons.FindAsync(talon.TalonId);
+
+                var talonServs = await context.TalonServices
+                    .Where(w => w.TalonId == talon.TalonId)
+                    .ToArrayAsync();
+
+                foreach(var serv in talonServs)
+                {
+                    context.TalonServices.Remove(serv);
+                }
+                
+
+                talonBase.PatientId = talon.PatientId;
+                talonBase.StaffId = talon.StaffId;
+                talonBase.Cost = talon.Cost;
+                talonBase.Description = talon.Description;
+                talonBase.Summa = talon.Summa;
+                talonBase.TalonServices = talon.TalonServices;
+
+                //context.Talons.Attach(talon);
 
                 /*var oldTalon = await context.Talons.FindAsync(talon.TalonId);
 
@@ -175,7 +194,6 @@ namespace STDentalLibrary.Implementation
                 oldTalon.StaffId = talon.StaffId;
                 oldTalon.Cost = talon.Cost;
                 oldTalon.Description = talon.Description;
-
 
                 context.Talons.Update(oldTalon);*/
 
