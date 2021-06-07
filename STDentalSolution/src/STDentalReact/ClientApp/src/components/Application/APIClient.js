@@ -78,7 +78,7 @@ export class ApiClient {
 
 
     //------talons-------------------
-    async GetCountTalons(filter) {
+    async getCountTalons(filter) {
         let response;
         (!filter) ? response = await fetch('talons/talonCount') :
             response = await fetch(`talons/talonCount?${filter}`);
@@ -86,18 +86,69 @@ export class ApiClient {
         return await response.json();
     };
 
-    async GetTalonServices(talonId) {
+    async getTalonServices(talonId) {
         const response = await fetch(`talons/services?talonid=${talonId}`);
         return await response.json();
     } 
 
-    async GetTalon(talonId) {
+    async getTalon(talonId) {
         const response = await fetch(`talons/talon?talonid=${talonId}`);
         return await response.json(); 
     }
 
+    async addTalon(jsonTalon) {
+        const response = await fetch(`talons`, 
+            {
+                method: 'POST',
+                mode: 'cors',
+                cache: 'no-cache',
+                credentials: 'same-origin',
+                headers: {
+                    'Content-type': 'application/json'
+                },
+                redirect: 'follow',
+                referrerPolicy: 'no-referrer',
+                body: jsonTalon
+            });
+
+        return response.status; 
+    }
+
+    async deleteTalon(talonId) {
+        const response = await fetch(`talons?talonid=${talonId}`, 
+            {
+                method: 'DELETE',
+                mode: 'cors',
+                cache: 'no-cache',
+                credentials: 'same-origin',
+                headers: {
+                    'Content-type': 'application/json'
+                },
+                redirect: 'follow',
+                referrerPolicy: 'no-referrer'
+            });
+        return response.status;
+    }
+
+    async editTalon(jsonTalon) {
+        const response = await fetch(`talons`, 
+        {
+            method: 'PUT',
+            mode: 'cors',
+            cache: 'no-cache',
+            credentials: 'same-origin',
+            headers: {
+                'Content-type': 'application/json'
+            },
+            redirect: 'follow',
+            referrerPolicy: 'no-referrer',
+            body: jsonTalon
+        });
+        return response.status;
+    }
+
     //------services-----------------
-    async GetServiceNames() {
+    async getServiceNames() {
         const response = await fetch('services/serviceNames');
         return await response.json();
     };

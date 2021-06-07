@@ -15,6 +15,7 @@ import HomeOutlinedIcon from '@material-ui/icons/HomeOutlined';
 import {ApiClient} from './APIClient';
 import IconButton from '@material-ui/core/IconButton';
 import Loader from './Loader';
+import { InputBase, InputLabel } from '@material-ui/core';
 
 export class TalonCUD extends Component{
     constructor(props){
@@ -31,7 +32,10 @@ export class TalonCUD extends Component{
             descriptionTalon: null,
             addedTalonId: null,
             redirect: false,
-            loadingTalonService: true
+            loadingTalonService: true,
+            errorPatient: false,
+            errorDoctor: false,
+            disableDeleteButton: false
             }
 
         this.apiClient = new ApiClient();
@@ -42,6 +46,10 @@ export class TalonCUD extends Component{
         this.populateDoctors(); 
         this.populatePrices();
 
+        if (this.props.flagTalonCreate) {
+            this.setState({ loadingTalonService: false });
+        }
+
         if (this.props.flagTalonEdit) {            
             this.populateTalonServices(this.props.talonId);          
             this.fillFields(this.props.talonId);
@@ -50,6 +58,7 @@ export class TalonCUD extends Component{
         if (this.props.flagTalonDelete) {            
             this.populateTalonServices(this.props.talonId);          
             this.fillFields(this.props.talonId);
+            this.setState({ disableDeleteButton: true });
         }  
     } 
 
@@ -115,84 +124,98 @@ export class TalonCUD extends Component{
         this.CountCostAllTalons();
     }
 
+    validateDoctor() {
+        let isValid = !!this.state.selectedDoctorId;
+        this.setState({errorDoctor: !isValid});
+        return isValid;
+    }
+
+    validatePatient() {
+        let isValid = !!this.state.selectedPatientId;
+        this.setState({errorPatient: !isValid});
+        return isValid;
+    }
+
     onButtonSave() {   
         
-        //check doctor, patient, tablesservices
+        //const flagDoctor = this.validateDoctor();
+        //const flagPatient = this.validatePatient();
 
-        /*!(this.state.selectedPatientId) 
-            ? alert(`Необходимо выбрать пациента.`)
-            : {*/
+        //if (flagDoctor && flagPatient && (this.state.tableServices.length > 0)) { 
+            let newTalonService = [];
 
-        let newTalonService = [];
+            this.state.tableServices.forEach(service => {
+                
+                let rowService = {
+                    price: service.price,
+                    amount: service.amount,
+                    cost: service.cost,
+                    serviceid: service.id
+                };
 
-        this.state.tableServices.forEach(service => {
+                newTalonService.push(rowService);
+            });
+
+            let newTalon = {
+                createdate: this.state.selectedTalonDate,
+                summa: this.state.selectedCost,
+                sale: 0,
+                summasales: 0,
+                cost: this.state.selectedCost,
+                paymentstatus: 1,
+                description: this.state.descriptionTalon,
+                patientid: this.state.selectedPatientId,
+                staffid: this.state.selectedDoctorId,
+                talonservices: newTalonService
+            }
             
-            let rowService = {
-                price: service.price,
-                amount: service.amount,
-                cost: service.cost,
-                serviceid: service.id
-            };
+            let newjson = JSON.stringify(newTalon, null, '\t');
 
-            newTalonService.push(rowService);
-        });
+            this.props.flagTalonCreate && this.onAddTalon(newjson);
 
-        let newTalon = {
-            createdate: this.state.selectedTalonDate,
-            summa: this.state.selectedCost,
-            sale: 0,
-            summasales: 0,
-            cost: this.state.selectedCost,
-            paymentstatus: 1,
-            description: this.state.descriptionTalon,
-            patientid: this.state.selectedPatientId,
-            staffid: this.state.selectedDoctorId,
-            talonservices: newTalonService
-        }
-        
-        let newjson = JSON.stringify(newTalon, null, '\t');
+            this.props.flagTalonEdit && this.onAddEdit(newjson);
 
-        this.props.flagTalonCreate && this.onAddTalon(newjson);
-        this.props.flagTalonEdit && this.onAddEdit(newjson);
-        this.props.flagTalonDelete && this.onAddDelete(this.props.talonId);
+            this.props.flagTalonDelete && this.onDeleteTalon(this.props.talonId);
+        //}
     }
 
     async onAddTalon(newjson) {   
         try{
-            const res = await this.addTalon(newjson);
-      
+            //const res = await this.addTalon(newjson);
+            const res = await this.apiClient.addTalon(newjson)
+            console.log(res);
             if(res === 200) {
-              alert(`Талон успешно добавлен!`);
-              this.onClose();
+            alert(`Талон успешно добавлен!`);
+            this.onClose();
             }
-      
             if(res === 400) alert("Талон не добавлен в систему!");
         }
         catch {
             alert("Не удалось добавить талон.");
         }
-      }
+    }
 
-      async onEditTalon(newjson) {
-        /*try{
+    async onEditTalon(newjson) {
+        try{
             const res = await this.editPatient(newjson);
-      
+    
             if(res === 200) {
-              alert(`Талон успешно обновлен!`);
-              this.onClose();
+            alert(`Талон успешно обновлен!`);
+            this.onClose();
             }
-      
+    
             if(res === 400) alert("Талон не обновлен!");
         }
         catch {
             alert("Не удалось обновить реквизиты талона.");
-        }*/
-      }
-      
-      async onDeleteTalon(talonId) {
+        }
+    }
+    
+    async onDeleteTalon(talonId) {
         try{
-            const res = await this.deleteTalon(talonId);
-      
+            //const res = await this.deleteTalon(talonId);
+            const res = await this.apiClient.deleteTalon(talonId);
+    
             if(res === 200) {
                 alert(`Талон успешно удален!`);
                 this.onClose();
@@ -225,20 +248,29 @@ export class TalonCUD extends Component{
     }
 
     render(){
-        const { redirect } = this.state;
+        {/*const { redirect } = this.state;
 
         if (redirect) {
             return <Redirect to='/appdental/administrator/talons'/>;
-        }
+        }*/}
         return (
             <div>
                 {/*<MenuAdministrator />*/}
                 <div >
+                    <div>
+                        <InputLabel style={{ textAlign: "center", marginBottom: "15px", color: "blue" }}
+                        variant="standard"
+                        >{this.props.labelAction}</InputLabel>
+                    </div>
                     <div className={"d-flex justify-content-around"} style={{ marginBottom: "20px" }}>
                         <div>
                             <ComboBox labelvalue={"Выберите пациента"} lists={this.state.patients} 
                                 onSelected={ (value) => this.onPatientSelect(value) } nameid={"combopatientprice"} 
-                                widthValue={350} />
+                                widthValue={350} 
+                                //error={this.state.errorPatient}
+                                //value={this.state.selectedPatientId} 
+                                error={true}
+                                />
                         </div>
                         <div className={"d-flex justify-content-center"} >
                             <ComboBox labelvalue={"Выберите услугу"} lists={this.state.prices} 
@@ -248,7 +280,11 @@ export class TalonCUD extends Component{
                         <div >
                             <ComboBox labelvalue={"Выберите врача"} lists={this.state.doctors} 
                                 onSelected={ (value) => this.onDoctorSelect(value) } nameid={"combodoctorprice"} 
-                                widthValue={300} />                                
+                                widthValue={300} 
+                                error={false}
+                                //error={this.state.errorDoctor}
+                                //value={this.state.selectedDoctorId} 
+                                />                                
                         </div>
                     </div>                       
                 </div>
@@ -287,8 +323,9 @@ export class TalonCUD extends Component{
                                             <IconButton 
                                                 aria-label="delete" 
                                                 color="secondary"
-                                                onClick={ () => (this.deleteRowTalon(index)) }>
-                                                <DeleteIcon fontSize="small" />
+                                                onClick={ () => (this.deleteRowTalon(index)) }
+                                                disabled={this.state.disableDeleteButton}>
+                                                <DeleteIcon fontSize="small"/>
                                             </IconButton>
                                         </td>
                                     </tr>
@@ -331,7 +368,7 @@ export class TalonCUD extends Component{
                         //style={{ background: "yellow" }}
                         onClick={() => this.onButtonSave()}
                     >
-                        Сохранить
+                        {this.props.vabelButtonSave}
                     </Button>
                     <Button
                         //variant="contained"
@@ -364,7 +401,7 @@ export class TalonCUD extends Component{
     }
 
     async populatePrices() {        
-        const res = await this.apiClient.GetServiceNames()  
+        const res = await this.apiClient.getServiceNames()  
         this.setState({ prices: res });
     }
 
@@ -380,40 +417,6 @@ export class TalonCUD extends Component{
         catch (error) {
             console.log(`error - ${error}`);
         }
-    }
-
-    async addTalon(jsonTalon) {     
-        const response = await fetch(`talons`, 
-            {
-                method: 'POST',
-                mode: 'cors',
-                cache: 'no-cache',
-                credentials: 'same-origin',
-                headers: {
-                    'Content-type': 'application/json'
-                },
-                redirect: 'follow',
-                referrerPolicy: 'no-referrer',
-                body: jsonTalon
-            });
-
-        return await response.json();        
-    }
-
-    async deleteTalon(talonId) {
-        const response = await fetch(`talons?talonid=${talonId}`, 
-        {
-            method: 'DELETE',
-            mode: 'cors',
-            cache: 'no-cache',
-            credentials: 'same-origin',
-            headers: {
-                'Content-type': 'application/json'
-            },
-            redirect: 'follow',
-            referrerPolicy: 'no-referrer'
-        });
-        return response.status;
     }
 
     async populateTalonServices(talonId) {

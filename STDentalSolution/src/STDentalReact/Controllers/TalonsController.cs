@@ -88,33 +88,53 @@ namespace STDentalReact.Controllers
         }
 
         [HttpPost]
-        public async Task<int> PostTalonAsync([FromBody] Talon talon)
+        public async Task<IActionResult> PostTalonAsync([FromBody] Talon talon)
         {
             try
             {
-                return await _talonRepository.AddTalonAsync(talon);
-                //var res = await _talonRepository.AddTalonAsync(talon);
-                
+                await _talonRepository.AddTalonAsync(talon);
+                return Ok();
+
             }
-            catch (Exception e)
+            catch
             {
-                Console.WriteLine($"Talon didn`t add. Detail: {e.StackTrace}");
-                return 0;
+                //Console.WriteLine($"Talon didn`t add. Detail: {e.StackTrace}");
+                return BadRequest();
             }
         }
 
         [HttpDelete]
         public async Task<IActionResult> DeleteTalonAsync(int talonId)
         {
+            try
+            {
+                var delTalon = await _talonRepository.GetTalonAsync(talonId);
 
-            var delTalon = await _talonRepository.GetTalonAsync(talonId);
+                if (delTalon == null) return BadRequest();
 
-            if (delTalon == null) return BadRequest();            
-            
-            await _talonRepository.DeleteTalonAsync(talonId);
+                await _talonRepository.DeleteTalonAsync(talonId);
 
-            //Response.StatusCode = StatusCodes.Status200OK;
-            return Ok();
+                //Response.StatusCode = StatusCodes.Status200OK;
+                return Ok();
+            }
+            catch 
+            {
+                return BadRequest();
+            }
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> PutTalonAsync([FromBody] Talon talon)
+        {
+            try
+            {
+                await _talonRepository.UpdateTalonAsync(talon);
+                return Ok();
+            }
+            catch
+            {
+                return BadRequest();
+            }
         }
     }
 }

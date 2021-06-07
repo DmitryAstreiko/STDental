@@ -11,7 +11,7 @@ namespace STDentalLibrary.Repositories
     public interface ITalonRepository
     {
         //Get all talons
-        Task<IEnumerable<Talon>> GetTalonsAsync(int page, int itemsPerPage);
+        //Task<IEnumerable<Talon>> GetTalonsAsync(int page, int itemsPerPage);
 
         Task<int> GetCountTalonsAsync(int? patientId, int? doctorId, DateTime? startDate, DateTime? endDate);
 
@@ -24,9 +24,9 @@ namespace STDentalLibrary.Repositories
 
         Task<int> AddTalonAsync(Talon talon);
 
-        Task<bool> AddTalonServiceAsync(List<TalonService> servicesList);
+        //Task<bool> AddTalonServiceAsync(List<TalonService> servicesList);
 
-        Task<bool> UpdateTalonAsync(Talon talon);
+        Task UpdateTalonAsync(Talon talon);
 
         Task DeleteTalonAsync(int talonId);
         

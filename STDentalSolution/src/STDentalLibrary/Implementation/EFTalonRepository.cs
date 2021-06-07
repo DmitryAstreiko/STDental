@@ -16,13 +16,12 @@ namespace STDentalLibrary.Implementation
     public class EFTalonRepository : ITalonRepository
     {
         private readonly IConfiguration _configuration;
-
         public EFTalonRepository(IConfiguration configuration)
         {
             _configuration = configuration;
         }
 
-        public async Task<IEnumerable<Talon>> GetTalonsAsync(int page, int itemsPerPage)
+        /*public async Task<IEnumerable<Talon>> GetTalonsAsync(int page, int itemsPerPage)
         {
             await using (var context = CreateContext())
             {
@@ -37,7 +36,7 @@ namespace STDentalLibrary.Implementation
                     .Take(itemsPerPage)
                     .ToListAsync();
             }
-        }
+        }*/
 
         public async Task<int> AddPaymentAsync(Payment payment)
         {
@@ -58,7 +57,7 @@ namespace STDentalLibrary.Implementation
             }
         }
 
-        public async Task<bool> AddTalonServiceAsync(List<TalonService> servicesList)
+        /*public async Task<bool> AddTalonServiceAsync(List<TalonService> servicesList)
         {
             try
             {
@@ -78,7 +77,7 @@ namespace STDentalLibrary.Implementation
                 return false;
             }
             
-        }
+        }*/
 
         public async Task DeleteTalonAsync(int talonId)
         {            
@@ -164,26 +163,26 @@ namespace STDentalLibrary.Implementation
                     .ToListAsync();
             }
         }
-        public async Task<bool> UpdateTalonAsync(Talon talon)
+        public async Task UpdateTalonAsync(Talon talon)
         {
-            try
+            await using (var context = CreateContext())
             {
-                await using (var context = CreateContext())
-                {
-                    var helper = new EFHelperRepository(context);
+                //context.Patients.Attach(patient);
 
-                    if (await helper.DeleteTalonServices(talon.TalonId) == false) return false;
+                var oldTalon = await context.Talons.FindAsync(talon.TalonId);
 
-                    context.Talons.Attach(talon);
-                    await context.SaveChangesAsync();
-                    return true;
-                }
+                oldTalon.PatientId = talon.PatientId;
+                oldTalon.StaffId = talon.StaffId;
+                oldTalon.Cost = talon.Cost;
+                oldTalon.Description = talon.Description;
+
+
+                context.Talons.Update(oldTalon);
+
+                await context.SaveChangesAsync();
             }
-            catch
-            {
-                return false;
-            }           
         }
+
         private STDentalContext CreateContext()
         {
             return new STDentalContext(_configuration.GetConnectionString("STDentalDB"));

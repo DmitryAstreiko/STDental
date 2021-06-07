@@ -105,7 +105,7 @@ onFioInput(event) {
 }
 
 validateFio() {
-  var isValid = !!this.state.selectedName;
+  let isValid = !!this.state.selectedName;
   this.setState({errorName: !isValid});
   return isValid;
 }
@@ -115,7 +115,7 @@ onCityInput(event) {
 }
 
 validateCity() {
-  var isValid = !!this.state.selectedCity;
+  let isValid = !!this.state.selectedCity;
   this.setState({errorCity: !isValid});
   return isValid;
 }
@@ -125,7 +125,7 @@ onStreetInput(event) {
 }
 
 validateStreet() {
-  var isValid = !!this.state.selectedStreet;
+  let isValid = !!this.state.selectedStreet;
   this.setState({errorStreet: !isValid});
   return isValid;
 }
@@ -135,7 +135,7 @@ onPhoneInput(event) {
 }
 
 validatePhone() {
-  var isValid = !!this.state.selectedPhone;
+  let isValid = !!this.state.selectedPhone;
   this.setState({errorPhone: !isValid});
   return isValid;
 }

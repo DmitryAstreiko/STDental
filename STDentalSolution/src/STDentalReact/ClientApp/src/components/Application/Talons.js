@@ -338,11 +338,14 @@ export class Talons extends Component{
             <MenuAdministrator />
             {this.state.talonList && this.renderTalonsTable()}
             {this.state.talonCreate && <TalonCUD flagTalonCreate={true} flagTalonEdit={false} flagTalonDelete={false} 
-                closingPatient={ closingPatient } countTalon={ countTalon } getTalons={ getTalons }/>}
+                closingPatient={ closingPatient } countTalon={ countTalon } getTalons={ getTalons } 
+                vabelButtonSave={"Сохранить талон"} labelAction={"Добавление нового талона"} />}
             {this.state.talonEdit && <TalonCUD flagTalonCreate={false} flagTalonEdit={true} flagTalonDelete={false} 
-                talonId={this.state.selectedTalonId} closingPatient={ closingPatient } countTalon={ countTalon } getTalons={ getTalons }/>}
+                talonId={this.state.selectedTalonId} closingPatient={ closingPatient } countTalon={ countTalon } getTalons={ getTalons }
+                vabelButtonSave={"Изменить талон"} labelAction={`Редактирование талона № ${this.state.selectedTalonId}`} />}
             {this.state.talonDelete && <TalonCUD flagTalonCreate={false} flagTalonEdit={false} flagTalonDelete={true} 
-                talonId={this.state.selectedTalonId} closingPatient={ closingPatient } countTalon={ countTalon } getTalons={ getTalons }/>}
+                talonId={this.state.selectedTalonId} closingPatient={ closingPatient } countTalon={ countTalon } getTalons={ getTalons }
+                vabelButtonSave={"Удалить талон"} labelAction={`Удаление талона № ${this.state.selectedTalonId}`}/>}
         </div>
         )
     }
@@ -371,7 +374,7 @@ export class Talons extends Component{
     }
 
     async populateCountTalons(filter=null) {       
-        const res = await this.apiClient.GetCountTalons(filter);
+        const res = await this.apiClient.getCountTalons(filter);
         this.setState({ talonsCount: res });
     }    
 
