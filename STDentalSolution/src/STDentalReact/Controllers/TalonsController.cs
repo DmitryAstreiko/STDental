@@ -105,6 +105,20 @@ namespace STDentalReact.Controllers
             }
         }
 
+        [HttpPost("signin")]
+        public async Task<UserInfo> SignInAsync([FromBody] Authorization authorization)
+        {
+
+            var staff = await _talonRepository.Authorization(authorization);
+
+            return new UserInfo()
+            {
+                Id = staff.StaffId,
+                Role = staff.Role,
+                User = staff.Name
+            };
+        }
+
         [HttpDelete]
         public async Task<IActionResult> DeleteTalonAsync(int talonId)
         {

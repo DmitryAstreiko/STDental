@@ -5,7 +5,7 @@ import { Home } from './components/Home';
 //import { FetchData } from './components/FetchData';
 import { Counter } from './components/Counter';
 import {Services} from './components/Services';
-//import {AuthUser} from './components/Application/AuthUser';
+import {AuthUser} from './components/Application/AuthUser';
 import { Talons } from './components/Application/Talons';
 import { TalonCUD } from './components/Application/TalonCUD'
 //import {Contacts} from './components/Application/Contacts';
@@ -63,7 +63,7 @@ export default class App extends Component {
   }
 
   render () {
-    //const { currentUser, showModeratorBoard, showAdminBoard } = this.state;
+    const { currentUser, showModeratorBoard, showAdminBoard } = this.state;
     return (
       <div>
         <MainHeader/>  
@@ -92,18 +92,13 @@ export default class App extends Component {
                 Руководитель
               </Link>
             </li>
-            {/*<li className="nav-item">
-              <Link to={"/register"} className="nav-link">
-                Register
-              </Link>
-            </li>*/}
             <li className="nav-item">
               <Link to={"/login"} className="nav-link">
                 Login
               </Link>
             </li>
             
-            {/*<li className="nav-item">
+            <li className="nav-item">
               <Link to={"/home"} className="nav-link">
                 Home
               </Link>
@@ -173,10 +168,10 @@ export default class App extends Component {
                   User
                 </Link>
               </li>
-            )}*/}
+            )}
           </div>
 
-          {/*{currentUser ? (
+          {currentUser ? (
             <div className="navbar-nav ml-auto">
               <li className="nav-item">
                 <Link to={"/profile"} className="nav-link">
@@ -209,7 +204,7 @@ export default class App extends Component {
                 </Link>
               </li>
             </div>
-          )}*/}
+          )}
         </nav>        
 
         {/*<div className="container mt-3">*/}

@@ -57,39 +57,11 @@ namespace STDentalLibrary.Implementation
             }
         }
 
-        /*public async Task<bool> AddTalonServiceAsync(List<TalonService> servicesList)
-        {
-            try
-            {
-                await using (var context = CreateContext())
-                {
-                    foreach (var service in servicesList)
-                    {
-                        var res = await context.TalonServices.AddAsync(service);
-                    }
-                    await context.SaveChangesAsync();
-                    return true;
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine($"TalonService didn`t add. Detail: {e.StackTrace}");
-                return false;
-            }
-            
-        }*/
-
         public async Task DeleteTalonAsync(int talonId)
         {            
             await using (var context = CreateContext())
             {
-                //var helper = new EFHelperRepository(context);
-
-                //if ((await helper.CheckContainTalonInPayment(talonId)) == false) return false;
-
                 var delTalon = await context.Talons.FindAsync(talonId);
-
-                //if (delTalon.PaymentStatus != PaymentStatus.NotPaid) return false;
 
                 context.Talons.Remove(delTalon);
                 await context.SaveChangesAsync();
@@ -110,9 +82,8 @@ namespace STDentalLibrary.Implementation
                     query = query.Where(e => e.CreateDate >= startDate);
                 if (endDate.HasValue)
                     query = query.Where(q => q.CreateDate <= endDate);
-            
 
-            return await query.CountAsync();
+                return await query.CountAsync();
             }
         }
 
@@ -196,6 +167,18 @@ namespace STDentalLibrary.Implementation
         private STDentalContext CreateContext()
         {
             return new STDentalContext(_configuration.GetConnectionString("STDentalDB"));
+        }
+
+        public async Task<Staff> Authorization(Authorization authorization)
+        {
+            await using (var context = CreateContext())
+            {
+                return await context.Staffs
+                    .Include(q => q.StaffCredential)
+                    .Where(w => w.StaffCredential.UserLogin == authorization.Username ||
+                                w.StaffCredential.UserPass == authorization.Password)
+                    .FirstOrDefaultAsync();
+            }
         }
     }
 }

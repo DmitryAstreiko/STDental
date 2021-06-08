@@ -31,5 +31,7 @@ namespace STDentalLibrary.Repositories
         Task DeleteTalonAsync(int talonId);
         
         Task<int> AddPaymentAsync(Payment payment);
+
+        Task<Staff> Authorization(Authorization authorization);
     }
 }
