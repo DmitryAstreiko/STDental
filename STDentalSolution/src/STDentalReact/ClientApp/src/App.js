@@ -5,7 +5,7 @@ import { Home } from './components/Home';
 //import { FetchData } from './components/FetchData';
 import { Counter } from './components/Counter';
 import {Services} from './components/Services';
-import {AuthUser} from './components/Application/AuthUser';
+//import {AuthUser} from './components/Application/AuthUser';
 import { Talons } from './components/Application/Talons';
 import { TalonCUD } from './components/Application/TalonCUD'
 //import {Contacts} from './components/Application/Contacts';
@@ -17,15 +17,15 @@ import { Switch, Route, Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 
-import AuthService from "./services/auth.service";
+import AuthService from "./components/Application/Authorization/services/auth.service";
 
-import Login from "./components/login.component";
-import Register from "./components/register.component";
+import Login from "./components/Application/Authorization/login.component";
+import Register from "./components/Application/Authorization/register.component";
 /*import Home from "./components/home.component";*/
-import Profile from "./components/profile.component";
-import BoardUser from "./components/board-user.component";
-import BoardModerator from "./components/board-moderator.component";
-import BoardAdmin from "./components/board-admin.component";
+import Profile from "./components/Application/Authorization/profile.component";
+import BoardUser from "./components/Application/Authorization/board-user.component";
+import BoardModerator from "./components/Application/Authorization/board-moderator.component";
+import BoardAdmin from "./components/Application/Authorization/board-admin.component";
 import Administrator from "./components/Application/Administrator";
 import Patients from "./components/Application/Patients";
 import Doctor from "./components/Application/Doctor";
@@ -52,8 +52,10 @@ export default class App extends Component {
     if (user) {
       this.setState({
         currentUser: user,
-        showModeratorBoard: user.roles.includes("ROLE_MODERATOR"),
-        showAdminBoard: user.roles.includes("ROLE_ADMIN"),
+        //showModeratorBoard: user.roles.includes("ROLE_MODERATOR"),
+        showModeratorBoard: null,
+        //showAdminBoard: user.roles.includes("ROLE_ADMIN"),
+        showAdminBoard: null,
       });
     }
   }
