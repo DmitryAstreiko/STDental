@@ -10,16 +10,18 @@ namespace STDentalLibrary.Repositories
 {
     public interface IStaffRepository
     {
-        Task<IEnumerable<Staff>> GetActualStaffsAsync();
+        //Task<IEnumerable<Staff>> GetActualStaffsAsync();
 
         Task<IEnumerable<DoctorNames>> GetFoundedStaffsInTalonsAsync();
 
-        Task<Staff> GetStaffAsync(int staffId);
+        //Task<Staff> GetStaffAsync(int staffId);
 
-        Task<int> AddStaffAsync(Staff staff);
+        //Task<int> AddStaffAsync(Staff staff);
 
-        Task<bool> UpdateStaffAsync(Staff staff);
+        //Task<bool> UpdateStaffAsync(Staff staff);
 
-        Task<bool> FireStaffAsync(int staffId);
+        //Task<bool> FireStaffAsync(int staffId);
+
+        Task<Staff> Authorization(Authorization authorization);
     }
 }

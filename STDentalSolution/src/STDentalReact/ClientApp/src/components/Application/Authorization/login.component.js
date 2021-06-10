@@ -71,6 +71,8 @@ export default class Login extends Component {
             case 5:  //Head
               this.props.history.push("/appdental/head");
             break;
+            default:
+              this.props.history.push("/");
           }          
           window.location.reload();
 

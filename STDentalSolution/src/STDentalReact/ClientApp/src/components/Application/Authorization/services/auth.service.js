@@ -3,7 +3,7 @@ import axios from "axios";
 class AuthService {
   login(username, password) {
     return axios
-      .post("talons/signin", {
+      .post("staffs/signin", {
         username,
         password
       })
@@ -26,7 +26,7 @@ class AuthService {
   }
 
   register(username, email, password) {
-    return axios.post("talons/signup", {
+    return axios.post("staffs/signup", {
       username,
       email,
       password

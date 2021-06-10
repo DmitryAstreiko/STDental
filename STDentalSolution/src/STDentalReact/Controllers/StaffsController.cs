@@ -34,5 +34,19 @@ namespace STDentalReact.Controllers
                 })
                 .ToArray();
         }
+
+        [HttpPost("signin")]
+        public async Task<UserInfo> SignInAsync([FromBody] Authorization authorization)
+        {
+
+            var staff = await _staffRepository.Authorization(authorization);
+
+            return new UserInfo()
+            {
+                Id = staff.StaffId,
+                Role = staff.Role,
+                User = staff.Name
+            };
+        }
     }
 }

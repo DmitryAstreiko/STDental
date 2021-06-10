@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace STDentalLibrary.Models
 {
-    public class Authorization
+    public class AuthorizationDental
     {
         public string Username { get; set; }
 

@@ -1,12 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.Json;
-using System.Text.Json.Serialization;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Logging;
 using STDentalLibrary.Models;
 using STDentalLibrary.Models.ModelsResponse;
@@ -103,20 +99,6 @@ namespace STDentalReact.Controllers
                 //Console.WriteLine($"Talon didn`t add. Detail: {e.StackTrace}");
                 return BadRequest();
             }
-        }
-
-        [HttpPost("signin")]
-        public async Task<UserInfo> SignInAsync([FromBody] Authorization authorization)
-        {
-
-            var staff = await _talonRepository.Authorization(authorization);
-
-            return new UserInfo()
-            {
-                Id = staff.StaffId,
-                Role = staff.Role,
-                User = staff.Name
-            };
         }
 
         [HttpDelete]

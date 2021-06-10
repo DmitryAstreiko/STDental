@@ -21,23 +21,6 @@ namespace STDentalLibrary.Implementation
             _configuration = configuration;
         }
 
-        /*public async Task<IEnumerable<Talon>> GetTalonsAsync(int page, int itemsPerPage)
-        {
-            await using (var context = CreateContext())
-            {
-                return await context.Talons
-                    .Include(s => s.Staff)
-                    .Include(p => p.Patient)
-                    .Where(q => q.CreateDate > DateTime.UtcNow.AddDays(-360))
-                    .OrderBy(a => a.PaymentStatus)
-                    .ThenByDescending(s => s.CreateDate)
-                    .ThenByDescending(s => s.TalonId)
-                    .Skip((page - 1) * itemsPerPage)
-                    .Take(itemsPerPage)
-                    .ToListAsync();
-            }
-        }*/
-
         public async Task<int> AddPaymentAsync(Payment payment)
         {
             await using (var context = CreateContext())
@@ -169,16 +152,5 @@ namespace STDentalLibrary.Implementation
             return new STDentalContext(_configuration.GetConnectionString("STDentalDB"));
         }
 
-        public async Task<Staff> Authorization(Authorization authorization)
-        {
-            await using (var context = CreateContext())
-            {
-                return await context.Staffs
-                    .Include(q => q.StaffCredential)
-                    .Where(w => w.StaffCredential.UserLogin == authorization.Username ||
-                                w.StaffCredential.UserPass == authorization.Password)
-                    .FirstOrDefaultAsync();
-            }
-        }
     }
 }
