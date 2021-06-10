@@ -1,7 +1,5 @@
 import axios from "axios";
 
-//const API_URL = "http://localhost:8080/api/auth/";
-
 class AuthService {
   login(username, password) {
     return axios
@@ -10,7 +8,8 @@ class AuthService {
         password
       })
       .then(response => {
-        localStorage.setItem("username", JSON.stringify(response.data.user));
+        localStorage.setItem("userNameDental", JSON.stringify(response.data.user));
+        localStorage.setItem("userRoleDental", JSON.stringify(response.data.role));
 
         {/*if (response.data.accessToken) {
           localStorage.setItem("user", JSON.stringify(response.data));
@@ -22,7 +21,8 @@ class AuthService {
   }
 
   logout() {
-    localStorage.removeItem("username");
+    localStorage.removeItem("userNameDental");
+    localStorage.removeItem("userRoleDental");
   }
 
   register(username, email, password) {
@@ -34,7 +34,11 @@ class AuthService {
   }
 
   getCurrentUser() {
-    return JSON.parse(localStorage.getItem('username'));;
+    return JSON.parse(localStorage.getItem('userNameDental'));;
+  }
+
+  getCurrentRole() {
+    return JSON.parse(localStorage.getItem('userRoleDental'));;
   }
 }
 

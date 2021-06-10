@@ -5,7 +5,6 @@ import { Home } from './components/Home';
 //import { FetchData } from './components/FetchData';
 import { Counter } from './components/Counter';
 import {Services} from './components/Services';
-//import {AuthUser} from './components/Application/AuthUser';
 import { Talons } from './components/Application/Talons';
 import { TalonCUD } from './components/Application/TalonCUD'
 //import {Contacts} from './components/Application/Contacts';
@@ -16,7 +15,6 @@ import { MainHeader } from './components/MainHeader';
 import { Switch, Route, Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
-
 import AuthService from "./components/Application/Authorization/services/auth.service";
 
 import Login from "./components/Application/Authorization/login.component";
@@ -40,9 +38,9 @@ export default class App extends Component {
     this.logOut = this.logOut.bind(this);
 
     this.state = {
-      showModeratorBoard: false,
-      showAdminBoard: false,
-      currentUser: undefined,
+      /*showModeratorBoard: false,
+      showAdminBoard: false,*/
+      userNameDental: null
     };
   }
 
@@ -51,21 +49,20 @@ export default class App extends Component {
 
     if (user) {
       this.setState({
-        currentUser: user,
-        //showModeratorBoard: user.roles.includes("ROLE_MODERATOR"),
-        showModeratorBoard: null,
-        //showAdminBoard: user.roles.includes("ROLE_ADMIN"),
-        showAdminBoard: null,
+        userNameDental: user
       });
     }
   }
 
   logOut() {
-    AuthService.logout();
+    this.setState({ userNameDental: null });
+    AuthService.logout();    
   }
 
+
   render () {
-    const { currentUser, showModeratorBoard, showAdminBoard } = this.state;
+    const { userNameDental} = this.state;
+
     return (
       <div>
         <MainHeader/>  
@@ -94,18 +91,7 @@ export default class App extends Component {
                 Руководитель
               </Link>
             </li>
-            <li className="nav-item">
-              <Link to={"/login"} className="nav-link">
-                Login
-              </Link>
-            </li>
-            
-            <li className="nav-item">
-              <Link to={"/home"} className="nav-link">
-                Home
-              </Link>
-            </li>
-
+            {/*
             <li className="nav-item">
               <Link to={"/services"} className="nav-link">
                 _Наши услуги
@@ -135,45 +121,41 @@ export default class App extends Component {
                 _Контакты
               </Link>
             </li>
-
-            <li className="nav-item">
-              <Link to={"/appdental/talons"} className="nav-link">
-                -Талоны
-              </Link>
-            </li>
-
-            <li className="nav-item">
-              <Link to={"/appdental/createtalon"} className="nav-link">
-                -Выписка талонов
-              </Link>
-            </li>
-
-            {showModeratorBoard && (
+            <div className="navbar-nav ml-auto">
               <li className="nav-item">
-                <Link to={"/mod"} className="nav-link">
-                  Moderator Board
+                <Link to={"/login"} className="nav-link">
+                  Записаться на прием
                 </Link>
               </li>
-            )}
-
-            {showAdminBoard && (
-              <li className="nav-item">
-                <Link to={"/admin"} className="nav-link">
-                  Admin Board
-                </Link>
-              </li>
-            )}
-
-            {currentUser && (
-              <li className="nav-item">
-                <Link to={"/user"} className="nav-link">
-                  User
-                </Link>
-              </li>
-            )}
+            </div>*/}
           </div>
+          
+          {userNameDental ?
+          (<div>
+            <div className="navbar-nav ml-auto">
+                <li className="nav-item">
+                  <Link className="nav-link">{userNameDental}</Link>
+                </li>
+                <li className="nav-item">
+                  <Link to={"/"} className="nav-link" onClick={() => this.logOut()}>
+                    Выйти
+                  </Link>
+                </li>
+            </div>
+          </div>)
+          :
+          (<div>
+            <div className="navbar-nav ml-auto">
+                <li className="nav-item">
+                  <Link to={"/appdental/login"} className="nav-link">
+                    Войти
+                  </Link>
+                </li>
+            </div>
+          </div>)
+          }
 
-          {currentUser ? (
+          {/*{currentUser ? (
             <div className="navbar-nav ml-auto">
               <li className="nav-item">
                 <Link to={"/profile"} className="nav-link">
@@ -206,21 +188,21 @@ export default class App extends Component {
                 </Link>
               </li>
             </div>
-          )}
+          )}*/}
         </nav>        
 
         {/*<div className="container mt-3">*/}
         <div>
           <Switch>
             <Route exact path={["/", "/home"]} component={Home} />
-            <Route exact path="/login" component={Login} />
+            <Route exact path="/appdental/login" component={Login} />
             <Route exact path="/register" component={Register} />
             <Route exact path="/profile" component={Profile} />
-            <Route exact path='/services' Component={Services}/>
+            <Route exact path='/services' component={Services}/>
             <Route exact path='/whyme' component={Counter} />
             <Route exact path='/appdental/administrator/talons' component={Talons} />
             <Route exact path='/appdental/administrator/talons/add' component={TalonCUD} />
-            <Route exact path='/appdental/administrator' component={Administrator} />
+            <Route exact path='/appdental/administrator' component={ Administrator } />
             <Route exact path='/appdental/doctor' component={Doctor} />
             <Route exact path='/appdental/accountant' component={Accountant} />
             <Route exact path='/appdental/head' component={Head} />

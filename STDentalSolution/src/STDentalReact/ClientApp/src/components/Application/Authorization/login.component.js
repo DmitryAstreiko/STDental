@@ -54,9 +54,26 @@ export default class Login extends Component {
 
     if (this.checkBtn.context._errors.length === 0) {
       AuthService.login(this.state.username, this.state.password).then(
-        () => {
-          this.props.history.push("/profile");
+        () => {          
+          switch (AuthService.getCurrentRole()){
+            case 1:  //Admin
+              this.props.history.push("/appdental/admin");
+            break;
+            case 2:  //Administrator
+              this.props.history.push("/appdental/administrator");
+            break;
+            case 3:  //Doctor
+              this.props.history.push("/appdental/doctor");
+            break;
+            case 4:  //Accountant
+              this.props.history.push("/appdental/accountant");
+            break;
+            case 5:  //Head
+              this.props.history.push("/appdental/head");
+            break;
+          }          
           window.location.reload();
+
         },
         error => {
           const resMessage =
@@ -72,7 +89,8 @@ export default class Login extends Component {
           });
         }
       );
-    } else {
+    } 
+    else {
       this.setState({
         loading: false
       });
