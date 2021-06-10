@@ -102,14 +102,14 @@ namespace STDentalLibrary.Implementation
         //    }
         //}
 
-        public async Task<Staff> Authorization(Authorization authorization)
+        public async Task<Staff> Authorization(AuthorizationDental authorizationDental)
         {
             await using (var context = CreateContext())
             {
                 return await context.Staffs
                     .Include(q => q.StaffCredential)
-                    .Where(w => w.StaffCredential.UserLogin == authorization.Username ||
-                                w.StaffCredential.UserPass == authorization.Password)
+                    .Where(w => w.StaffCredential.UserLogin == authorizationDental.Username ||
+                                w.StaffCredential.UserPass == authorizationDental.Password)
                     .FirstOrDefaultAsync();
             }
         }

@@ -22,6 +22,6 @@ namespace STDentalLibrary.Repositories
 
         //Task<bool> FireStaffAsync(int staffId);
 
-        Task<Staff> Authorization(Authorization authorization);
+        Task<Staff> Authorization(AuthorizationDental authorizationDental);
     }
 }

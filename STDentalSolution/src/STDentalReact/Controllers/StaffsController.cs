@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using STDentalLibrary.Models;
 using STDentalLibrary.Models.ModelsResponse;
 using STDentalLibrary.Repositories;
 
@@ -36,10 +37,10 @@ namespace STDentalReact.Controllers
         }
 
         [HttpPost("signin")]
-        public async Task<UserInfo> SignInAsync([FromBody] Authorization authorization)
+        public async Task<UserInfo> SignInAsync([FromBody] AuthorizationDental authorizationDental)
         {
 
-            var staff = await _staffRepository.Authorization(authorization);
+            var staff = await _staffRepository.Authorization(authorizationDental);
 
             return new UserInfo()
             {
