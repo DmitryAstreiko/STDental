@@ -9,7 +9,7 @@ const required = value => {
   if (!value) {
     return (
       <div className="alert alert-danger" role="alert">
-        This field is required!
+        Поле должно быть заполнено.
       </div>
     );
   }
@@ -154,7 +154,7 @@ export default class Login extends Component {
             {this.state.message && (
               <div className="form-group">
                 <div className="alert alert-danger" role="alert">
-                  {this.state.message}
+                  уке{this.state.message}
                 </div>
               </div>
             )}
