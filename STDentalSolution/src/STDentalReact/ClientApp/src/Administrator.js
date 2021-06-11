@@ -10,7 +10,7 @@ export default class Administrator extends Component {
     render() {
         return(
         <div>
-            <MenuAdministrator />
+            <MenuAdministrator logOut={this.props.logOut()}/>
             {/*<Container>*/}
             <div>
                 {this.props.children}

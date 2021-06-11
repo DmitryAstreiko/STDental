@@ -2,11 +2,11 @@ import React, { Component } from 'react';
 //import { Container, Row, Col} from 'reactstrap';
 import { Row, Col} from 'reactstrap';
 import './MainHeader.css';
-import logo from './Application/Images/logo.png';
-import phonegreen from './Application/Images/phonegreen.jpg';
-import phonered from './Application/Images/phonered.jpg';
-import phoneblue from './Application/Images/phoneblue.jpg';
-import geolocation from './Application/Images/geolocation.jpg';
+import logo from './Images/logo.png';
+import phonegreen from './Images/phonegreen.jpg';
+import phonered from './Images/phonered.jpg';
+import phoneblue from './Images/phoneblue.jpg';
+import geolocation from './Images/geolocation.jpg';
 
 export class MainHeader extends Component{
     static displayName = MainHeader.name;

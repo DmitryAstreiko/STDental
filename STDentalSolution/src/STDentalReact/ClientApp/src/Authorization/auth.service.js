@@ -34,11 +34,22 @@ class AuthService {
   }
 
   getCurrentUser() {
-    return JSON.parse(localStorage.getItem('userNameDental'));;
+    console.log(!!(localStorage.getItem('userNameDental')));
+    console.log(localStorage.getItem('userNameDental') === 'undefined');
+    const resName = (localStorage.getItem('userNameDental') === 'undefined') ? null : localStorage.getItem('userNameDental'); 
+    console.log(`resName = ${resName}`);
+    //return JSON.parse(localStorage.getItem('userNameDental'));;
+    return JSON.parse(resName);
   }
 
   getCurrentRole() {
-    return JSON.parse(localStorage.getItem('userRoleDental'));;
+    return JSON.parse(localStorage.getItem('userRoleDental'));
+  }
+
+  getFlagAutorization() {
+    if (localStorage.getItem('userNameDental') !== null) return true
+    else return false;
+    
   }
 }
 

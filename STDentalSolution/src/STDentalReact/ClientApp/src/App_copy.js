@@ -1,20 +1,22 @@
 import React, { Component } from 'react';
-import { Home } from './Home';
-import { Services } from './Services';
-import { Talons } from './Talons';
-import { TalonCUD } from './TalonCUD'
-import { MainHeader } from './MainHeader';
+import { Home } from './components/Home';
+import { Counter } from './components/Counter';
+import { Services } from './components/Services';
+import { Talons } from './components/Application/Talons';
+import { TalonCUD } from './components/Application/TalonCUD'
+import { MainHeader } from './components/MainHeader';
 import { Switch, Route, Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
-import AuthService from "./Authorization/auth.service";
-import Login from "./Authorization/login.component";
-import Register from "./Authorization/register.component";
-import Administrator from "./Administrator";
-import Patients from "./Patients";
-import Doctor from "./Doctor";
-import Accountant from "./Accountant";
-import Head from "./Head";
+import AuthService from "./components/Application/Authorization/services/auth.service";
+import Login from "./components/Application/Authorization/login.component";
+import Register from "./components/Application/Authorization/register.component";
+import Administrator from "./components/Application/Administrator";
+import Patients from "./components/Application/Patients";
+import Doctor from "./components/Application/Doctor";
+import Accountant from "./components/Application/Accountant";
+import Head from "./components/Application/Head";
+import { NavMenu } from './components/NavMenu';
 
 import './custom.css'
 
@@ -25,39 +27,40 @@ export default class App extends Component {
     this.logOut = this.logOut.bind(this);
 
     this.state = {
-      //userNameDental: false,
-      flagAutorization: false
+      userNameDental: null,
+      visibleMainMenu: true
     };
   }
 
   componentDidMount() {
-    /*const user = AuthService.getCurrentUser();
+    const user = AuthService.getCurrentUser();
     console.log(`user = ${user}`);
     if (user) {
-      this.setState({ userNameDental: user });
-    };*/
-
-    const flag = AuthService.getFlagAutorization();
-    console.log(`flag = ${flag}`);
-    this.setState({ flagAutorization: flag });
-    console.log(`FlagAutorization = ${this.state.flagAutorization}`);    
+      this.setState({
+        userNameDental: user
+      });
+    }
   }
 
   logOut() {
-    this.setState({ flagAutorization: false });
+    this.setState({ userNameDental: null });
     AuthService.logout();    
   }
 
+  closeMainMenu() {
+    this.setState({ visibleMainMenu: false });
+  }
+
   render () {
-    const { flagAutorization } = this.state;
-    const logOut = () => { this.logOut() };
+    const { userNameDental, visibleMainMenu} = this.state;
+
     return (
       <div>
         <MainHeader/>  
         {/*<NavMenu /> */}
-        { !flagAutorization && (
+
         <nav className="navbar navbar-expand navbar-dark bg-dark">
-          
+          {visibleMainMenu} ? (
           <div className="navbar-nav mr-auto">            
             <li className="nav-item">
               <Link to={"/services"} className="nav-link">
@@ -98,19 +101,9 @@ export default class App extends Component {
               </Link>
             </li>
           </div>
-
-          <div>
-            <div className="navbar-nav ml-auto">
-                <li className="nav-item">
-                  <Link to={"/login"} className="nav-link">
-                    Войти
-                  </Link>
-                </li>
-            </div>
-          </div>
+          )
           
-
-          {/*{userNameDental ?
+          {userNameDental ?
           (<div>
             <div className="navbar-nav ml-auto">
                 <li className="nav-item">
@@ -133,11 +126,9 @@ export default class App extends Component {
                 </li>
             </div>
           </div>)
-          }*/}
+          }
 
-        </nav>
-        )    
-        }    
+        </nav>        
 
         {/*<div className="container mt-3">*/}
         <div>
@@ -146,13 +137,10 @@ export default class App extends Component {
             <Route exact path="/login" component={Login} />
             <Route exact path="/register" component={Register} />
             <Route exact path='/services' component={Services}/>
-            <Route exact path='/whyme' component={Services} />
+            <Route exact path='/whyme' component={Counter} />
             <Route exact path='/appdental/administrator/talons' component={Talons} />
             <Route exact path='/appdental/administrator/talons/add' component={TalonCUD} />
-            {/*<Route exact path='/appdental/administrator' component={ Administrator } />*/}
-            <Route exact path='/appdental/administrator'>
-              <Administrator logOut={logOut}/>
-            </Route>
+            <Route exact path='/appdental/administrator' component={ Administrator } />
             <Route exact path='/appdental/doctor' component={Doctor} />
             <Route exact path='/appdental/accountant' component={Accountant} />
             <Route exact path='/appdental/head' component={Head} />
