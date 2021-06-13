@@ -298,7 +298,9 @@ export class TalonCUD extends Component{
 
                 <div >
                     {this.state.loadingTalonService ? (
+                        <div style={{ height: "50px" }}>
                         <Loader />
+                        </div>
                     ) :
                     (
                     <div className="row">

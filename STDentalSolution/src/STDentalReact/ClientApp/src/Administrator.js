@@ -8,9 +8,10 @@ export default class Administrator extends Component {
     }*/
 
     render() {
+        const logOutInput = () => {this.props.funcLogOut()}
         return(
         <div>
-            <MenuAdministrator logOut={this.props.logOut()}/>
+            <MenuAdministrator logOutInput={ logOutInput }/>
             {/*<Container>*/}
             <div>
                 {this.props.children}

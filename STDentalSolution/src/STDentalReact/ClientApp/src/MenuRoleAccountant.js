@@ -7,9 +7,10 @@ import {
 import { Link } from 'react-router-dom';
 import "bootstrap/dist/css/bootstrap.min.css";
 import 'bootstrap/dist/css/bootstrap.css';
+import { Button } from 'bootstrap';
 
 
-export class MenuAccountant extends Component{
+export class MenuRoleAccountant extends Component{
 
     render() {
         return(
@@ -36,7 +37,8 @@ export class MenuAccountant extends Component{
                 </div>
                 </NavItem>
                 <NavItem>
-                  <NavLink tag={Link} className="text-dark" to="/">Прейскурант</NavLink>
+                  
+                  <NavLink tag={Link} className="text-dark" to="/" >Прейскурант</NavLink>
                 </NavItem>
               </ul>
               </div>          

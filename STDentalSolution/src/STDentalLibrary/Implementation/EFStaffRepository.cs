@@ -108,7 +108,7 @@ namespace STDentalLibrary.Implementation
             {
                 return await context.Staffs
                     .Include(q => q.StaffCredential)
-                    .Where(w => w.StaffCredential.UserLogin == authorizationDental.Username ||
+                    .Where(w => w.StaffCredential.UserLogin == authorizationDental.Username &&
                                 w.StaffCredential.UserPass == authorizationDental.Password)
                     .FirstOrDefaultAsync();
             }

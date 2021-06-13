@@ -5,7 +5,6 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import 'bootstrap/dist/css/bootstrap.css';
 import AuthService from "./Authorization/auth.service";
 
-
 export class MenuAdministrator extends Component{
   constructor(props) {
     super(props);
@@ -24,7 +23,8 @@ export class MenuAdministrator extends Component{
   }
 
   logOut() {
-    this.props.logOut();    
+    console.log(`logOut-MenuAdmin.js`); 
+    this.props.logOutInput();       
   }
 
     render() {
@@ -58,7 +58,8 @@ export class MenuAdministrator extends Component{
                     <button className="btn dropdown-toggle" type="button" id="dropdownMenuReport" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                       Отчеты
                     </button>
-                    <div className="dropdown-menu" aria-labelledby="dropdownMenuReport" x-placement="bottom-start" style={{position: "absolute", transform: "translate3d(0px, 38px, 0px)", top: "0px", left: "0px", willchange: "transform"}}>
+                    <div className="dropdown-menu" aria-labelledby="dropdownMenuReport" x-placement="bottom-start" style={{position: "absolute", 
+                      transform: "translate3d(0px, 38px, 0px)", top: "0px", left: "0px", willchange: "transform"}}>
                       
                       <NavLink tag={Link} className="text-dark" to="/">Материалы за период</NavLink>
                       <a className="dropdown-item" href="/">Оплата за период (оплата)</a>
@@ -98,6 +99,14 @@ export class MenuAdministrator extends Component{
                   <NavItem>
                     <NavLink tag={Link} className="text-dark" to="/">Прием пациентов</NavLink>
                   </NavItem>
+
+                    <NavItem>
+                      <NavLink className="text-dark">{userNameDental}</NavLink>
+                    </NavItem>
+                    <NavItem>
+                      <NavLink tag={Link} className="text-dark" to="/" onClick={() => this.logOut()}>Выйти</NavLink>
+                    </NavItem>
+                 
                 </ul>
                 </div>           
               {/*</Container>*/}
@@ -107,36 +116,38 @@ export class MenuAdministrator extends Component{
             <nav className="navbar navbar-expand navbar-dark bg-dark">          
               <div className="navbar-nav mr-auto">            
                 <li className="nav-item">
-                  <Link to={"/services"} className="nav-link">
+                  <Link to={"/appdental/administrator/talons"} className="nav-link">
                     Талоны
                   </Link>
                 </li>
 
                 <li className="nav-item">
-                  <Link to={"/whyme"} className="nav-link">
+                  <Link to={"/appdental/administrator/talons/add"} className="nav-link">
                     Создать талон
                   </Link>
                 </li>
 
                 <li className="nav-item">
-                  <Link to={"/doctors"} className="nav-link">
+                  <Link to={"/appdental/administrator/reports"} className="nav-link">
                     Отчеты
                   </Link>
                 </li>
 
                 <li className="nav-item">
-                  <Link to={"/licenses"} className="nav-link">
+                  <Link to={"/appdental/administrator/services"} className="nav-link">
                     Прейскурант
                   </Link>
                 </li>
 
                 <li className="nav-item">
+                  
                   <Link to={"/contacts"} className="nav-link">
-                    Справочники
-                  </Link>
-                </li>   
+                      Справочники1
+                    </Link>
+                </li>  
+
                 <li className="nav-item">
-                  <Link to={"/contacts"} className="nav-link">
+                  <Link to={"/appdental/administrator/receptions"} className="nav-link">
                     Прием пациентов
                   </Link>
                 </li>           
@@ -155,7 +166,7 @@ export class MenuAdministrator extends Component{
                 </div>
               </div>
 
-              </nav>
+            </nav>
             </div>
           </div>
 

@@ -1,16 +1,17 @@
 import React, { Component } from 'react';
 //import { Container } from 'reactstrap';
-import { MenuAccountant } from './MenuAccountant';
+import { MenuDoctor } from './MenuDoctor';
 
-export default class Accountant extends Component {
+export default class Doctor extends Component {
     /*constructor(props) {
         super(props);
     }*/
 
     render() {
+        const logOutInput = () => {this.props.funcLogOut()}
         return(
         <div>
-            <MenuAccountant />
+            <MenuDoctor logOutInput={ logOutInput }/>
             {/*<Container>*/}
             <div>
                 {this.props.children}

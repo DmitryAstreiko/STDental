@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 //import { Container } from 'reactstrap';
-import { MenuDoctor } from './MenuDoctor';
+import { MenuRoleAccountant } from './MenuRoleAccountant';
 
-export default class Doctor extends Component {
+export default class RoleAccountant extends Component {
     /*constructor(props) {
         super(props);
     }*/
@@ -10,7 +10,7 @@ export default class Doctor extends Component {
     render() {
         return(
         <div>
-            <MenuDoctor />
+            <MenuRoleAccountant />
             {/*<Container>*/}
             <div>
                 {this.props.children}

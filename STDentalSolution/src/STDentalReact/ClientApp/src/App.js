@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Home } from './Home';
 import { Services } from './Services';
 import { Talons } from './Talons';
-import { TalonCUD } from './TalonCUD'
+import { TalonCUD } from './TalonCUD';
 import { MainHeader } from './MainHeader';
 import { Switch, Route, Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -12,8 +12,8 @@ import Login from "./Authorization/login.component";
 import Register from "./Authorization/register.component";
 import Administrator from "./Administrator";
 import Patients from "./Patients";
-import Doctor from "./Doctor";
-import Accountant from "./Accountant";
+import RoleDoctor from "./RoleDoctor";
+import RoleAccountant from "./RoleAccountant";
 import Head from "./Head";
 
 import './custom.css'
@@ -31,21 +31,42 @@ export default class App extends Component {
   }
 
   componentDidMount() {
-    /*const user = AuthService.getCurrentUser();
-    console.log(`user = ${user}`);
-    if (user) {
-      this.setState({ userNameDental: user });
-    };*/
 
     const flag = AuthService.getFlagAutorization();
-    console.log(`flag = ${flag}`);
-    this.setState({ flagAutorization: flag });
-    console.log(`FlagAutorization = ${this.state.flagAutorization}`);    
+    
+    if (flag) {
+      this.setState({ flagAutorization: true });
+
+      /*switch (AuthService.getCurrentRole()){
+        case 1:  //Admin
+          this.props.history.push("/appdental/admin");
+        break;
+        case 2:  //Administrator
+          this.props.history.push("/appdental/administrator");
+        break;
+        case 3:  //Doctor
+          this.props.history.push("/appdental/doctor");
+        break;
+        case 4:  //Accountant
+          this.props.history.push("/appdental/accountant");
+        break;
+        case 5:  //Head
+          this.props.history.push("/appdental/head");
+        break;
+        default:
+          this.props.history.push("/login");
+      }          
+      window.location.reload();
+      */
+    } 
+    else {
+      this.setState({ flagAutorization: false });
+    }       
   }
 
   logOut() {
     this.setState({ flagAutorization: false });
-    AuthService.logout();    
+    AuthService.logout();  
   }
 
   render () {
@@ -148,13 +169,20 @@ export default class App extends Component {
             <Route exact path='/services' component={Services}/>
             <Route exact path='/whyme' component={Services} />
             <Route exact path='/appdental/administrator/talons' component={Talons} />
+            <Route exact path='/appdental/doctor/talons' component={Talons} />
             <Route exact path='/appdental/administrator/talons/add' component={TalonCUD} />
             {/*<Route exact path='/appdental/administrator' component={ Administrator } />*/}
             <Route exact path='/appdental/administrator'>
-              <Administrator logOut={logOut}/>
+              <Administrator funcLogOut={ logOut }/>
             </Route>
-            <Route exact path='/appdental/doctor' component={Doctor} />
-            <Route exact path='/appdental/accountant' component={Accountant} />
+            {/*<Route exact path='/appdental/doctor' component={Doctor} />*/}
+            <Route exact path='/appdental/doctor'>
+              <RoleDoctor funcLogOut={ logOut }/>
+            </Route>
+            {/*<Route exact path='/appdental/accountant' component={Accountant} />*/}
+            <Route exact path='/appdental/accountant'>
+              <RoleAccountant funcLogOut={ logOut }/>
+            </Route>
             <Route exact path='/appdental/head' component={Head} />
             <Route exact path='/appdental/administrator/patients' component={Patients} />
           </Switch>
