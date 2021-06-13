@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-//import { Container } from 'reactstrap';
 import { MenuDoctor } from './MenuRoleDoctor';
 import { Talons } from './Talons';
 import { TalonCUD } from './TalonCUD';
@@ -44,7 +43,6 @@ export default class RoleDoctor extends Component {
         }
 
         const staffId = AuthService.getCurrentStaffId();
-        console.log(`staffId = ${staffId}`);
         if (staffId) {
         this.setState({ userIdDental: staffId });
         };

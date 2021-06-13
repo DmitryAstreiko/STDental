@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
+import { PageNotFound } from './PageNotFound';
 
 export class Services extends Component{
 
     render(){
         return(
             <div>
-                <p2>This services</p2>
+                <PageNotFound />
             </div>
         );
     }

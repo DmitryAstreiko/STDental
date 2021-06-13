@@ -35,10 +35,7 @@ class AuthService {
   }
 
   getCurrentUser() {
-    console.log(!!(localStorage.getItem('userNameDental')));
-    console.log(localStorage.getItem('userNameDental') === 'undefined');
     const resName = (localStorage.getItem('userNameDental') === 'undefined') ? null : localStorage.getItem('userNameDental'); 
-    console.log(`resName = ${resName}`);
     //return JSON.parse(localStorage.getItem('userNameDental'));;
     return JSON.parse(resName);
   }

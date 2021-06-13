@@ -4,8 +4,6 @@ import './Talons.css';
 import ComboBox from './Combobox.component';
 import Button from '@material-ui/core/Button';
 import Loader from './Loader';
-import { MenuAdministrator } from './MenuAdministrator';
-//import Pagination from './Pagination';
 import DatePicker from './Picker.component';
 import * as moment  from 'moment';
 import Error from './Error';
@@ -13,7 +11,6 @@ import PaginationControlled from './Pagination.component';
 import { green, purple} from '@material-ui/core/colors';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
-//import AssignmentOutlinedIcon from '@material-ui/icons/AssignmentOutlined';
 import IconButton from '@material-ui/core/IconButton';
 import ContactlessOutlinedIcon from '@material-ui/icons/ContactlessOutlined';
 import ContactsOutlinedIcon from '@material-ui/icons/ContactsOutlined';
@@ -47,7 +44,9 @@ export class Talons extends Component{
             talonDelete: false,
             talonList: true,
             selectedTalonId: null,
-            roleDoctor: false
+            roleDoctor: false,
+            roleAccountant: false,
+            roleAdministrator: false,
         }
 
         this.apiClient = new ApiClient();
@@ -64,6 +63,7 @@ export class Talons extends Component{
         {
             const doctorId = this.props.doctorId;
             this.setState({ selectedDoctorId: doctorId});
+
             let filter = `doctorid=${doctorId}`;
             this.populateTalons(1, `&${filter}`);   
             this.populateCountTalons(filter);
@@ -75,6 +75,8 @@ export class Talons extends Component{
         }
 
         (this.props.roleDoctor) && this.setState({ roleDoctor: true });
+        (this.props.roleAdministrator) && this.setState({ roleAdministrator: true });
+        (this.props.roleAccountant) && this.setState({ roleAccountant: true });
     } 
 
     onRowSelect = row => (
@@ -242,11 +244,11 @@ export class Talons extends Component{
                                             <th>ФИО врача</th>
                                             <th>Стоимость</th>
                                             <th>Со скидкой</th>
-                                            {!this.state.roleDoctor &&  <th></th>}
+                                            {this.state.roleAdministrator &&  <th></th>}
                                             <th>Дата талона</th>
                                             <th>Комментарий</th>
-                                            <th></th>
-                                            {!this.state.roleDoctor && <th></th>}
+                                            {!this.state.roleAccountant && <th></th>}
+                                            {this.state.roleAdministrator && <th></th>}
                                         </tr>
                                     </thead>           
                                         <tbody>
@@ -262,7 +264,7 @@ export class Talons extends Component{
                                                     <td>{talon.staffName}</td> 
                                                     <td>{talon.summa.toFixed(2)}</td>   
                                                     <td>{talon.cost.toFixed(2)}</td>
-                                                    {!this.state.roleDoctor && <td>
+                                                    {this.state.roleAdministrator && <td>
                                                         <IconButton 
                                                             aria-label="pay" 
                                                             style={{ color: purple[500] }}
@@ -273,23 +275,26 @@ export class Talons extends Component{
                                                     }
                                                     <td>{moment(talon.createDate).format('DD.MM.YYYY')}</td>
                                                     <td>{talon.description}</td> 
-                                                    <td>
-                                                        {/*<IconButton aria-label="delete" className={classes.margin}>*/}
-                                                        <IconButton 
-                                                            aria-label="edit" 
-                                                            style={{ color: green[500] }}
-                                                            onClick={ () => (this.onEditTalon(talon.talonId)) }>
-                                                            <EditIcon fontSize="small" />
-                                                        </IconButton>
-                                                    </td>                                                  
-                                                    {!this.state.roleDoctor && <td>                                                        
-                                                        <IconButton 
-                                                            aria-label="delete" 
-                                                            color="secondary"
-                                                            onClick={ () => (this.onDeleteTalon(talon.talonId)) }>
-                                                            <DeleteIcon fontSize="small" />
-                                                        </IconButton>
-                                                    </td>  
+                                                    {!this.state.roleAccountant && 
+                                                        <td>
+                                                            {/*<IconButton aria-label="delete" className={classes.margin}>*/}
+                                                            <IconButton 
+                                                                aria-label="edit" 
+                                                                style={{ color: green[500] }}
+                                                                onClick={ () => (this.onEditTalon(talon.talonId)) }>
+                                                                <EditIcon fontSize="small" />
+                                                            </IconButton>
+                                                        </td>  
+                                                    }                                                
+                                                    {this.state.roleAdministrator && 
+                                                        <td>                                                        
+                                                            <IconButton 
+                                                                aria-label="delete" 
+                                                                color="secondary"
+                                                                onClick={ () => (this.onDeleteTalon(talon.talonId)) }>
+                                                                <DeleteIcon fontSize="small" />
+                                                            </IconButton>
+                                                        </td>  
                                                     }                                         
                                                 </tr>
                                             )}
@@ -325,7 +330,6 @@ export class Talons extends Component{
         const getTalons = () => { this.populateTalons(1) }
         return (
         <div>
-            {/*<MenuAdministrator />*/}
             {this.state.talonList && this.renderTalonsTable()}
             {this.state.talonCreate && <TalonCUD flagTalonCreate={true} flagTalonEdit={false} flagTalonDelete={false} 
                 closingPatient={ closingPatient } countTalon={ countTalon } getTalons={ getTalons } 
@@ -343,7 +347,6 @@ export class Talons extends Component{
     async populateTalons(page, filter=null) {
         try{
             let filterRow = `talons?page=${page}&itemsPerPage=${this.state.talonsPerPage}${filter}`.replace('null','');
-            console.log(filterRow);
             const response = await fetch(filterRow);
             const data = await response.json();   
             this.setState({ talons: data, loadingTalons: false, currentPage: page });
