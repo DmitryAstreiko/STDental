@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { MenuDoctor } from './MenuRoleDoctor';
 import { Talons } from './Talons';
 import { TalonCUD } from './TalonCUD';
-import Receptions from './Receptions';
+import { Receptions } from './Receptions';
 import AuthService from "./Authorization/auth.service";
 
 export default class RoleDoctor extends Component {

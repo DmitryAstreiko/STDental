@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Home } from './Home';
-import { Services } from './Services';
 import { Talons } from './Talons';
 import { TalonCUD } from './TalonCUD';
 import { MainHeader } from './MainHeader';
@@ -15,7 +14,12 @@ import Patients from "./Patients";
 import RoleDoctor from "./RoleDoctor";
 import RoleAccountant from "./RoleAccountant";
 import Head from "./Head";
-import { PageNotFound } from './PageNotFound';
+import { OurServices } from './OurServices';
+import { WhyWe } from './WhyWe';
+import { Staffs } from './Staffs';
+import { Licenses } from './Licenses';
+import { ContactsOrg } from './Contacts';
+import { Receptions } from './Receptions';
 
 export default class App extends Component {
   constructor(props) {
@@ -81,31 +85,31 @@ export default class App extends Component {
           <div className="navbar-nav mr-auto">            
             <li className="nav-item">
               <Link to={"/services"} className="nav-link">
-                _Наши услуги
+                  Наши услуги
               </Link>
             </li>
 
             <li className="nav-item">
-              <Link to={"/whyme"} className="nav-link">
-                _Почему мы
+              <Link to={"/whywe"} className="nav-link">
+                  Почему мы
               </Link>
             </li>
 
             <li className="nav-item">
               <Link to={"/doctors"} className="nav-link">
-                _Наши врачи
+                  Наши врачи
               </Link>
             </li>
 
             <li className="nav-item">
               <Link to={"/licenses"} className="nav-link">
-                _Лицензии
+                  Сертификаты
               </Link>
             </li>
 
             <li className="nav-item">
               <Link to={"/contacts"} className="nav-link">
-                _Контакты
+                  Контакты
               </Link>
             </li>            
           </div>
@@ -113,7 +117,7 @@ export default class App extends Component {
 
           <div className="navbar-nav ml-auto">
             <li className="nav-item">
-              <Link to={"/login"} className="nav-link">
+              <Link to={"/reception"} className="nav-link">
                 Записаться на прием
               </Link>
             </li>
@@ -165,8 +169,13 @@ export default class App extends Component {
             <Route exact path={["/", "/home"]} component={Home} />
             <Route exact path="/login" component={Login} />
             <Route exact path="/register" component={Register} />
-            <Route exact path='/services' component={Services}/>
-            <Route exact path='/whyme' component={Services} />
+            <Route exact path="/doctors" component={Staffs} />
+            <Route exact path='/services' component={OurServices}/>
+            <Route exact path='/licenses' component={Licenses}/>
+            <Route exact path='/whywe' component={WhyWe} />
+            <Route exact path='/contacts' component={ContactsOrg} />
+            <Route exact path='/reception' component={Receptions} />
+
             <Route exact path='/appdental/administrator/talons' component={Talons} />
             <Route exact path='/appdental/doctor/talons' component={Talons} />
             <Route exact path='/appdental/administrator/talons/add' component={TalonCUD} />

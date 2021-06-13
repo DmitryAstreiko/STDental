@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import contacts from './Images/contacts.png';
+import license from './Images/licenses.png';
 
-export class ContactsOrg extends Component {
+export class Licenses extends Component {
 
   render () {
     return (
         <div style={{display: "flex", alignItems: "center", flexDirection: 'column' }}>
-            <img src={contacts} alt="contacts" style={{ width: "80%", margin: "20px" }}/>
+            <img src={license} alt="license" style={{ width: "80%", margin: "20px" }}/>
         </div>
     );
   }

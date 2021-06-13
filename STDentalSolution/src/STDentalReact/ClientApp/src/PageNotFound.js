@@ -12,6 +12,6 @@ export class PageNotFound extends Component{
             <div style={{display: "flex", alignItems: "center", flexDirection: 'column'}}>
                 <img src={oops} alt="oops"/>
             </div>
-        )
+        );
     }
 }

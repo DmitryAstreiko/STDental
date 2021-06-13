@@ -3,6 +3,7 @@ import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
 import AuthService from "./auth.service";
+import loginUser from '../Images/login.jpg'
 
 const required = value => {
   if (!value) {
@@ -103,7 +104,8 @@ export default class Login extends Component {
       <div className="col-md-12">
         <div className="card card-container">
           <img
-            src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"
+            //src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"
+            src={loginUser}
             alt="profile-img"
             className="profile-img-card"
           />

@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
-import { PageNotFound } from './PageNotFound';
+import receptionOrg from './Images/reception.png';
 
-export default class Receptions extends Component {
+export class Receptions extends Component {
     /*constructor(props) {
         super(props);
     }*/
 
     render() {       
         return(
-        <div>
-            <PageNotFound />
+        <div style={{display: "flex", alignItems: "center", flexDirection: 'column' }}>
+            <img src={receptionOrg} alt="receptionOrg" style={{ width: "80%", margin: "20px" }}/>
         </div>
         );
     }

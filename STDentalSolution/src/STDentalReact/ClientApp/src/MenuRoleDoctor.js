@@ -14,7 +14,7 @@ logOut() {
 
 render() {
     return(
-        <div style={{ backgroundColor: "#eaebec", height: "50px" }}>
+        <div style={{ backgroundColor: "#fbf87a", height: "50px" }}>
             <div class="d-flex justify-content-between">
                 <div>
                     <Button onClick={ () => this.props.setFlagTalons() } 
