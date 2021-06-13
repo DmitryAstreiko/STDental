@@ -5,6 +5,7 @@ import AuthService from "./Authorization/auth.service";
 import Button from '@material-ui/core/Button';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
 import { Link } from 'react-router-dom';
+import './custom.css';
 
 export class MenuDoctor extends Component{
 constructor(props) {
@@ -30,16 +31,20 @@ logOut() {
 
 render() {
     return(
-        <div>
-            <ButtonGroup color="primary" aria-label="outlined primary button group">
-                <Button onClick={ () => this.props.setFlagTalons() }>Талоны</Button>
-                <Button onClick={ () => this.props.setFlagAddTalon() }>Добавить талон</Button>
-                <Button onClick={ () => this.props.setFlagReception() }>Прием пациентов</Button>
-            </ButtonGroup>
-            <ButtonGroup color="primary" aria-label="outlined primary button group">
-                <Button>{this.state.userNameDental}</Button>
-                <Button href="/" onClick={ () => this.props.logOutInput() }>Выйти</Button>
-            </ButtonGroup>
+        <div style={{ backgroundColor: "yellow", height: "50px" }}>
+            <div class="d-flex justify-content-between">
+                <div>
+                    <Button onClick={ () => this.props.setFlagTalons() } className="button-menu-role">Талоны</Button>
+                    <Button onClick={ () => this.props.setFlagAddTalon() } variant="text" 
+                        style={{textTransform: "none", padding: ".375rem .75rem", fontSize: "1rem", marginTop: "5px"}} >Добавить талон</Button>
+                    <Button onClick={ () => this.props.setFlagReception() } className="button-menu-role">Прием пациентов</Button>
+                    {/*<button type="button" class="btn btn-outline-info" >qwewqe</button>*/}
+                </div>
+                <div>
+                    <Button className="button-menu-role" >{this.state.userNameDental} </Button>
+                    <Button outline  href="/" onClick={ () => this.props.logOutInput() } className="button-menu-role">Выйти</Button>
+                </div>
+            </div>
         </div>
     );
 }

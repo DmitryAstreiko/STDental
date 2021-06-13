@@ -16,7 +16,7 @@ import RoleDoctor from "./RoleDoctor";
 import RoleAccountant from "./RoleAccountant";
 import Head from "./Head";
 
-import './custom.css'
+import './custom.css';
 
 export default class App extends Component {
   constructor(props) {

@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import "bootstrap/dist/css/bootstrap.min.css";
 import 'bootstrap/dist/css/bootstrap.css';
 import AuthService from "./Authorization/auth.service";
+import { Button } from 'bootstrap';
 
 export class MenuAdministrator extends Component{
   constructor(props) {
@@ -100,12 +101,12 @@ export class MenuAdministrator extends Component{
                     <NavLink tag={Link} className="text-dark" to="/">Прием пациентов</NavLink>
                   </NavItem>
 
-                    <NavItem>
-                      <NavLink className="text-dark">{userNameDental}</NavLink>
-                    </NavItem>
-                    <NavItem>
-                      <NavLink tag={Link} className="text-dark" to="/" onClick={() => this.logOut()}>Выйти</NavLink>
-                    </NavItem>
+                  <NavItem>
+                    <NavLink className="text-dark">{userNameDental}</NavLink>
+                  </NavItem>
+                  <NavItem>
+                    <NavLink tag={Link} className="text-dark" to="/" onClick={() => this.logOut()}>Выйти</NavLink>
+                  </NavItem>
                  
                 </ul>
                 </div>           
@@ -150,7 +151,8 @@ export class MenuAdministrator extends Component{
                   <Link to={"/appdental/administrator/receptions"} className="nav-link">
                     Прием пациентов
                   </Link>
-                </li>           
+                </li> 
+         
               </div> 
 
               <div>

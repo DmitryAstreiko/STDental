@@ -14,7 +14,7 @@ export class MenuRoleAccountant extends Component{
 
     render() {
         return(
-            <Navbar className="navbar-expand-lg navbar-toggleable-lg ng-white border-bottom box-shadow mb-3" light>
+            <Navbar className="navbar-expand-lg navbar-toggleable-lg ng-black border-bottom box-shadow mb-3" style={{ backgroundColor: "#f5f56d" }}>
             <div>
                 <ul className="navbar-nav flex-grow">
                 <NavItem>
