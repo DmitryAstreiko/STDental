@@ -1,15 +1,11 @@
 import React, { Component } from 'react';
-import {
-  Navbar,
-  NavItem,
-  NavLink,
-} from 'reactstrap';
+import { Navbar, NavItem, NavLink } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import "bootstrap/dist/css/bootstrap.min.css";
 import 'bootstrap/dist/css/bootstrap.css';
 
 
-export class MenuHead extends Component{
+export class MenuMain extends Component{
 
     render() {
         return(

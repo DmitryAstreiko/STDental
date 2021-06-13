@@ -15,8 +15,7 @@ import Patients from "./Patients";
 import RoleDoctor from "./RoleDoctor";
 import RoleAccountant from "./RoleAccountant";
 import Head from "./Head";
-
-import './custom.css';
+import { PageNotFound } from './PageNotFound';
 
 export default class App extends Component {
   constructor(props) {
@@ -177,7 +176,7 @@ export default class App extends Component {
             </Route>
             {/*<Route exact path='/appdental/doctor' component={Doctor} />*/}
             <Route exact path='/appdental/doctor'>
-              <RoleDoctor funcLogOut={ logOut }/>
+              <RoleDoctor funcLogOut={ logOut } />
             </Route>
             {/*<Route exact path='/appdental/accountant' component={Accountant} />*/}
             <Route exact path='/appdental/accountant'>

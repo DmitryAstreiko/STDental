@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 //import { Container } from 'reactstrap';
-import { MenuHead } from './MenuHead';
+import { MenuMain } from './MenuMain';
 
 export default class Head extends Component {
     /*constructor(props) {
@@ -10,7 +10,7 @@ export default class Head extends Component {
     render() {
         return(
         <div>
-            <MenuHead />
+            <MenuMain />
             <div>
                 {this.props.children}
             </div>           

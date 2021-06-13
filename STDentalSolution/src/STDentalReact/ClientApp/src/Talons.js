@@ -57,12 +57,24 @@ export class Talons extends Component{
         this.onPatientSelect = this.onPatientSelect.bind(this);
     }
 
-    componentDidMount() {
-        this.populateCountTalons();
+    componentDidMount() {        
         this.populatePatients();
         this.populateDoctors();
-        this.populateTalons(this.state.currentPage, null);   
-        this.setState({ roleDoctor: true });
+        if (this.props.doctorId) 
+        {
+            const doctorId = this.props.doctorId;
+            this.setState({ selectedDoctorId: doctorId});
+            let filter = `doctorid=${doctorId}`;
+            this.populateTalons(1, `&${filter}`);   
+            this.populateCountTalons(filter);
+        }
+        else 
+        {
+            this.populateTalons(this.state.currentPage, null);
+            this.populateCountTalons();
+        }
+
+        (this.props.roleDoctor) && this.setState({ roleDoctor: true });
     } 
 
     onRowSelect = row => (
@@ -331,7 +343,7 @@ export class Talons extends Component{
     async populateTalons(page, filter=null) {
         try{
             let filterRow = `talons?page=${page}&itemsPerPage=${this.state.talonsPerPage}${filter}`.replace('null','');
-
+            console.log(filterRow);
             const response = await fetch(filterRow);
             const data = await response.json();   
             this.setState({ talons: data, loadingTalons: false, currentPage: page });
