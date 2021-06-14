@@ -21,23 +21,6 @@ namespace STDentalLibrary.Implementation
             _configuration = configuration;
         }
 
-        /*public async Task<IEnumerable<Talon>> GetTalonsAsync(int page, int itemsPerPage)
-        {
-            await using (var context = CreateContext())
-            {
-                return await context.Talons
-                    .Include(s => s.Staff)
-                    .Include(p => p.Patient)
-                    .Where(q => q.CreateDate > DateTime.UtcNow.AddDays(-360))
-                    .OrderBy(a => a.PaymentStatus)
-                    .ThenByDescending(s => s.CreateDate)
-                    .ThenByDescending(s => s.TalonId)
-                    .Skip((page - 1) * itemsPerPage)
-                    .Take(itemsPerPage)
-                    .ToListAsync();
-            }
-        }*/
-
         public async Task<int> AddPaymentAsync(Payment payment)
         {
             await using (var context = CreateContext())
@@ -57,39 +40,11 @@ namespace STDentalLibrary.Implementation
             }
         }
 
-        /*public async Task<bool> AddTalonServiceAsync(List<TalonService> servicesList)
-        {
-            try
-            {
-                await using (var context = CreateContext())
-                {
-                    foreach (var service in servicesList)
-                    {
-                        var res = await context.TalonServices.AddAsync(service);
-                    }
-                    await context.SaveChangesAsync();
-                    return true;
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine($"TalonService didn`t add. Detail: {e.StackTrace}");
-                return false;
-            }
-            
-        }*/
-
         public async Task DeleteTalonAsync(int talonId)
         {            
             await using (var context = CreateContext())
             {
-                //var helper = new EFHelperRepository(context);
-
-                //if ((await helper.CheckContainTalonInPayment(talonId)) == false) return false;
-
                 var delTalon = await context.Talons.FindAsync(talonId);
-
-                //if (delTalon.PaymentStatus != PaymentStatus.NotPaid) return false;
 
                 context.Talons.Remove(delTalon);
                 await context.SaveChangesAsync();
@@ -110,9 +65,8 @@ namespace STDentalLibrary.Implementation
                     query = query.Where(e => e.CreateDate >= startDate);
                 if (endDate.HasValue)
                     query = query.Where(q => q.CreateDate <= endDate);
-            
 
-            return await query.CountAsync();
+                return await query.CountAsync();
             }
         }
 
@@ -197,5 +151,6 @@ namespace STDentalLibrary.Implementation
         {
             return new STDentalContext(_configuration.GetConnectionString("STDentalDB"));
         }
+
     }
 }

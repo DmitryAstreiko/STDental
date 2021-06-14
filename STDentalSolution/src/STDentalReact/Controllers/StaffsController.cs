@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using STDentalLibrary.Models;
 using STDentalLibrary.Models.ModelsResponse;
 using STDentalLibrary.Repositories;
 
@@ -33,6 +34,22 @@ namespace STDentalReact.Controllers
                     Name = doctor.Name
                 })
                 .ToArray();
+        }
+
+        [HttpPost("signin")]
+        public async Task<UserInfo> SignInAsync([FromBody] AuthorizationDental authorizationDental)
+        {
+
+            var staff = await _staffRepository.Authorization(authorizationDental);
+
+            if (staff == null) return null;
+
+            return new UserInfo()
+            {
+                Id = staff.StaffId,
+                Role = staff.Role,
+                User = staff.Name
+            };
         }
     }
 }

@@ -5,13 +5,7 @@ VisualStudioVersion = 16.0.30717.126
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "STDentalLibrary", "src\STDentalLibrary\STDentalLibrary.csproj", "{C4578D19-C790-4716-BF2A-4C941F8EA480}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "STDentalWeb", "src\STDentalWeb\STDentalWeb.csproj", "{2B16A850-FFF2-4EC6-82D5-C5FB2866F318}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "STDentalReact", "src\STDentalReact\STDentalReact.csproj", "{DABCA67C-7D78-48E8-A878-422D6689D415}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "STDentalMVCNotUse", "src\STDentalMVC\STDentalMVCNotUse.csproj", "{60E5080B-0DB7-438B-A173-AF6866807AB5}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "STDentalReactReduxNotUse", "src\STDentalReactRedux\STDentalReactReduxNotUse.csproj", "{2E519EAA-7B8A-466C-8E03-FF9AEA0A6B36}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,22 +17,10 @@ Global
 		{C4578D19-C790-4716-BF2A-4C941F8EA480}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C4578D19-C790-4716-BF2A-4C941F8EA480}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C4578D19-C790-4716-BF2A-4C941F8EA480}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2B16A850-FFF2-4EC6-82D5-C5FB2866F318}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2B16A850-FFF2-4EC6-82D5-C5FB2866F318}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2B16A850-FFF2-4EC6-82D5-C5FB2866F318}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2B16A850-FFF2-4EC6-82D5-C5FB2866F318}.Release|Any CPU.Build.0 = Release|Any CPU
 		{DABCA67C-7D78-48E8-A878-422D6689D415}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{DABCA67C-7D78-48E8-A878-422D6689D415}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DABCA67C-7D78-48E8-A878-422D6689D415}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DABCA67C-7D78-48E8-A878-422D6689D415}.Release|Any CPU.Build.0 = Release|Any CPU
-		{60E5080B-0DB7-438B-A173-AF6866807AB5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{60E5080B-0DB7-438B-A173-AF6866807AB5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{60E5080B-0DB7-438B-A173-AF6866807AB5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{60E5080B-0DB7-438B-A173-AF6866807AB5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2E519EAA-7B8A-466C-8E03-FF9AEA0A6B36}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2E519EAA-7B8A-466C-8E03-FF9AEA0A6B36}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2E519EAA-7B8A-466C-8E03-FF9AEA0A6B36}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2E519EAA-7B8A-466C-8E03-FF9AEA0A6B36}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

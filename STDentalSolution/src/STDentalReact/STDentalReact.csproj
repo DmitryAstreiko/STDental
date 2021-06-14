@@ -15,17 +15,17 @@
 
   <ItemGroup>
     <!-- Don't publish the SPA source files, but do show them in the project files list -->
+    <Compile Remove="BackupDB\**" />
     <Content Remove="$(SpaRoot)**" />
+    <Content Remove="BackupDB\**" />
+    <EmbeddedResource Remove="BackupDB\**" />
     <None Remove="$(SpaRoot)**" />
+    <None Remove="BackupDB\**" />
     <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\STDentalLibrary\STDentalLibrary.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="BackupDB\" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

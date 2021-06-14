@@ -30,4 +30,41 @@ label {
     -webkit-border-radius: 50%;
     border-radius: 50%;
   }
+
+  .button-menu-role {
+    text-transform: "none"; 
+    padding: ".375rem .75rem"; 
+    font-size: "1rem";
+    margin-top: "5px";  
+  }
+
+  a {
+    color: #0366d6;
+  }
+  
+  code {
+    color: #E01A76;
+  }
+  
+  .btn-primary {
+    color: #fff;
+    background-color: #1b6ec2;
+    border-color: #1861ac;
+  }
+  
+  .form-auth {
+    width: 10%;
+  }
+  
+  body{
+    background-color: #f6f6f6;
+  }
+  
+  .container{
+  width: 100%;
+  margin-left: 10px;
+  margin-right: 10px;
+  }
+  
+ 
   
