@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Home } from './Home';
+import { PageHome } from './PageHome';
 import { MainHeader } from './MainHeader';
 import { Switch, Route } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -72,12 +72,11 @@ export default class App extends Component {
     return (
       <div>
         <MainHeader/>  
-        {/*<NavMenu /> */} 
 
         {/*<div className="container mt-3">*/}
         <div>
           <Switch>
-            <Route exact path={["/", "/home"]} component={Home} />
+            <Route exact path={["/", "/home"]} component={PageHome} />
             <Route exact path="/login" component={Login} />
             <Route exact path='/reception' component={Receptions} />
             {/*<Route exact path="/register" component={Register} />*/}

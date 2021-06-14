@@ -42,6 +42,9 @@ export class MenuRoleAdministrator extends Component{
                   >Добавить талон</Button>
                   <Button 
                       style={{textTransform: "none", fontWeight: "400", padding: ".375rem .75rem", fontSize: "1rem", marginTop: "5px", letterSpacing: "0px", color: "rgb(255 255 255 / 50%)"}}
+                  >Группировка услуг</Button>
+                  <Button 
+                      style={{textTransform: "none", fontWeight: "400", padding: ".375rem .75rem", fontSize: "1rem", marginTop: "5px", letterSpacing: "0px", color: "rgb(255 255 255 / 50%)"}}
                   >Отчеты</Button>
                   <Button 
                       style={{textTransform: "none", fontWeight: "400", padding: ".375rem .75rem", fontSize: "1rem", marginTop: "5px", letterSpacing: "0px", color: "rgb(255 255 255 / 50%)"}}

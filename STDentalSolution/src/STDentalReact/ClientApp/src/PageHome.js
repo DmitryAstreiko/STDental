@@ -8,8 +8,7 @@ import roleAccountant from './Images/roleaccountant.png';
 import roleDoctor from './Images/roledoctor.png';
 import { MainMenu } from './MainMenu';
 
-export class Home extends Component {
-  static displayName = Home.name;
+export class PageHome extends Component {
 
   render () {
     return (      
