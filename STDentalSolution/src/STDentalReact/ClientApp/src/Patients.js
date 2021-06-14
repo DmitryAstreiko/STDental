@@ -14,18 +14,7 @@ import PersonAddOutlinedIcon from '@material-ui/icons/PersonAddOutlined';
 import IconButton from '@material-ui/core/IconButton';
 import PatientCRUD from './PatientCRUD';
 import { ApiClient } from './APIClient';
-//import { ThemeProvider } from '@material-ui/styles';
-
-//import { makeStyles } from '@material-ui/core/styles';
-
-/*useStyles = makeStyles((theme) => ({
-    margin: {
-        margin: theme.spacing(1),
-    },
-    extendedIcon: {
-        marginRight: theme.spacing(1),
-    },
-}));*/
+import { NotInfo }  from './NotInfo';
 
 export default class Patients extends Component{
 
@@ -119,8 +108,6 @@ export default class Patients extends Component{
 
         return(
             <div>
-                {/*<MenuAdministrator />*/}
-
                 <div className={"d-flex justify-content-around"}>
                     <div >
                         <div>
@@ -167,11 +154,7 @@ export default class Patients extends Component{
                         <Error /> ) :
                         (
                             (this.state.patients.length === 0) ? (
-                                //<NotInfo /> ) : 
-                                <div className="d-flex justify-content-center">
-                                    <h1 style={{ color: "red" }}>Нет информации для отображения</h1>
-                                </div> 
-                                ) :
+                                <NotInfo /> ) :                                
                                 (<Table className='table' aria-labelledby="tabelLabel">
                                     <thead>
                                         <tr>

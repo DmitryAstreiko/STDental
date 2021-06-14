@@ -180,7 +180,7 @@ export class TalonCUD extends Component{
             //const res = await this.addTalon(newjson);
 
             const res = await this.apiClient.addTalon(newjson)
-          
+        
             if(res === 200) {
                 alert(`Талон успешно добавлен!`);
             this.onClose();

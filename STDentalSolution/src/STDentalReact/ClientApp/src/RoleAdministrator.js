@@ -18,35 +18,35 @@ export default class RoleAdministrator extends Component {
             userNameDental: false,
             userIdDental: false
         };
-    }
+    };
 
     setFlagTalons() {
         this.setState({ showTalons: true });
         this.setState({ showAddTalon: false });
         this.setState({ showReception: false });
         this.setState({ showPatients: false });
-    }
+    };
 
     setFlagAddTalon() {
         this.setState({ showTalons: false });
         this.setState({ showAddTalon: true });
         this.setState({ showReception: false });
         this.setState({ showPatients: false });
-    }
+    };
 
     setFlagReception() {
         this.setState({ showTalons: false });
         this.setState({ showAddTalon: false });
         this.setState({ showReception: true });
         this.setState({ showPatients: false });
-    }
+    };
 
     setFlagPatients() {
         this.setState({ showTalons: false });
         this.setState({ showAddTalon: false });
         this.setState({ showReception: false });
         this.setState({ showPatients: true });
-    }
+    };
 
     componentDidMount() {
         const user = AuthService.getCurrentUser();
@@ -58,19 +58,20 @@ export default class RoleAdministrator extends Component {
         if (staffId) {
         this.setState({ userIdDental: staffId });
         };
-    }
+    };
 
     render() {
         const logOutInput = () => {this.props.funcLogOut()};
         const setFlagTalons = () => {this.setFlagTalons()};
         const setFlagAddTalon = () => {this.setFlagAddTalon()};
         const setFlagReception = () => {this.setFlagReception()};
+        const setFlagPatients = () => {this.setFlagPatients()};
         return(
         <div>
             <div style={{ marginBottom: "10px" }}>
             <MenuRoleAdministrator
                 logOutInput={ logOutInput } setFlagTalons={setFlagTalons} setFlagAddTalon={setFlagAddTalon} setFlagReception={setFlagReception}
-                userNameDental={ this.state.userNameDental }/>
+                userNameDental={ this.state.userNameDental } setFlagPatients={setFlagPatients}/>
             </div>
             {this.state.showTalons && <Talons roleAdministrator={true} />}
             {this.state.showAddTalon && <TalonCUD vabelButtonSave={'Сохранить'} flagTalonCreate={true}/>}

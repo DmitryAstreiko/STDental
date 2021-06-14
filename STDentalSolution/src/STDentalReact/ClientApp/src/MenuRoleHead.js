@@ -3,7 +3,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import 'bootstrap/dist/css/bootstrap.css';
 import Button from '@material-ui/core/Button';
 
-export class MenuRoleAccountant extends Component{
+export class MenuRoleHead extends Component{
 
     render() {
         return(

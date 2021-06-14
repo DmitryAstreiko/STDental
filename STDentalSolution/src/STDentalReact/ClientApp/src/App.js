@@ -10,7 +10,7 @@ import Login from "./Authorization/login.component";
 import RoleAdministrator from "./RoleAdministrator";
 import RoleDoctor from "./RoleDoctor";
 import RoleAccountant from "./RoleAccountant";
-import Head from "./Head";
+import RoleHead from "./RoleHead";
 import { PageServices } from './PageServices';
 import { PageWhyWe } from './PageWhyWe';
 import { PageDoctors } from './PageDoctors';
@@ -97,7 +97,7 @@ export default class App extends Component {
               <RoleAccountant funcLogOut={ logOut }/>
             </Route>
             <Route exact path='/appdental/head'>
-
+              <RoleHead funcLogOut={ logOut }/>
             </Route>
           </Switch>
         </div>

@@ -31,11 +31,31 @@ label {
     border-radius: 50%;
   }
 
-  .button-menu-role {
-    text-transform: "none"; 
-    padding: ".375rem .75rem"; 
-    font-size: "1rem";
-    margin-top: "5px";  
+  .menu-roles {
+    font-size: 1rem;
+    margin-top: 5px; 
+    background-color: #343a40;
+    height: 50px;
+  }
+
+  .menu-button {
+    text-transform: none; 
+    padding: .375rem .75rem; 
+    font-size: 1rem; 
+    margin-top: 5px; 
+    letter-spacing: 0px; 
+    color: rgb(255, 255, 255, 0.5); 
+    font-weight: 400;
+  }
+
+  .menu-roles .MuiButton-root {
+    text-transform: none !important;
+    padding: .375rem .75rem !important; 
+    font-size: 1rem !important; 
+    margin-top: 5px !important; 
+    letter-spacing: 0px !important; 
+    color: rgb(255, 255, 255, 0.5) !important; 
+    font-weight: 400 !important;
   }
 
   a {

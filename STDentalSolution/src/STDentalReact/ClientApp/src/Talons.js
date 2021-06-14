@@ -18,7 +18,8 @@ import SearchOutlinedIcon from '@material-ui/icons/SearchOutlined';
 import ViewTalonServices from './ViewTalonServices';
 import {ApiClient} from './APIClient';
 import {TalonCUD} from './TalonCUD';
-
+import { NotInfo } from './NotInfo';
+ 
 export class Talons extends Component{
 
     constructor(props){
@@ -47,6 +48,7 @@ export class Talons extends Component{
             roleDoctor: false,
             roleAccountant: false,
             roleAdministrator: false,
+            roleHead: false
         }
 
         this.apiClient = new ApiClient();
@@ -77,6 +79,7 @@ export class Talons extends Component{
         (this.props.roleDoctor) && this.setState({ roleDoctor: true });
         (this.props.roleAdministrator) && this.setState({ roleAdministrator: true });
         (this.props.roleAccountant) && this.setState({ roleAccountant: true });
+        (this.props.roleHead) && this.setState({ roleHead: true });
     } 
 
     onRowSelect = row => (
@@ -207,6 +210,7 @@ export class Talons extends Component{
                                 startIcon={<ContactsOutlinedIcon />}
                                 onClick={ () => this.onCancelFilter()}>Сбросить</Button>                            
                         </div>
+                        {this.state.roleAdministrator && (
                         <div className={"col"} style={{position: "relative"}}> 
                         <Button
                             //variant="contained"
@@ -217,7 +221,8 @@ export class Talons extends Component{
                             startIcon={<ContactsOutlinedIcon />}
                             onClick={ () => (this.onCreateTalon()) }
                         >Создать талон</Button>
-                    </div>
+                        </div>)
+                        }
                     </div>                                
                     </div>
                 <div>
@@ -230,11 +235,7 @@ export class Talons extends Component{
                         <Error /> ) :
                         (
                             (this.state.talons.length === 0) ? (
-                                //<NotInfo /> ) : 
-                                <div className="d-flex justify-content-center">
-                                    <h1 style={{ color: "red" }}>Нет информации для отображения</h1>
-                                </div> 
-                                ) :
+                                <NotInfo /> ) : 
                                 (<Table className='table' aria-labelledby="tabelLabel">
                                     <thead>
                                         <tr>
@@ -247,7 +248,7 @@ export class Talons extends Component{
                                             {this.state.roleAdministrator &&  <th></th>}
                                             <th>Дата талона</th>
                                             <th>Комментарий</th>
-                                            {!this.state.roleAccountant && <th></th>}
+                                            {this.state.roleAdministrator && <th></th>}
                                             {this.state.roleAdministrator && <th></th>}
                                         </tr>
                                     </thead>           
@@ -275,7 +276,7 @@ export class Talons extends Component{
                                                     }
                                                     <td>{moment(talon.createDate).format('DD.MM.YYYY')}</td>
                                                     <td>{talon.description}</td> 
-                                                    {!this.state.roleAccountant && 
+                                                    {this.state.roleAdministrator && 
                                                         <td>
                                                             {/*<IconButton aria-label="delete" className={classes.margin}>*/}
                                                             <IconButton 
@@ -285,7 +286,7 @@ export class Talons extends Component{
                                                                 <EditIcon fontSize="small" />
                                                             </IconButton>
                                                         </td>  
-                                                    }                                                
+                                                    }                                         
                                                     {this.state.roleAdministrator && 
                                                         <td>                                                        
                                                             <IconButton 

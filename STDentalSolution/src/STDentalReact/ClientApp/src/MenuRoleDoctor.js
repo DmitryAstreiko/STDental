@@ -14,27 +14,16 @@ logOut() {
 
 render() {
     return(
-        <div style={{ backgroundColor: "#fbf87a", height: "50px" }}>
+        <div className="menu-roles">
             <div class="d-flex justify-content-between">
                 <div>
-                    <Button onClick={ () => this.props.setFlagTalons() } 
-                        style={{textTransform: "none", padding: ".375rem .75rem", fontSize: "1rem", marginTop: "5px", letterSpacing: "0px"}}
-                    >Талоны</Button>
-                    <Button onClick={ () => this.props.setFlagAddTalon() } variant="text" 
-                        style={{textTransform: "none", padding: ".375rem .75rem", fontSize: "1rem", marginTop: "5px", letterSpacing: "0px"}} 
-                    >Добавить талон</Button>
-                    <Button onClick={ () => this.props.setFlagReception() } 
-                        style={{textTransform: "none", padding: ".375rem .75rem", fontSize: "1rem", marginTop: "5px", letterSpacing: "0px"}}
-                    >Прием пациентов</Button>
-                    {/*<button type="button" class="btn btn-outline-info" >qwewqe</button>*/}
+                    <Button onClick={ () => this.props.setFlagTalons() } >Талоны</Button>
+                    <Button onClick={ () => this.props.setFlagAddTalon() } >Добавить талон</Button>
+                    <Button onClick={ () => this.props.setFlagReception() } >Прием пациентов</Button>
                 </div>
                 <div>
-                    <Button className="button-menu-role" 
-                        style={{textTransform: "none", padding: ".375rem .75rem", fontSize: "1rem", marginTop: "5px", letterSpacing: "0px"}} 
-                    >{this.props.userNameDental} </Button>
-                    <Button outline  href="/" onClick={ () => this.props.logOutInput() } className="button-menu-role"
-                        style={{textTransform: "none", padding: ".375rem .75rem", fontSize: "1rem", marginTop: "5px", letterSpacing: "0px"}}
-                    >Выйти</Button>
+                    <Button >{this.props.userNameDental} </Button>
+                    <Button outline  href="/" onClick={ () => this.props.logOutInput() } >Выйти</Button>
                 </div>
             </div>
         </div>
