@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import { Home } from './Home';
-import { Talons } from './Talons';
-import { TalonCUD } from './TalonCUD';
 import { MainHeader } from './MainHeader';
 import { Switch, Route, Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -9,7 +7,7 @@ import "./App.css";
 import AuthService from "./Authorization/auth.service";
 import Login from "./Authorization/login.component";
 import Register from "./Authorization/register.component";
-import Administrator from "./Administrator";
+import RoleAdministrator from "./RoleAdministrator";
 import Patients from "./Patients";
 import RoleDoctor from "./RoleDoctor";
 import RoleAccountant from "./RoleAccountant";
@@ -176,23 +174,16 @@ export default class App extends Component {
             <Route exact path='/contacts' component={ContactsOrg} />
             <Route exact path='/reception' component={Receptions} />
 
-            <Route exact path='/appdental/administrator/talons' component={Talons} />
-            <Route exact path='/appdental/doctor/talons' component={Talons} />
-            <Route exact path='/appdental/administrator/talons/add' component={TalonCUD} />
-            {/*<Route exact path='/appdental/administrator' component={ Administrator } />*/}
             <Route exact path='/appdental/administrator'>
-              <Administrator funcLogOut={ logOut }/>
+              <RoleAdministrator funcLogOut={ logOut }/>
             </Route>
-            {/*<Route exact path='/appdental/doctor' component={Doctor} />*/}
             <Route exact path='/appdental/doctor'>
               <RoleDoctor funcLogOut={ logOut } />
             </Route>
-            {/*<Route exact path='/appdental/accountant' component={Accountant} />*/}
             <Route exact path='/appdental/accountant'>
               <RoleAccountant funcLogOut={ logOut }/>
             </Route>
             <Route exact path='/appdental/head' component={Head} />
-            <Route exact path='/appdental/administrator/patients' component={Patients} />
           </Switch>
         </div>
       </div>

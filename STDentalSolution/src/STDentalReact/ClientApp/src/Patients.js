@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { MenuAdministrator } from './MenuAdministrator';
 import './Patients.css';
 import Error from './Error';
 import Loader from './Loader';
@@ -120,7 +119,7 @@ export default class Patients extends Component{
 
         return(
             <div>
-                <MenuAdministrator />
+                {/*<MenuAdministrator />*/}
 
                 <div className={"d-flex justify-content-around"}>
                     <div >
