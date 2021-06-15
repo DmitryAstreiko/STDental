@@ -117,7 +117,7 @@ export class Talons extends Component{
         let filterEndDate = this.state.selectedEndDate && `&enddate=${this.state.selectedEndDate}`;
 
         let filter = `${filterPatient}${filterDoctor}${filterStartDate}${filterEndDate}`.replace('null','').replace('null','');
-
+        console.log(filter);
         this.setState({ filterTalons:  filter });
 
         this.populateCountTalons(filter);

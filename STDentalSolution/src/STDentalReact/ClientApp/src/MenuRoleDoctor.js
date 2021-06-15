@@ -4,9 +4,6 @@ import 'bootstrap/dist/css/bootstrap.css';
 import Button from '@material-ui/core/Button';
 
 export class MenuDoctor extends Component{
-constructor(props) {
-    super(props);
-}
 
 logOut() {
     this.props.logOutInput();       

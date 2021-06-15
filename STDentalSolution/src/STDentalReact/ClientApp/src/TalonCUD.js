@@ -22,7 +22,7 @@ export class TalonCUD extends Component{
         super(props);
 
         this.state = {
-            selectedPatient: null,
+            selectedPatient: [],
             selectedDoctor: [],
             selectedPrice: [],
             patients: [],
@@ -66,7 +66,10 @@ export class TalonCUD extends Component{
     } 
 
     onPatientSelect = value => {
-        this.setState({ selectedPatient: value && value })
+        //this.setState({ selectedPatient: value && value })
+        if(value) {
+            this.setState({ selectedPatient: {id: value.patientId, name: value.patientName}});
+        }
     }
 
     onDoctorSelect = value => {
@@ -261,6 +264,8 @@ export class TalonCUD extends Component{
         this.setState({ selectedPatient: {id: res.patientId, name: res.patientName}});
         this.setState({ selectedDoctor: {id: res.staffId, name: res.staffName} });
         this.setState({ selectedTalonDate: res.createDate });
+
+        console.log(res.patientName);
     }
 
     render(){
