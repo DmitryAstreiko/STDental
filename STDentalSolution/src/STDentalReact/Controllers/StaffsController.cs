@@ -42,7 +42,12 @@ namespace STDentalReact.Controllers
 
             var staff = await _staffRepository.Authorization(authorizationDental);
 
-            if (staff == null) return null;
+            if (staff == null) return new UserInfo()
+            {
+                Id = 0,
+                Role = null,
+                User = null
+            };
 
             return new UserInfo()
             {

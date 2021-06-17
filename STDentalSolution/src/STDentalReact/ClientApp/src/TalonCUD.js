@@ -139,10 +139,10 @@ export class TalonCUD extends Component{
 
     onButtonSave() {   
         
-        //const flagDoctor = this.validateDoctor();
-        //const flagPatient = this.validatePatient();
+        const flagDoctor = this.validateDoctor();
+        const flagPatient = this.validatePatient();
 
-        //if (flagDoctor && flagPatient && (this.state.tableServices.length > 0)) { 
+        if (flagDoctor && flagPatient && (this.state.tableServices.length > 0)) { 
             let newTalonService = [];
 
             this.state.tableServices.forEach(service => {
@@ -162,6 +162,7 @@ export class TalonCUD extends Component{
             this.props.flagTalonEdit && this.onEditTalon(newTalonService, this.props.talonId);
 
             this.props.flagTalonDelete && this.onDeleteTalon(this.props.talonId);
+        }
     }
 
     async onAddTalon(services) {   

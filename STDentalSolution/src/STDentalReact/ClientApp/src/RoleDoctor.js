@@ -11,7 +11,7 @@ export default class RoleDoctor extends Component {
         super(props);
 
         this.state = {
-            showTalons: true,
+            showTalons: false,
             showAddTalon: false,
             showReception: false,
             userNameDental: false,
@@ -57,6 +57,7 @@ export default class RoleDoctor extends Component {
         const staffId = AuthService.getCurrentStaffId();
         if (staffId) {
         this.setState({ userIdDental: staffId });
+        this.setState({ showTalons: true });
         };
     }
 

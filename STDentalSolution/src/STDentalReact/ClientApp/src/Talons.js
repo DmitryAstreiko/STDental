@@ -12,13 +12,13 @@ import { green, purple} from '@material-ui/core/colors';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import IconButton from '@material-ui/core/IconButton';
-import ContactlessOutlinedIcon from '@material-ui/icons/ContactlessOutlined';
 import ContactsOutlinedIcon from '@material-ui/icons/ContactsOutlined';
 import SearchOutlinedIcon from '@material-ui/icons/SearchOutlined';
 import ViewTalonServices from './ViewTalonServices';
 import {ApiClient} from './APIClient';
 import {TalonCUD} from './TalonCUD';
 import { NotInfo } from './NotInfo';
+import Payment from './Payment';
  
 export class Talons extends Component{
 
@@ -61,7 +61,7 @@ export class Talons extends Component{
     componentDidMount() {        
         this.populatePatients();
         this.populateDoctors();
-        if (this.props.doctorId) 
+        if (this.props.roleDoctor) 
         {
             const doctorId = this.props.doctorId;
             this.setState({ selectedDoctorId: doctorId});
@@ -117,7 +117,6 @@ export class Talons extends Component{
         let filterEndDate = this.state.selectedEndDate && `&enddate=${this.state.selectedEndDate}`;
 
         let filter = `${filterPatient}${filterDoctor}${filterStartDate}${filterEndDate}`.replace('null','').replace('null','');
-        console.log(filter);
         this.setState({ filterTalons:  filter });
 
         this.populateCountTalons(filter);
@@ -125,11 +124,16 @@ export class Talons extends Component{
     }
 
     onCancelFilter() {     
-        //clear combobox and state current date to datepicker
-        this.setState({ filterTalons: null });
-            
+        if (this.props.roleDoctor) {
+            let filter = `doctorid=${this.state.selectedDoctorId}`;
+            this.populateTalons(1, `&${filter}`);   
+            this.populateCountTalons(filter);
+        } 
+        else {
+        this.setState({ filterTalons: null });            
         this.populateCountTalons();
         this.populateTalons(1);
+        }
     }
 
     onCreateTalon() {
@@ -154,10 +158,6 @@ export class Talons extends Component{
         this.setState({ talonEdit: false });
         this.setState({ talonDelete: true });
         this.setState({ selectedTalonId: talonId });
-    }
-
-    payTalonServices(talonId) {
-
     }
 
     closePatientCUD(){
@@ -186,10 +186,14 @@ export class Talons extends Component{
                         </div>
                         }
                         <div className="col">
-                            <DatePicker labelvalue={"Начало периода"} onSelected={ (value) => this.onDateStartSelect(value) } />
+                            <DatePicker labelvalue={"Начало периода"} 
+                                onSelected={ (value) => this.onDateStartSelect(value) } 
+                                selectedDate={this.state.selectedStartDate}/>
                         </div>
                         <div className="col">
-                            <DatePicker labelvalue={"Окончание периода"} onSelected={ (value) => this.onDateEndSelect(value) } />
+                            <DatePicker labelvalue={"Окончание периода"} 
+                                onSelected={ (value) => this.onDateEndSelect(value) } 
+                                selectedDate={this.state.selectedEndDate}/>
                         </div>
                         <div className={"col"} style={{position: "relative"}}>
                             <Button 
@@ -266,12 +270,7 @@ export class Talons extends Component{
                                                     <td>{talon.summa.toFixed(2)}</td>   
                                                     <td>{talon.cost.toFixed(2)}</td>
                                                     {this.state.roleAdministrator && <td>
-                                                        <IconButton 
-                                                            aria-label="pay" 
-                                                            style={{ color: purple[500] }}
-                                                            onClick={ () => (this.payTalonServices(talon.talonId)) }>
-                                                            <ContactlessOutlinedIcon fontSize="small" />
-                                                        </IconButton>
+                                                        <Payment />
                                                     </td>
                                                     }
                                                     <td>{moment(talon.createDate).format('DD.MM.YYYY')}</td>

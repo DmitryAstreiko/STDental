@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { PageHome } from './PageHome';
-import { MainHeader } from './MainHeader';
+//import { MainHeader } from './MainHeader';
 import { Switch, Route } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
@@ -71,7 +71,7 @@ export default class App extends Component {
     const logOut = () => { this.logOut() };
     return (
       <div>
-        <MainHeader/>  
+        {/*<MainHeader/>*/}  
 
         {/*<div className="container mt-3">*/}
         <div>

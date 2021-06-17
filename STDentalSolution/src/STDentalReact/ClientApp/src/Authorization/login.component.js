@@ -56,27 +56,38 @@ export default class Login extends Component {
     if (this.checkBtn.context._errors.length === 0) {
       AuthService.login(this.state.username, this.state.password).then(
         () => {    
-          console.log(`AuthService.getCurrentRole() = ${AuthService.getCurrentRole()}`);      
+
+          
+          
           switch (AuthService.getCurrentRole()){
             case 1:  //Admin
               this.props.history.push("/appdental/admin");
+              window.location.reload();
             break;
             case 2:  //Administrator
               this.props.history.push("/appdental/administrator");
+              window.location.reload();
             break;
             case 3:  //Doctor
               this.props.history.push("/appdental/doctor");
+              window.location.reload();
             break;
             case 4:  //Accountant
               this.props.history.push("/appdental/accountant");
+              window.location.reload();
             break;
             case 5:  //Head
               this.props.history.push("/appdental/head");
+              window.location.reload();
             break;
             default:
-              this.props.history.push("/login");
+              //this.props.history.push("/login");
+              this.setState({ 
+                loading: false,
+                message: `Не правильный логин или пароль!`
+              })
           }          
-          window.location.reload();
+          //window.location.reload();
 
         },
         error => {

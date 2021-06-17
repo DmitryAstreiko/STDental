@@ -17,6 +17,8 @@ class AuthService {
           console.log(`response.data = ${response.data}`);
         } */}       
 
+        console.log(response.data);
+
         return response.data;
       });
   }
@@ -36,6 +38,9 @@ class AuthService {
   }
 
   getCurrentUser() {
+    const www = localStorage.getItem('userRoleDental');
+    console.log(www);
+
     const resName = (localStorage.getItem('userNameDental') === 'undefined') ? null : localStorage.getItem('userNameDental'); 
     //return JSON.parse(localStorage.getItem('userNameDental'));;
     return JSON.parse(resName);

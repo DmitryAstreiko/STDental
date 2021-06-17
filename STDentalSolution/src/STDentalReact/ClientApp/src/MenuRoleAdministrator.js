@@ -5,7 +5,6 @@ import AuthService from "./Authorization/auth.service";
 import Button from '@material-ui/core/Button';
 import "./App.css";
 import IconButton from '@material-ui/core/IconButton';
-import { purple } from '@material-ui/core/colors';
 import AppsOutlinedIcon from '@material-ui/icons/AppsOutlined';
 
 export class MenuRoleAdministrator extends Component{

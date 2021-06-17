@@ -10,8 +10,8 @@ namespace STDentalLibrary.Models.ModelsResponse
     {
         public int Id { get; set; }
 
-        public string User { get; set; }
+        public string? User { get; set; }
 
-        public Enums.Role Role { get; set; }
+        public Enums.Role? Role { get; set; }
     }
 }
