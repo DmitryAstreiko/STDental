@@ -4,6 +4,7 @@ import { Talons } from './Talons';
 import { TalonCUD } from './TalonCUD';
 import { Receptions } from './Receptions';
 import AuthService from "./Authorization/auth.service";
+import { Reports } from "./Reports";
 
 export default class RoleDoctor extends Component {
     constructor(props) {
@@ -14,7 +15,8 @@ export default class RoleDoctor extends Component {
             showAddTalon: false,
             showReception: false,
             userNameDental: false,
-            userIdDental: false
+            userIdDental: false,
+            showReport: false
         };
     }
 
@@ -22,18 +24,28 @@ export default class RoleDoctor extends Component {
         this.setState({ showTalons: true });
         this.setState({ showAddTalon: false });
         this.setState({ showReception: false });
+        this.setState({ showReport: false });
     }
 
     setFlagAddTalon() {
         this.setState({ showTalons: false });
         this.setState({ showAddTalon: true });
         this.setState({ showReception: false });
+        this.setState({ showReport: false });
     }
 
     setFlagReception() {
         this.setState({ showTalons: false });
         this.setState({ showAddTalon: false });
         this.setState({ showReception: true });
+        this.setState({ showReport: false });
+    }
+
+    setFlagReport() {
+        this.setState({ showTalons: false });
+        this.setState({ showAddTalon: false });
+        this.setState({ showReception: false });
+        this.setState({ showReport: true });
     }
 
     componentDidMount() {
@@ -49,20 +61,17 @@ export default class RoleDoctor extends Component {
     }
 
     render() {
-        const logOutInput = () => {this.props.funcLogOut()};
-        const setFlagTalons = () => {this.setFlagTalons()};
-        const setFlagAddTalon = () => {this.setFlagAddTalon()};
-        const setFlagReception = () => {this.setFlagReception()};
         return(
         <div>
             <div style={{ marginBottom: "10px" }}>
             <MenuDoctor
-                logOutInput={ logOutInput } setFlagTalons={setFlagTalons} setFlagAddTalon={setFlagAddTalon} setFlagReception={setFlagReception}
-                userNameDental={ this.state.userNameDental }/>
+                logOutInput={ () => this.props.funcLogOut() } setFlagTalons={() => this.setFlagTalons()} setFlagAddTalon={() => this.setFlagAddTalon()} 
+                setFlagReception={() => this.setFlagReception()} userNameDental={ this.state.userNameDental }  setFlagReport={() => this.setFlagReport()}/>
             </div>
             {this.state.showTalons && <Talons roleDoctor={true} doctorId={this.state.userIdDental}/>}
             {this.state.showAddTalon && <TalonCUD vabelButtonSave={'Сохранить'} flagTalonCreate={true}/>}
-            {this.state.showReception && <Receptions />}
+            {this.state.showReception && <Receptions roleInside={true}/>}
+            {this.state.showReport && <Reports roleDoctor={true}/>}
         </div>
         );
     }

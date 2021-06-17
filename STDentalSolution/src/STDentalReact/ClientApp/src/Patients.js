@@ -15,6 +15,7 @@ import IconButton from '@material-ui/core/IconButton';
 import PatientCRUD from './PatientCRUD';
 import { ApiClient } from './APIClient';
 import { NotInfo }  from './NotInfo';
+import ViewCardPatient from './ViewCardPatient';
 
 export default class Patients extends Component{
 
@@ -160,6 +161,7 @@ export default class Patients extends Component{
                                         <tr>
                                             <th>№ п.п.</th>
                                             <th>ФИО пациента</th>
+                                            <th></th>
                                             <th>Город</th>
                                             <th>Улица</th>
                                             <th>Телефон</th>
@@ -176,6 +178,9 @@ export default class Patients extends Component{
                                                 <tr key={index} >
                                                     <td>{index + 1}</td>
                                                     <td>{patient.name}</td>
+                                                    <td>
+                                                        <ViewCardPatient />
+                                                    </td>
                                                     <td>{patient.city}</td> 
                                                     <td>{patient.street}</td> 
                                                     <td>{patient.phone}</td> 

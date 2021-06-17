@@ -44,20 +44,16 @@ export default class RoleHead extends Component {
     }
 
     render() {
-        const logOutInput = () => {this.props.funcLogOut()};
-        const setFlagTalons = () => {this.setFlagTalons()};
-        const setFlagServices = () => {this.setFlagServices()};
-        const setFlagReports = () => {this.setFlagReports()};
         return(
         <div>
             <div style={{ marginBottom: "10px" }}>
             <MenuRoleHead
-                logOutInput={ logOutInput } setFlagTalons={setFlagTalons} setFlagServices={setFlagServices} setFlagReports={setFlagReports} 
-                userNameDental={ this.state.userNameDental }/>
+                logOutInput={ () =>this.props.funcLogOut() } setFlagTalons={() => this.setFlagTalons()} setFlagServices={() => this.setFlagServices()} 
+                setFlagReports={() => this.setFlagReports()} userNameDental={ this.state.userNameDental }/>
             </div>
             {this.state.showTalons && <Talons roleHead={true}/>}
-            {this.state.showServices && <Services />}
-            {this.state.showReports && <Reports />}
+            {this.state.showServices && <Services roleHead={true}/>}
+            {this.state.showReports && <Reports roleHead={true}/>}
         </div>
         );
     }

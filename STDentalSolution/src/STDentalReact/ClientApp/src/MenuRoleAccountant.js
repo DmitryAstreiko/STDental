@@ -8,15 +8,17 @@ export class MenuRoleAccountant extends Component{
     render() {
         return(
             <div className="menu-roles">
-            <div class="d-flex justify-content-between">
+            <div className="d-flex justify-content-between">
                 <div>
                     <Button onClick={ () => this.props.setFlagTalons() } >Талоны</Button>                
                     <Button onClick={ () => this.props.setFlagReports() } >Отчеты</Button>
                     <Button onClick={ () => this.props.setFlagServices() } >Прейскурант</Button>
+                    <Button onClick={ () => this.props.setFlagMaterials() }>Материалы</Button>
+                    <Button onClick={ () => this.props.setFlagUnits() }>Единицы измерения</Button>
                 </div>
                 <div>
                     <Button >{this.props.userNameDental} </Button>
-                    <Button outline  href="/" onClick={ () => this.props.logOutInput() }>Выйти</Button>
+                    <Button href="/" onClick={ () => this.props.logOutInput() }>Выйти</Button>
                 </div>
             </div>
         </div>
