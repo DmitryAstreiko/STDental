@@ -131,9 +131,7 @@ export default class Patients extends Component{
                             operationInsert={false} operationEdit={false} operationDelete={true} selectCountPatients={ selectCountPatients } 
                             selectPatients={ selectPatients } selectedPatientId={this.state.selectedPatientId} valueButtonSave={"Удалить"} />
                         }
-
-                    </div>                        
-
+                    </div>                       
                     <div style={{position: "relative", width: "200px"}}>
                         <Button
                             //variant="contained"

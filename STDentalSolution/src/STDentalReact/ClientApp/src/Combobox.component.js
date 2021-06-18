@@ -7,7 +7,9 @@ export default function ComboBox(props) {
     <div>
         <Autocomplete
           //onChange={(event, value) => props.patientid = value.id}
-          onChange={(value) => { console.log(`value Autocomplete = ${value.id}`); props.onSelected(value); }}
+          //onChange={(event, value) => { console.log(`value Autocomplete = ${value.id}`); props.onSelected(value); }}
+          onChange={( event, value, reason ) => { if (reason === "select-option") props.onSelected(value) }}
+
           //clearOnBlur={true}
           //selectOnFocus={true}
           ////clearOnEscape={true}
@@ -15,8 +17,10 @@ export default function ComboBox(props) {
           options={props.lists}
           getOptionLabel={option => option.name ? option.name : ""}
           style={{ width: props.widthValue }}          
-          getOptionSelected={(option, value) => { console.log(`getOptionSelected = ${value[0]}`) }}
+          getOptionSelected={(option, value) => {return option.id === value.id}}
+          
           value={props.selectedValue}
+
           //inputValue={props.selectedValue}
           renderInput={(params) => <TextField {...params} label={props.labelvalue} variant="outlined" />}
           />

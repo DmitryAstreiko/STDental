@@ -66,24 +66,23 @@ export class TalonCUD extends Component{
     } 
 
     onPatientSelect = value => {
-        //this.setState({ selectedPatient: value && value })
         if(value) {
-            this.setState({ selectedPatient: {id: value.patientId, name: value.patientName}});
+            this.setState({ selectedPatient: {id: value.id, name: value.name}});
         }
     }
 
     onDoctorSelect = value => {
-        this.setState({ selectedDoctor: value && value })
+        if(value) {
+            this.setState({ selectedDoctor: {id: value.id, name: value.name}});
+        }
     }
 
     onPriceSelect = value => {
-        this.state({ selectedPrice: value && value });
-
-        /*console.log(value);    
-        (value) && (
-            this.populateSelectedPrice(value.id));
-
-        this.CountCostAllTalons();*/
+        if(value) {
+            this.setState({ selectedPrice: {id: value.id, name: value.name}});
+            this.populateSelectedPrice(value.id);
+            this.CountCostAllTalons();
+        }            
     }
 
     onChangeCount(evt, index) {
@@ -139,10 +138,10 @@ export class TalonCUD extends Component{
 
     onButtonSave() {   
         
-        const flagDoctor = this.validateDoctor();
-        const flagPatient = this.validatePatient();
+        //const flagDoctor = this.validateDoctor();
+        //const flagPatient = this.validatePatient();
 
-        if (flagDoctor && flagPatient && (this.state.tableServices.length > 0)) { 
+        //if (flagDoctor && flagPatient && (this.state.tableServices.length > 0)) { 
             let newTalonService = [];
 
             this.state.tableServices.forEach(service => {
@@ -162,7 +161,7 @@ export class TalonCUD extends Component{
             this.props.flagTalonEdit && this.onEditTalon(newTalonService, this.props.talonId);
 
             this.props.flagTalonDelete && this.onDeleteTalon(this.props.talonId);
-        }
+        //}
     }
 
     async onAddTalon(services) {   
@@ -261,12 +260,11 @@ export class TalonCUD extends Component{
         //const res = this.apiClient.GetTalon(talonId);
 
         this.setState({ descriptionTalon: res.description });
+
         this.setState({ selectedCost: res.cost });
         this.setState({ selectedPatient: {id: res.patientId, name: res.patientName}});
         this.setState({ selectedDoctor: {id: res.staffId, name: res.staffName} });
         this.setState({ selectedTalonDate: res.createDate });
-
-        console.log(res.patientName);
     }
 
     render(){
@@ -352,10 +350,13 @@ export class TalonCUD extends Component{
 
                     <div className={"d-flex justify-content-around"} style={{ marginTop: "20px" }}>
                         <div>
-                            <TextField id="outlined-basic-description" label="Комментарий" variant="outlined" 
+                            <TextField id="outlined-basic-description" 
+                                label="Комментарий" 
+                                variant="outlined" 
                                 style={{ width: "400px", marginTop: "10px" }}                                
-                                onChange={(event) => this.onDescriptionChange(event)} 
-                                value={this.state.descriptionTalon}/>
+                                onChange={(event) => this.onDescriptionChange(event)}    
+                                value={this.state.descriptionTalon}         
+                                />
                         </div>
                         <div className={"d-flex justify-content-center"} >
                             <div >
@@ -372,7 +373,7 @@ export class TalonCUD extends Component{
                                 <input type="text" value={this.state.selectedCost ? `${this.state.selectedCost.toFixed(2)}` : `0.00`} style={{ width: "150px", textAlign: "center" }} readOnly />
                             </div>
                         </div>
-                    </div>                   
+                    </div>                  
 
                     <div className={"d-flex justify-content-around"} style={{ marginTop: "20px" }}>
                     <Button
