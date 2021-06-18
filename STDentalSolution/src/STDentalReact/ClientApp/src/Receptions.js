@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import receptionOrg from './Images/reception.png';
 import receptionInsideImage from './Images/receptioninside.png';
+import { MainMenu } from './MainMenu';
 
 export class Receptions extends Component {
     /*constructor(props) {
@@ -10,6 +11,9 @@ export class Receptions extends Component {
     render() {       
         return(
             <div>
+                <div>
+                    <MainMenu />
+                </div>
                 {
                     (this.props.roleInside) ? (
                         <div style={{display: "flex", alignItems: "center", flexDirection: 'column' }}>
