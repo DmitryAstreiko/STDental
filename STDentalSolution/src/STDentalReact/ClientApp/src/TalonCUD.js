@@ -51,6 +51,9 @@ export class TalonCUD extends Component{
 
         if (this.props.flagTalonCreate) {
             this.setState({ loadingTalonService: false });
+            if (this.props.roleDoctor) {
+                this.setState({ selectedDoctor: {id: this.props.selectedDoctor.id, name: this.props.selectedDoctor.name }});
+            }
         }
 
         if (this.props.flagTalonEdit) {            
@@ -186,7 +189,7 @@ export class TalonCUD extends Component{
         
             if(res === 200) {
                 alert(`Талон успешно добавлен!`);
-            this.onClose();
+                this.onClose();
             }
             if(res === 400) alert("Талон не добавлен в систему!");
         }
@@ -244,9 +247,12 @@ export class TalonCUD extends Component{
     }
 
     onClose() {
+        if (!this.props.actionAddButton) {            
+            this.props.countTalon();
+            this.props.getTalons();
+        }
+
         this.props.closingPatient();
-        this.props.countTalon();
-        this.props.getTalons();
     }
 
     onDescriptionChange(evt) {
@@ -289,7 +295,8 @@ export class TalonCUD extends Component{
                                 onSelected={ (value) => this.onPriceSelect(value) } nameid={"comboprice"} 
                                 widthValue={500} 
                                 />
-                    </div>
+                        </div>
+                        { !this.props.roleDoctor &&
                         <div >
                             <ComboBox labelvalue={"Выберите врача"} lists={this.state.doctors} 
                                 onSelected={ (value) => this.onDoctorSelect(value) } nameid={"combodoctorprice"} 
@@ -297,6 +304,7 @@ export class TalonCUD extends Component{
                                 selectedValue={this.state.selectedDoctor}
                                 />                                
                         </div>
+                        }
                     </div>                       
                 </div>
 

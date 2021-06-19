@@ -12,12 +12,10 @@ class AuthService {
         localStorage.setItem("userNameDental", JSON.stringify(response.data.user));
         localStorage.setItem("userRoleDental", JSON.stringify(response.data.role));
         localStorage.setItem("userIdDental", JSON.stringify(response.data.id));
-        {/*if (response.data.accessToken) {
+        /*if (response.data.accessToken) {
           localStorage.setItem("user", JSON.stringify(response.data));
           console.log(`response.data = ${response.data}`);
-        } */}       
-
-        console.log(response.data);
+        } */       
 
         return response.data;
       });
@@ -38,9 +36,6 @@ class AuthService {
   }
 
   getCurrentUser() {
-    const www = localStorage.getItem('userRoleDental');
-    console.log(www);
-
     const resName = (localStorage.getItem('userNameDental') === 'undefined') ? null : localStorage.getItem('userNameDental'); 
     //return JSON.parse(localStorage.getItem('userNameDental'));;
     return JSON.parse(resName);

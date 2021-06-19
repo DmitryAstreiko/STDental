@@ -16,7 +16,8 @@ export default class RoleDoctor extends Component {
             showReception: false,
             userNameDental: false,
             userIdDental: false,
-            showReport: false
+            showReport: false,
+            selectedDoctor: []
         };
     }
 
@@ -51,13 +52,14 @@ export default class RoleDoctor extends Component {
     componentDidMount() {
         const user = AuthService.getCurrentUser();
         if (user) {
-        this.setState({ userNameDental: user });
+            this.setState({ userNameDental: user });
         }
 
         const staffId = AuthService.getCurrentStaffId();
         if (staffId) {
-        this.setState({ userIdDental: staffId });
-        this.setState({ showTalons: true });
+        
+            this.setState({ selectedDoctor: {id: staffId, name: user}});
+            this.setState({ showTalons: true });
         };
     }
 
@@ -69,8 +71,12 @@ export default class RoleDoctor extends Component {
                 logOutInput={ () => this.props.funcLogOut() } setFlagTalons={() => this.setFlagTalons()} setFlagAddTalon={() => this.setFlagAddTalon()} 
                 setFlagReception={() => this.setFlagReception()} userNameDental={ this.state.userNameDental }  setFlagReport={() => this.setFlagReport()}/>
             </div>
-            {this.state.showTalons && <Talons roleDoctor={true} doctorId={this.state.userIdDental}/>}
-            {this.state.showAddTalon && <TalonCUD vabelButtonSave={'Сохранить'} flagTalonCreate={true}/>}
+            {this.state.showTalons && <Talons roleDoctor={true} selectedDoctor={this.state.selectedDoctor}/>}
+
+            {this.state.showAddTalon && <TalonCUD flagTalonCreate={true} flagTalonEdit={false} flagTalonDelete={false}  
+                vabelButtonSave={"Сохранить талон"} labelAction={"Добавление нового талона"} closingPatient={() => this.setFlagTalons()} 
+                roleDoctor={true} actionAddButton={true} selectedDoctor={this.state.selectedDoctor}/>}
+
             {this.state.showReception && <Receptions roleInside={true}/>}
             {this.state.showReport && <Reports roleDoctor={true}/>}
         </div>

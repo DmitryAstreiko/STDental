@@ -11,9 +11,6 @@ export class Receptions extends Component {
     render() {       
         return(
             <div>
-                <div>
-                    <MainMenu />
-                </div>
                 {
                     (this.props.roleInside) ? (
                         <div style={{display: "flex", alignItems: "center", flexDirection: 'column' }}>
@@ -21,8 +18,13 @@ export class Receptions extends Component {
                         </div>
                     ) :
                     (
-                        <div style={{display: "flex", alignItems: "center", flexDirection: 'column' }}>
-                            <img src={receptionOrg} alt="receptionOrg" style={{ width: "80%", margin: "20px" }}/>
+                        <div>
+                            <div>
+                                <MainMenu />
+                            </div>
+                            <div style={{display: "flex", alignItems: "center", flexDirection: 'column' }}>
+                                <img src={receptionOrg} alt="receptionOrg" style={{ width: "80%", margin: "20px" }}/>
+                            </div>
                         </div>
                     )
                 }

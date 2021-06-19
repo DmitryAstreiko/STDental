@@ -186,7 +186,11 @@ export default class RoleAdministrator extends Component {
                 setFlagCallPatients={ () => this.setFlagCallPatients() } setFlagOptions={ () => this.setFlagOptions() }/>
             </div>
             {this.state.showTalons && <Talons roleAdministrator={true} />}
-            {this.state.showAddTalon && <TalonCUD vabelButtonSave={'Сохранить'} flagTalonCreate={true}/>}
+
+            {this.state.showAddTalon && <TalonCUD flagTalonCreate={true} flagTalonEdit={false} flagTalonDelete={false}  
+                vabelButtonSave={"Сохранить талон"} labelAction={"Добавление нового талона"} 
+                closingPatient={() => this.setFlagTalons()} actionAddButton={true} />}
+
             {this.state.showReception && <Receptions roleInside={true}/>}
             {this.state.showPatients && <Patients />}
             {this.state.showGroupServices && <GroupServices />}

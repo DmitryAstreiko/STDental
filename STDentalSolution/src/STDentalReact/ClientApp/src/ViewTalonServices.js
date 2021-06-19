@@ -80,7 +80,7 @@ export default class ViewTalonServices extends Component {
         <IconButton 
             aria-label="view" 
             style={{ color: yellow[900] }}
-            onClick={() => (this.populateTalonServices(this.props.talonNumber), this.setState({ open: true }))}>
+            onClick={() => {this.populateTalonServices(this.props.talonNumber); this.setState({ open: true });}}>
             <AssignmentOutlinedIcon fontSize="small" />
         </IconButton>
         <Dialog onClose={() => this.setState({ open: false })}  
