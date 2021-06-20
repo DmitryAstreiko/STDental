@@ -53,7 +53,7 @@ namespace STDentalReact.Controllers
 
             return services.Select(service => new ServiceNames()
             {
-                Id = service.ServiceId.ToString(),
+                Id = service.ServiceId,
                 Name = $"{service.Shifr} {service.Name}"
             })
                 .ToArray();

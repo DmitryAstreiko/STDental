@@ -38,6 +38,7 @@ export class TalonCUD extends Component{
             loadingTalonService: true,
             errorPatient: false,
             errorDoctor: false,
+            errorService: false,
             disableDeleteButton: false
             }
 
@@ -71,18 +72,21 @@ export class TalonCUD extends Component{
     onPatientSelect = value => {
         if(value) {
             this.setState({ selectedPatient: {id: value.id, name: value.name}});
+            this.setState({ errorPatient: false });
         }
     }
 
     onDoctorSelect = value => {
         if(value) {
             this.setState({ selectedDoctor: {id: value.id, name: value.name}});
+            this.setState({ errorDoctor: false });
         }
     }
 
     onPriceSelect = value => {
         if(value) {
             this.setState({ selectedPrice: {id: value.id, name: value.name}});
+            this.setState({ errorService: false });
             this.populateSelectedPrice(value.id);
             this.CountCostAllTalons();
         }            
@@ -128,9 +132,9 @@ export class TalonCUD extends Component{
     }
 
     validateDoctor() {
-        let isValid = !!this.state.selectedDoctor.Id;
-        this.setState({errorDoctor: !isValid});
-        return isValid;
+        let isValidDoc = !!this.state.selectedDoctor.Id;
+        this.setState({errorDoctor: !isValidDoc});
+        return isValidDoc;
     }
 
     validatePatient() {
@@ -139,12 +143,20 @@ export class TalonCUD extends Component{
         return isValid;
     }
 
+    validateService() {
+        let isValid = !!this.state.tableServices.length;
+        this.setState({errorService: !isValid});
+        return isValid;
+    }
+
     onButtonSave() {   
         
-        //const flagDoctor = this.validateDoctor();
-        //const flagPatient = this.validatePatient();
+        const flagDoctor = this.validateDoctor();
+        const flagPatient = this.validatePatient();
+        const flagService= this.validateService();
 
-        //if (flagDoctor && flagPatient && (this.state.tableServices.length > 0)) { 
+        if (flagPatient && flagService) {
+            
             let newTalonService = [];
 
             this.state.tableServices.forEach(service => {
@@ -161,10 +173,10 @@ export class TalonCUD extends Component{
 
             this.props.flagTalonCreate && this.onAddTalon(newTalonService);
 
-            this.props.flagTalonEdit && this.onEditTalon(newTalonService, this.props.talonId);
+            this.props.flagTalonEdit && this.onEditTalon(newTalonService, this.props.talonId);            
+        }
 
-            this.props.flagTalonDelete && this.onDeleteTalon(this.props.talonId);
-        //}
+        this.props.flagTalonDelete && this.onDeleteTalon(this.props.talonId);
     }
 
     async onAddTalon(services) {   
@@ -209,7 +221,7 @@ export class TalonCUD extends Component{
                 summasales: 0,
                 cost: this.state.selectedCost,
                 paymentstatus: 1,
-                description: this.state.descriptionTalon,
+                description: this.state.descriptionTalon ? this.state.descriptionTalon : '',
                 patientid: this.state.selectedPatient.id,
                 staffid: this.state.selectedDoctor.id,
                 talonservices: services
@@ -265,7 +277,7 @@ export class TalonCUD extends Component{
 
         //const res = this.apiClient.GetTalon(talonId);
 
-        this.setState({ descriptionTalon: res.description });
+        this.setState({ descriptionTalon: res.description ? res.description : '' });
 
         this.setState({ selectedCost: res.cost });
         this.setState({ selectedPatient: {id: res.patientId, name: res.patientName}});
@@ -288,12 +300,14 @@ export class TalonCUD extends Component{
                                 onSelected={ (value) => this.onPatientSelect(value) } nameid={"combopatientprice"} 
                                 widthValue={300} 
                                 selectedValue={this.state.selectedPatient}
+                                errorTrue={this.state.errorPatient} 
                                 />
                         </div>
                         <div className={"d-flex justify-content-center"} >
                             <ComboBox labelvalue={"Выберите услугу"} lists={this.state.prices} 
                                 onSelected={ (value) => this.onPriceSelect(value) } nameid={"comboprice"} 
                                 widthValue={500} 
+                                errorTrue={this.state.errorService}
                                 />
                         </div>
                         { !this.props.roleDoctor &&
@@ -302,6 +316,7 @@ export class TalonCUD extends Component{
                                 onSelected={ (value) => this.onDoctorSelect(value) } nameid={"combodoctorprice"} 
                                 widthValue={300} 
                                 selectedValue={this.state.selectedDoctor}
+                                errorTrue={this.state.errorDoctor}                               
                                 />                                
                         </div>
                         }

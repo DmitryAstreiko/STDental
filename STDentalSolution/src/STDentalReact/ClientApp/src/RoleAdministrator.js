@@ -187,7 +187,7 @@ export default class RoleAdministrator extends Component {
             </div>
             {this.state.showTalons && <Talons roleAdministrator={true} />}
 
-            {this.state.showAddTalon && <TalonCUD flagTalonCreate={true} flagTalonEdit={false} flagTalonDelete={false}  
+            {this.state.showAddTalon && <TalonCUD flagTalonCreate={true}
                 vabelButtonSave={"Сохранить талон"} labelAction={"Добавление нового талона"} 
                 closingPatient={() => this.setFlagTalons()} actionAddButton={true} />}
 
