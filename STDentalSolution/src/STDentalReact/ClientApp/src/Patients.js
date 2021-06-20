@@ -118,17 +118,17 @@ export default class Patients extends Component{
                         </div>
 
                         {this.state.patientInsert && <PatientCRUD visibleModal={true} changeState={ changeState } valueForm={"Добавление пациента"} 
-                            operationInsert={true} operationEdit={false} operationDelete={false} selectCountPatients={ selectCountPatients } 
+                            operationInsert={true} selectCountPatients={ selectCountPatients } 
                             selectPatients={ selectPatients } selectedPatientId={null} valueButtonSave={"Сохранить"} />
                         }
 
                         {this.state.patientEdit && <PatientCRUD visibleModal={true} changeState={ changeState } valueForm={"Редактирование пациента"} 
-                            operationInsert={false} operationEdit={true} operationDelete={false} selectCountPatients={ selectCountPatients } 
+                            operationEdit={true} selectCountPatients={ selectCountPatients } 
                             selectPatients={ selectPatients } selectedPatientId={this.state.selectedPatientId} valueButtonSave={"Изменить"} />
                         }
 
                         {this.state.patientDelete && <PatientCRUD visibleModal={true} changeState={ changeState } valueForm={"Удаление пациента"} 
-                            operationInsert={false} operationEdit={false} operationDelete={true} selectCountPatients={ selectCountPatients } 
+                            operationDelete={true} selectCountPatients={ selectCountPatients } 
                             selectPatients={ selectPatients } selectedPatientId={this.state.selectedPatientId} valueButtonSave={"Удалить"} />
                         }
                     </div>                       

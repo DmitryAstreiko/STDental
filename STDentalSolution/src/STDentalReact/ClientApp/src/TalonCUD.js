@@ -32,7 +32,7 @@ export class TalonCUD extends Component{
             selectedTalonDate: moment(new Date()).format('YYYY-MM-DD'),
             changeDateTalon: moment(new Date()).format('YYYY-MM-DD'),
             selectedCost: null,
-            descriptionTalon: null,
+            descriptionTalon: '',
             addedTalonId: null,
             //redirect: false,
             loadingTalonService: true,
