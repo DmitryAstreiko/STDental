@@ -290,7 +290,8 @@ export class TalonCUD extends Component{
             <div>
                 <div >
                     <div>
-                        <InputLabel style={{ textAlign: "center", marginBottom: "15px", color: "blue" }}
+                        {/*<InputLabel style={{ textAlign: "center", marginBottom: "15px", color: "blue" }}*/}
+                        <InputLabel style={{ textAlign: "center", marginBottom: "15px", color: "red" }}
                         variant="standard"
                         >{this.props.labelAction}</InputLabel>
                     </div>

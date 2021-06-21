@@ -35,8 +35,6 @@ export default class App extends Component {
     
     if (flag) {
       this.setState({ flagAutorization: true });
-
-      console.log(`Build 21.06.2021 10.00`);
       /*switch (AuthService.getCurrentRole()){
         case 1:  //Admin
           this.props.history.push("/appdental/admin");
