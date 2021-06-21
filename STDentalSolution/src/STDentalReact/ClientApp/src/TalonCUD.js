@@ -132,7 +132,7 @@ export class TalonCUD extends Component{
     }
 
     validateDoctor() {
-        let isValidDoc = !!this.state.selectedDoctor.Id;
+        let isValidDoc = !!this.state.selectedDoctor.id;
         this.setState({errorDoctor: !isValidDoc});
         return isValidDoc;
     }
@@ -155,7 +155,7 @@ export class TalonCUD extends Component{
         const flagPatient = this.validatePatient();
         const flagService= this.validateService();
 
-        if (flagPatient && flagService) {
+        if (flagPatient && flagService && flagDoctor) {
             
             let newTalonService = [];
 
