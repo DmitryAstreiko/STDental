@@ -59,5 +59,19 @@ namespace STDentalReact.Controllers
                 .ToArray();
         }
 
+        [HttpGet("actualServices")]
+        public async Task<IEnumerable<ServicesActual>> GetActualServicesAsync()
+        {
+            var services = await _serviceRepository.GetActualServicesAsync();
+
+            return services.Select(service => new ServicesActual()
+                {
+                    Id = service.ServiceId,
+                    Name = service.Name,
+                    Shifr = service.Shifr
+                })
+                .ToArray();
+        }
+
     }
 }
