@@ -11,7 +11,7 @@ export class Services extends Component{
         super(props);
 
         this.state = {
-            actualServices: null,
+            actualServices: [],
             }
 
         this.apiClient = new ApiClient();
@@ -19,20 +19,20 @@ export class Services extends Component{
 
 
     componentDidMount() {
-        this.getActualServices();
+        this.getActualServices();        
     }
 
 
-
     render(){
+        console.log(this.state.actualServices[0]);
         return(
             <div>
-                <div class="row">
-                    <div class="col-sm-4">
-                        <TreeView />
+                <div className="row">
+                    <div className="col-sm-4">
+                        <TreeView actualServices={this.state.actualServices}/>
                     </div>
-                    <div class="col-sm-8">
-                        <row >
+                    <div className="col-sm-8">
+                        <div >
                             <Table className='table' aria-labelledby="tabelLabel">
                                 <thead>
                                     <tr>
@@ -66,12 +66,12 @@ export class Services extends Component{
                                         )}*/}                                        
                                     </tbody>                  
                             </Table>
-                        </row>
+                        </div>
 
-                        <row>
+                        <div>
                             <div className={"d-flex justify-content-around"} style={{ marginTop: "20px" }}>
                                 <div>
-                                    <TextField id="outlined-basic-description" 
+                                    <TextField id="outlined-basic-total" 
                                         label="Всего по услуге" 
                                         variant="outlined" 
                                         style={{ width: "200px", marginTop: "10px" }} 
@@ -79,21 +79,21 @@ export class Services extends Component{
                                     />
                                 </div>
                                 <div>
-                                    <TextField id="outlined-basic-description" 
+                                    <TextField id="outlined-basic-discount" 
                                         label="% скидки" 
                                         variant="outlined" 
                                         style={{ width: "200px", marginTop: "10px" }}       
                                     />
                                 </div>
                                 <div>
-                                    <TextField id="outlined-basic-description" 
+                                    <TextField id="outlined-basic-cost" 
                                         label="Итого по услуге" 
                                         variant="outlined" 
                                         style={{ width: "200px", marginTop: "10px" }}       
                                     />
                                 </div>
                             </div>
-                        </row>
+                        </div>
                     </div>
                 </div>
                 {/*{

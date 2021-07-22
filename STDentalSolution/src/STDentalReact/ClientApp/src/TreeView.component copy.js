@@ -15,7 +15,7 @@ const useStyles = makeStyles({
     },
 });
 
-export default function ControlledTreeView(props) {
+export default function ControlledTreeView() {
     const classes = useStyles();
     const [expanded, setExpanded] = React.useState([]);
     const [selected, setSelected] = React.useState([]);
@@ -38,16 +38,16 @@ export default function ControlledTreeView(props) {
             onNodeToggle={handleToggle}
             onNodeSelect={handleSelect}
             >
-            {props.actualServices.map((service, index) => 
-                    (service.shifr === 1) && (
-                        <TreeItem nodeId={service.id} label={service.shifr}>
-                            <TreeItem nodeId="20" label="Calendar" />
-                        
+                {props.actualServices.map((service, index) => 
+                    (service.shifr.length() === 1) && (
+                        <TreeItem nodeId={index} label={service.shifr}>
+                            
+                        )
                         </TreeItem>
-                    )                                       
-                )
-            }
+                    )
 
+                    
+                )}
             <TreeItem nodeId="1" label="Applications">
                 <TreeItem nodeId="2" label="Calendar" />
                 <TreeItem nodeId="3" label="Chrome" />
@@ -61,8 +61,6 @@ export default function ControlledTreeView(props) {
                 </TreeItem>
                 </TreeItem>
             </TreeItem>
-            
-
         </TreeView>
     );
 }
