@@ -2,9 +2,10 @@ import React, { Component } from 'react';
 //import  servicesAccountantImage  from './Images/servicesaccountant.png';
 //import  servicesHeadImage  from './Images/serviceshead.png';
 import TreeView from './TreeView.component';
+import TreeView1 from './TreeView';
 import TextField from '@material-ui/core/TextField';
 import { Table } from 'reactstrap';
-import {ApiClient} from './APIClient';
+import { ApiClient } from './APIClient';
 
 export class Services extends Component{
     constructor(props){
@@ -17,21 +18,19 @@ export class Services extends Component{
         this.apiClient = new ApiClient();
     }
 
-
     componentDidMount() {
         this.getActualServices();        
     }
 
-
     render(){
-        console.log(this.state.actualServices[0]);
+        console.log(this.state.actualServices[0])
         return(
             <div>
                 <div className="row">
-                    <div className="col-sm-4">
-                        <TreeView actualServices={this.state.actualServices}/>
+                    <div className="col-sm-6">
+                        <TreeView1 actualServices={this.state.actualServices}/>
                     </div>
-                    <div className="col-sm-8">
+                    <div className="col-sm-6">
                         <div >
                             <Table className='table' aria-labelledby="tabelLabel">
                                 <thead>

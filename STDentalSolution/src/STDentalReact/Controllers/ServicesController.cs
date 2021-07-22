@@ -68,7 +68,8 @@ namespace STDentalReact.Controllers
                 {
                     Id = service.ServiceId,
                     Name = service.Name,
-                    Shifr = service.Shifr
+                    Shifr = service.Shifr,
+                    FullName = service.Shifr + " " + service.Name
                 })
                 .ToArray();
         }

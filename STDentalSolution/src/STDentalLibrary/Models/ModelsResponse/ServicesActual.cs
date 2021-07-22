@@ -13,5 +13,7 @@ namespace STDentalLibrary.Models.ModelsResponse
         public string Name { get; set; }
 
         public string Shifr { get; set; }
+
+        public string FullName { get; set; }
     }
 }
