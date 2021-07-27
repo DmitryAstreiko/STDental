@@ -24,14 +24,14 @@ namespace STDentalLibrary.Implementation
             _configuration = configuration;
         }
 
-        public async Task<IEnumerable<Option>> GetOptionsAsync()
+        public async Task<IEnumerable<Option>> GetAsync()
         {
             await using var context = CreateContext();
 
             return await context.Options.ToListAsync();
         }
 
-        public async Task<bool> SaveOptionsAsync(List<Option> options)
+        public async Task<bool> SaveAsync(List<Option> options)
         {
             try
             {

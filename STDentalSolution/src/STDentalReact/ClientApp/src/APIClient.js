@@ -158,6 +158,12 @@ export class ApiClient {
         return await response.json();
     };
 
+    //----options------------------------
+    async getOptions() {
+        const response = await fetch('options');
+        return await response.json();
+    };
+
 }
 
 
