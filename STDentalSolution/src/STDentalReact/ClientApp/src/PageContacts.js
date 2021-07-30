@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import contacts from './Images/contacts.png';
+//import contacts from './Images/contacts.png';
 import { MainMenu } from './MainMenu';
 import Button from "@material-ui/core/Button";
+import * as Pbi from 'powerbi-client';
 
 export class PageContacts extends Component {
 
@@ -12,54 +13,68 @@ export class PageContacts extends Component {
           <MainMenu />
         </div>
         <div style={{ height: "20px" }}></div>
+        <div>
+          {/*<Pbi ></Pbi>*/}
+        </div>
+        <div style={{ height: "20px" }}></div>
         <div style={{display: "flex", alignItems: "center", flexDirection: 'column' }}>
-          <iframe width="1140" height="550" 
+          <iframe width="1140" height="550" id="1" title="1"
             src="https://app.powerbi.com/reportEmbed?reportId=657a065c-0cfe-49ff-98a3-093a7f9e66f9&groupId=2b9f5bfa-14f7-4cca-90a5-6c5ea7bf9e14&autoAuth=true&ctid=b41b72d0-4e9f-4c26-8a69-f949f367c91d&config=eyJjbHVzdGVyVXJsIjoiaHR0cHM6Ly93YWJpLXdlc3QtZXVyb3BlLXJlZGlyZWN0LmFuYWx5c2lzLndpbmRvd3MubmV0LyJ9" 
-            frameborder="0" allowFullScreen="true"></iframe>
+            frameBorder="0" 
+            allowFullScreen={true}></iframe>
         </div>
         <div style={{ height: "20px" }}></div>
         <div style={{display: "flex", alignItems: "center", flexDirection: 'column' }}>
-          <iframe width="1140" height="550" 
+          <iframe width="1140" height="550"  id="2" title="2"
             src="https://app.powerbi.com/reportEmbed?reportId=e07fe3cb-f772-4a66-b480-188fc417f9ff&groupId=2b9f5bfa-14f7-4cca-90a5-6c5ea7bf9e14&autoAuth=true&ctid=b41b72d0-4e9f-4c26-8a69-f949f367c91d&config=eyJjbHVzdGVyVXJsIjoiaHR0cHM6Ly93YWJpLXdlc3QtZXVyb3BlLXJlZGlyZWN0LmFuYWx5c2lzLndpbmRvd3MubmV0LyJ9" 
-            frameborder="0" allowFullScreen="true"></iframe>
+            frameBorder="0" 
+            allowFullScreen={true}></iframe>
         </div>
         <div style={{ height: "20px" }}></div>
         <div style={{display: "flex", alignItems: "center", flexDirection: 'column' }}>
-          <iframe width="1140" height="550" src="https://app.powerbi.com/reportEmbed?reportId=6fb56935-0733-4d4a-9ef2-7a21904657f7&groupId=2b9f5bfa-14f7-4cca-90a5-6c5ea7bf9e14&autoAuth=true&ctid=b41b72d0-4e9f-4c26-8a69-f949f367c91d&config=eyJjbHVzdGVyVXJsIjoiaHR0cHM6Ly93YWJpLXdlc3QtZXVyb3BlLXJlZGlyZWN0LmFuYWx5c2lzLndpbmRvd3MubmV0LyJ9" 
-            frameborder="0" allowFullScreen="true"></iframe>
+          <iframe width="1140" height="550" id="3" title="3"
+            src="https://app.powerbi.com/reportEmbed?reportId=6fb56935-0733-4d4a-9ef2-7a21904657f7&groupId=2b9f5bfa-14f7-4cca-90a5-6c5ea7bf9e14&autoAuth=true&ctid=b41b72d0-4e9f-4c26-8a69-f949f367c91d&config=eyJjbHVzdGVyVXJsIjoiaHR0cHM6Ly93YWJpLXdlc3QtZXVyb3BlLXJlZGlyZWN0LmFuYWx5c2lzLndpbmRvd3MubmV0LyJ9" 
+            frameBorder="0" 
+            allowFullScreen={true}></iframe>
         </div>
         <div style={{ height: "20px" }}></div>
         <div style={{display: "flex", alignItems: "center", flexDirection: 'column' }}>
-          <iframe width="1140" height="550" src="https://app.powerbi.com/reportEmbed?reportId=dedb4189-f02c-4613-ba1b-7f99ae505332&groupId=2b9f5bfa-14f7-4cca-90a5-6c5ea7bf9e14&autoAuth=true&ctid=b41b72d0-4e9f-4c26-8a69-f949f367c91d&config=eyJjbHVzdGVyVXJsIjoiaHR0cHM6Ly93YWJpLXdlc3QtZXVyb3BlLXJlZGlyZWN0LmFuYWx5c2lzLndpbmRvd3MubmV0LyJ9" 
-            frameborder="0" allowFullScreen="true"></iframe>
+          <iframe width="1140" height="550" id="4" title="4"
+            src="https://app.powerbi.com/reportEmbed?reportId=dedb4189-f02c-4613-ba1b-7f99ae505332&groupId=2b9f5bfa-14f7-4cca-90a5-6c5ea7bf9e14&autoAuth=true&ctid=b41b72d0-4e9f-4c26-8a69-f949f367c91d&config=eyJjbHVzdGVyVXJsIjoiaHR0cHM6Ly93YWJpLXdlc3QtZXVyb3BlLXJlZGlyZWN0LmFuYWx5c2lzLndpbmRvd3MubmV0LyJ9" 
+            frameBorder="0" 
+            allowFullScreen={true}></iframe>
         </div>
         <div style={{ height: "20px" }}></div>        
         <div style={{display: "flex", alignItems: "center", flexDirection: 'column' }}>
-          <iframe width="1140" height="550" src="https://app.powerbi.com/reportEmbed?reportId=00eae1cc-65c8-42f7-b3d8-c35529d61a60&groupId=2b9f5bfa-14f7-4cca-90a5-6c5ea7bf9e14&autoAuth=true&ctid=b41b72d0-4e9f-4c26-8a69-f949f367c91d&config=eyJjbHVzdGVyVXJsIjoiaHR0cHM6Ly93YWJpLXdlc3QtZXVyb3BlLXJlZGlyZWN0LmFuYWx5c2lzLndpbmRvd3MubmV0LyJ9" 
-            frameborder="0" allowFullScreen="true">
+          <iframe width="1140" height="550" id="5" title="5"
+            src="https://app.powerbi.com/reportEmbed?reportId=00eae1cc-65c8-42f7-b3d8-c35529d61a60&groupId=2b9f5bfa-14f7-4cca-90a5-6c5ea7bf9e14&autoAuth=true&ctid=b41b72d0-4e9f-4c26-8a69-f949f367c91d&config=eyJjbHVzdGVyVXJsIjoiaHR0cHM6Ly93YWJpLXdlc3QtZXVyb3BlLXJlZGlyZWN0LmFuYWx5c2lzLndpbmRvd3MubmV0LyJ9" 
+            frameBorder="0" 
+            allowFullScreen={true}>
           </iframe>
         </div>
         <div style={{ height: "20px" }}>          
         </div>
         <div style={{display: "flex", alignItems: "center", flexDirection: 'column' }}>
-          <iframe width="1140" height="550" 
+          <iframe width="1140" height="550" id="6" title="6"
             src="https://app.powerbi.com/reportEmbed?reportId=604a75d5-88e3-4234-b1e3-3c5ddb54dd97&groupId=2b9f5bfa-14f7-4cca-90a5-6c5ea7bf9e14&autoAuth=true&ctid=b41b72d0-4e9f-4c26-8a69-f949f367c91d&config=eyJjbHVzdGVyVXJsIjoiaHR0cHM6Ly93YWJpLXdlc3QtZXVyb3BlLXJlZGlyZWN0LmFuYWx5c2lzLndpbmRvd3MubmV0LyJ9" 
-            frameborder="0" allowFullScreen="true"></iframe>
+            frameBorder="0" 
+            allowFullScreen={true}></iframe>
         </div>
         <div style={{ height: "20px" }}></div>
         <div style={{display: "flex", alignItems: "center", flexDirection: 'column' }}>
-          <iframe width="1140" height="550" 
+          <iframe width="1140" height="550" id="7" title="7"
             src="https://app.powerbi.com/reportEmbed?reportId=db9c498c-5e3a-452b-9bdb-be47a43e94bc&groupId=2b9f5bfa-14f7-4cca-90a5-6c5ea7bf9e14&autoAuth=true&ctid=b41b72d0-4e9f-4c26-8a69-f949f367c91d&config=eyJjbHVzdGVyVXJsIjoiaHR0cHM6Ly93YWJpLXdlc3QtZXVyb3BlLXJlZGlyZWN0LmFuYWx5c2lzLndpbmRvd3MubmV0LyJ9" 
-            frameborder="0" allowFullScreen="true"></iframe>
+            frameBorder="0" 
+            allowFullScreen={true}></iframe>
         </div>
         <div style={{ height: "20px" }}></div>
         <div style={{display: "flex", alignItems: "center", flexDirection: 'column' }}>
           <iframe 
             width="80%" 
-            height="600" 
+            height="600" id="8" title="8"
             src="https://app.powerbi.com/reportEmbed?reportId=4d9f4966-0e20-4032-88a6-b4a1e9cda52e&autoAuth=true&pageName=ReportSection30f5c6d000d026e4eeb7" 
-            frameborder="0" 
-            //allowFullScreen="true"
+            frameBorder="0" 
+            allowFullScreen={true}
             >            
           </iframe>
         </div>

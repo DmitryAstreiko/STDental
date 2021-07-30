@@ -34,8 +34,8 @@ namespace STDentalLibrary.Context
             /* optionsBuilder.UseSqlServer(
                  _connectionValue ?? @"Data Source=.\SQLExpress;Initial Catalog=STDentalTest;Integrated Security=True");*/
 
-            optionsBuilder.UseSqlServer("Server = .\\SQLEXPRESS; Database = STDentalTestNew; Trusted_Connection = True");
-            //optionsBuilder.UseSqlServer("Server = tcp:stdentalreactdbserver.database.windows.net,1433; Initial Catalog = STDental_db_test; Persist Security Info = False; User ID = dentaladmin; Password = Preved_1Medved; MultipleActiveResultSets = False; Encrypt = True; TrustServerCertificate = False; Connection Timeout = 30");
+            //optionsBuilder.UseSqlServer("Server = .\\SQLEXPRESS; Database = STDentalTestNew; Trusted_Connection = True");
+            optionsBuilder.UseSqlServer("Server = tcp:stdentalreactdbserver.database.windows.net,1433; Initial Catalog = STDental_db_test; Persist Security Info = False; User ID = dentaladmin; Password = Preved_1Medved; MultipleActiveResultSets = False; Encrypt = True; TrustServerCertificate = False; Connection Timeout = 30");
 
             //optionsBuilder.UseSqlServer(_connectionValue);
         }

@@ -5,7 +5,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import TreeItem from '@material-ui/lab/TreeItem';
 
-const data = {
+/*const data = {
   id: 'root',
   name: '1 Ортопедия',
   children: [
@@ -53,7 +53,7 @@ const data2 = {
     },
   ],
  
-};
+};*/
 
 const tree = [{
   text: '1 Ортопедия',
@@ -73,7 +73,7 @@ const tree = [{
             text: '1.2.1.2'
           }
         ],
-        text: '1.2.2',
+        /*text: '1.2.2',
         items: [
           {
             text: '1.2.2.1'
@@ -81,7 +81,7 @@ const tree = [{
           {
             text: '1.2.2.2'
           }
-        ]
+        ]*/
       }
     ]
   }, {
@@ -115,7 +115,7 @@ export default function TreeViewServices(props) {
     </TreeItem>
   );
 
-  const renderTree2 = (nodes) => (
+  /*const renderTree2 = (nodes) => (
       nodes.map((node, index) => 
           (node.shifr.length <= 2) && (
               <TreeItem id={node.id} nodeId={node.id} label={node.fullName}>                    
@@ -146,7 +146,7 @@ export default function TreeViewServices(props) {
         )
       }
     })
-  }
+  }*/
 
   const renderTree = (nodes) => {
     return nodes.map(node => {
