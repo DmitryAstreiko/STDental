@@ -16,7 +16,7 @@ export class PageHome extends Component {
         <div>
           <MainMenu />
         </div>
-        <div style={{display: "flex", alignItems: "center", flexDirection: 'column' }}>
+        {/*<div style={{display: "flex", alignItems: "center", flexDirection: 'column' }}>
           <img src={aboutSystem} alt="aboutSystem" style={{ width: "80%", margin: "20px" }}/>
         </div>
         <div style={{display: "flex", alignItems: "center", flexDirection: 'column' }}>
@@ -36,7 +36,7 @@ export class PageHome extends Component {
         </div>
         <div style={{display: "flex", alignItems: "center", flexDirection: 'column' }}>
           <img src={roleDoctor} alt="roleDoctor" style={{ width: "80%", margin: "20px" }}/>
-        </div>
+      </div>*/}
       </div>
     );
   }

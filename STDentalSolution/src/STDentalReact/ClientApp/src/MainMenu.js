@@ -10,7 +10,7 @@ export class MainMenu extends Component{
           <nav className="navbar navbar-expand navbar-dark bg-dark">
           
             <div className="navbar-nav mr-auto">            
-              <li className="nav-item">
+              {/*<li className="nav-item">
                 <Link to={"/pageservices"} className="nav-link">
                     Наши услуги
                 </Link>
@@ -32,16 +32,16 @@ export class MainMenu extends Component{
                 <Link to={"/pagelicenses"} className="nav-link">
                     Сертификаты
                 </Link>
-              </li>
+              </li>*/}
 
               <li className="nav-item">
                 <Link to={"/pagecontacts"} className="nav-link">
-                    Контакты - Reports BI
+                    Reports BI
                 </Link>
               </li>             
             </div>          
 
-            <div className="navbar-nav ml-auto">
+            {/*<div className="navbar-nav ml-auto">
               <li className="nav-item">
                 <Link to={"/reception"} className="nav-link">
                   Записаться на прием
@@ -57,7 +57,7 @@ export class MainMenu extends Component{
                     </Link>
                   </li>
               </div>
-            </div>
+            </div>*/}
           </nav>
         );
     }
