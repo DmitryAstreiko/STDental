@@ -85,6 +85,11 @@ label {
   margin-left: 10px;
   margin-right: 10px;
   }
+
+  .embed-container {
+    width: 95%;
+    height: 700px;
+  }
   
  
   
