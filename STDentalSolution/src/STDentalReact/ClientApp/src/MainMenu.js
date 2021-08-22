@@ -36,9 +36,9 @@ export class MainMenu extends Component{
 
               <li className="nav-item">
                 <Link to={"/pagecontacts"} className="nav-link">
-                    Контакты
+                    Контакты - Reports BI
                 </Link>
-              </li>            
+              </li>             
             </div>          
 
             <div className="navbar-nav ml-auto">
