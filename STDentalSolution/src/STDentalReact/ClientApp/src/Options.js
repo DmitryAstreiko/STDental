@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import optionsImage from './Images/options.png';
 import Loader from './Loader';
 import { Table } from 'reactstrap';
 import Error from './Error';
@@ -21,6 +20,7 @@ export class Options extends Component {
             optionEdit: false,
             selectedOptionId: null,
             selectedOptionName: null,
+            selectedOptionValue: null,
             selectedOptionDescription: null
         }
 
@@ -31,15 +31,17 @@ export class Options extends Component {
         this.populateOptions();
     }
 
-    onEditOption(optionId, optionName, optionDescription) {
+    onEditOption(optionId, optionValue, optionDescription, optionName) {
         this.setState({ optionEdit: true });
         this.setState({ selectedOptionId: optionId });
         this.setState({ selectedOptionName: optionName });
+        this.setState({ selectedOptionValue: optionValue });
         this.setState({ selectedOptionDescription: optionDescription });
     }
 
     closeOption(){
         this.setState({ optionEdit: false });
+        this.populateOptions();
     }
 
     render() {      
@@ -55,14 +57,14 @@ export class Options extends Component {
                             (
                                 (this.state.options.length === 0) ? (
                                     <NotInfo /> ) : 
-                                    (<Table className='table' aria-labelledby="tabelLabel">
+                                    (<Table className='table' aria-labelledby="tabelLabel" style={{ width: "100%" }}>
                                         <thead>
                                             <tr>
                                                 <th>№ п.п.</th>
                                                 <th>Описание</th>
                                                 <th>Значение</th>
                                                 <th></th>
-                                                <th>НАименование</th>
+                                                {/*<th>Наименование</th>*/}
                                             </tr>
                                         </thead>  
                                         <tbody>
@@ -75,11 +77,11 @@ export class Options extends Component {
                                                         <IconButton 
                                                             aria-label="edit" 
                                                             style={{ color: green[500] }}
-                                                            onClick={ () => (this.onEditOption(option.optionsId, option.value, option.description)) }>
+                                                            onClick={ () => (this.onEditOption(option.optionsId, option.value, option.description, option.name)) }>
                                                             <EditIcon fontSize="small" />
                                                         </IconButton>
                                                     </td>
-                                                    <td>{option.name}</td>                               
+                                                    {/*<td>{option.name}</td>*/}                               
                                                 </tr>
                                             )}
                                         </tbody>
@@ -88,11 +90,8 @@ export class Options extends Component {
                         )        
                     }            
                 </div> 
-                <div style={{display: "flex", alignItems: "center", flexDirection: 'column' }}>
-                    <img src={optionsImage} alt="optionsImage" style={{ width: "80%", margin: "20px" }}/>
-                </div>
                 <div>
-                    {this.state.optionEdit && <OptionsEdit optionId={this.state.selectedOptionId} optionName={this.state.selectedOptionName} 
+                    {this.state.optionEdit && <OptionsEdit optionId={this.state.selectedOptionId} optionName={this.state.selectedOptionName} optionValue={this.state.selectedOptionValue} 
                         labelAction={`${this.state.selectedOptionDescription}`} changeState={ changeState } 
                         />
                     }

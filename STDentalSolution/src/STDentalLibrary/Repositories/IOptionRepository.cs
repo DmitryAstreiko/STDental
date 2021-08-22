@@ -10,7 +10,7 @@ namespace STDentalLibrary.Repositories
     public interface IOptionRepository
     {
         Task<IEnumerable<Option>> GetAsync();
-        
-        Task<bool> SaveAsync(List<Option> options);
+
+        Task UpdateOptionAsync(Option option);
     }
 }

@@ -54,7 +54,7 @@ export default class OptionsEdit extends Component {
 
     this.state = {
     open: true,
-    selectedName: '',
+    selectedValue: '',
     errorName: false,
   }
 
@@ -62,11 +62,11 @@ export default class OptionsEdit extends Component {
 }
 
 onOptionInput(event) {  
-  this.setState({ selectedName: event.target.value }, () => this.validateOption());
+  this.setState({ selectedValue: event.target.value }, () => this.validateOption());
 }
 
 validateOption() {
-  let isValid = !!this.state.selectedName;
+  let isValid = !!this.state.selectedValue;
   this.setState({errorName: !isValid});
   return isValid;
 }
@@ -88,14 +88,18 @@ async onEditOption(newjson) {
 }
 
 onButtonSave() { 
-  let newOption = {
-    optionId: this.props.optionId,
-    name: this.state.selectedName,
-  };
+  const flagValue = this.validateOption();
+  
+  if (flagValue) {
+    let newOption = {
+      optionsId: this.props.optionId,
+      value: this.state.selectedValue
+    };
 
-  const newjson = JSON.stringify(newOption, null, '\t');
+    const newjson = JSON.stringify(newOption, null, '\t');
 
-  this.onEditOption(newjson);
+    this.onEditOption(newjson);
+  }
 }
 
 onClose() {  
@@ -116,12 +120,19 @@ onClose() {
           <DialogContent dividers>
             <FormGroup>
               <div>
-                <TextField id="outlined-basic-fio" label="Введите наименование параметра" variant="outlined" 
-                    style={{ width: "500px", marginBottom: "20px" }}
-                    onChange={(event) => this.onOptionInput(event)}
-                    value={this.state.selectedName}
-                    error={this.state.errorName}/>
-              </div>              
+                <TextField id="outlined-basic-fio" label="Введите новое значение" variant="outlined" 
+                  style={{ width: "500px", marginBottom: "20px" }}
+                  onChange={(event) => this.onOptionInput(event)}
+                  value={this.state.selectedValue}
+                  error={this.state.errorName}/>
+              </div> 
+              <div style={{ height:"30px" }}></div>
+              <div>
+                <TextField id="outlined-old-fio" label="Старое значение" variant="outlined" 
+                  style={{ width: "500px", marginBottom: "20px"}}
+                  value={this.props.optionValue}
+                  />
+              </div>             
             </FormGroup>
 
           </DialogContent>

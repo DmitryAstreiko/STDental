@@ -40,5 +40,19 @@ namespace STDentalReact.Controllers
                 .ToArray();
         }
 
+        [HttpPut]
+        public async Task<IActionResult> PutOptionAsync([FromBody] Option option)
+        {
+            try
+            {
+                await _optionsRepository.UpdateOptionAsync(option);
+                return Ok();
+            }
+            catch
+            {
+                return BadRequest();
+            }
+        }
+
     }
 }
