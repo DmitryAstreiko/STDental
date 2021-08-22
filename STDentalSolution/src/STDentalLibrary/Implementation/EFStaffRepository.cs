@@ -80,6 +80,18 @@ namespace STDentalLibrary.Implementation
             }
         }
 
+        public async Task<IEnumerable<Staff>> GetDoctorsAsync()
+        {
+            await using (var context = CreateContext())
+            {
+                return await context.Staffs
+                    .Include(w => w.Post)
+                    .Where(e => e.RenderService == RenderService.Yes)
+                    .OrderBy(a => a.Name)
+                    .ToListAsync();
+            }
+        }
+
         //public async Task<Staff> GetStaffAsync(int staffId)
         //{
         //    await using (var context = CreateContext())

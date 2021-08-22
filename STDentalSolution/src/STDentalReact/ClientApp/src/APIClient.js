@@ -76,6 +76,11 @@ export class ApiClient {
         return await response.json(); 
     };
 
+    async getDoctors() {
+        const response = await fetch('staffs/doctors');
+        return await response.json(); 
+    };
+
 
     //------talons-------------------
     async getCountTalons(filter) {
