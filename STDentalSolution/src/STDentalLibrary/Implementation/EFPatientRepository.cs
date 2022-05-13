@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -62,7 +60,7 @@ namespace STDentalLibrary.Implementation
             }
         }
 
-        public async Task<int> GetCountPatientsAsync(string? fioSearch)
+        public async Task<int> GetCountPatientsAsync(string fioSearch)
         {
             await using (var context = CreateContext())
             {
@@ -77,7 +75,7 @@ namespace STDentalLibrary.Implementation
             }
         }
 
-        public async Task<IEnumerable<Patient>> GetPatientsAsync(int page, int itemsPerPage, string? fioSearch)
+        public async Task<IEnumerable<Patient>> GetPatientsAsync(int page, int itemsPerPage, string fioSearch)
         {
             await using (var context = CreateContext())
             {

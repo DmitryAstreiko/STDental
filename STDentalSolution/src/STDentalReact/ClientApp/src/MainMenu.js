@@ -36,7 +36,7 @@ export class MainMenu extends Component{
 
               <li className="nav-item">
                 <Link to={"/pagecontacts"} className="nav-link">
-                    Контакты - Reports BI
+                    Контакты
                 </Link>
               </li>             
             </div>          

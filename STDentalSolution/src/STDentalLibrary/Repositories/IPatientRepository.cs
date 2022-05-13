@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using STDentalLibrary.Models;
 
@@ -9,9 +6,9 @@ namespace STDentalLibrary.Repositories
 {
     public interface IPatientRepository
     {
-        Task<IEnumerable<Patient>> GetPatientsAsync(int page, int itemsPerPage, string? fioSearch);
+        Task<IEnumerable<Patient>> GetPatientsAsync(int page, int itemsPerPage, string fioSearch);
 
-        Task<int> GetCountPatientsAsync(string? fioSearch);
+        Task<int> GetCountPatientsAsync(string fioSearch);
 
         Task<IEnumerable<Patient>> GetPatientNamesAsync();
 
