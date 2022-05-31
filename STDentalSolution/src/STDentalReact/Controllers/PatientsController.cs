@@ -34,7 +34,7 @@ namespace STDentalReact.Controllers
 
             return patients.Select(patient => new PatientNames()
                 {
-                    Id = patient.PatientId.ToString(),
+                    Id = patient.PatientId,
                     Name = patient.Name
                 })
                 .ToArray();

@@ -18,6 +18,20 @@ namespace STDentalLibrary.Migrations
                 {
                     table.PrimaryKey("PK_Posts", x => x.PostId);
                 });
+
+            migrationBuilder.InsertData(
+                table: "Posts",
+                columns: new[] { "PostId", "Name" },
+                values: new object[,]
+                {
+                    { 1, "Врач" },
+                    { 2, "Администратор" },
+                    { 3, "Директор" },
+                    { 4, "Заместитель директора" },
+                    { 5, "Бухгалтер" },
+                    { 6, "Медсестра" },
+                    { 7, "Юрист-консультант" }
+                });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using STDentalLibrary.Context;
 using STDentalLibrary.Models;
+using STDentalLibrary.Models.Enums;
 using STDentalLibrary.Models.ModelsResponse;
 using STDentalLibrary.Repositories;
 
@@ -65,10 +66,28 @@ namespace STDentalLibrary.Implementation
         {
             await using (var context = CreateContext())
             {
-                return await context.Talons
-                    .Include(e => e.Staff)
-                    .Select(x => new DoctorNames { Id = x.StaffId.ToString(), Name = x.Staff.Name })
+                //return await context.Talons
+                //    .Include(e => e.Staff)
+                //    .Select(x => new DoctorNames { Id = x.StaffId.ToString(), Name = x.Staff.Name })
+                //    .Distinct()
+                //    .ToListAsync();
+
+                return await context.Staffs
+                    .Where(q => q.RenderService == RenderService.Yes)
+                    .Select(x => new DoctorNames { Id = x.StaffId, Name = x.Name })
                     .Distinct()
+                    .ToListAsync();
+            }
+        }
+
+        public async Task<IEnumerable<Staff>> GetDoctorsAsync()
+        {
+            await using (var context = CreateContext())
+            {
+                return await context.Staffs
+                    .Include(w => w.Post)
+                    .Where(e => e.RenderService == RenderService.Yes)
+                    .OrderBy(a => a.Name)
                     .ToListAsync();
             }
         }

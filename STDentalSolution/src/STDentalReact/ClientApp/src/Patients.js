@@ -14,18 +14,8 @@ import PersonAddOutlinedIcon from '@material-ui/icons/PersonAddOutlined';
 import IconButton from '@material-ui/core/IconButton';
 import PatientCRUD from './PatientCRUD';
 import { ApiClient } from './APIClient';
-//import { ThemeProvider } from '@material-ui/styles';
-
-//import { makeStyles } from '@material-ui/core/styles';
-
-/*useStyles = makeStyles((theme) => ({
-    margin: {
-        margin: theme.spacing(1),
-    },
-    extendedIcon: {
-        marginRight: theme.spacing(1),
-    },
-}));*/
+import { NotInfo }  from './NotInfo';
+import ViewCardPatient from './ViewCardPatient';
 
 export default class Patients extends Component{
 
@@ -119,8 +109,6 @@ export default class Patients extends Component{
 
         return(
             <div>
-                {/*<MenuAdministrator />*/}
-
                 <div className={"d-flex justify-content-around"}>
                     <div >
                         <div>
@@ -130,22 +118,20 @@ export default class Patients extends Component{
                         </div>
 
                         {this.state.patientInsert && <PatientCRUD visibleModal={true} changeState={ changeState } valueForm={"Добавление пациента"} 
-                            operationInsert={true} operationEdit={false} operationDelete={false} selectCountPatients={ selectCountPatients } 
+                            operationInsert={true} selectCountPatients={ selectCountPatients } 
                             selectPatients={ selectPatients } selectedPatientId={null} valueButtonSave={"Сохранить"} />
                         }
 
                         {this.state.patientEdit && <PatientCRUD visibleModal={true} changeState={ changeState } valueForm={"Редактирование пациента"} 
-                            operationInsert={false} operationEdit={true} operationDelete={false} selectCountPatients={ selectCountPatients } 
+                            operationEdit={true} selectCountPatients={ selectCountPatients } 
                             selectPatients={ selectPatients } selectedPatientId={this.state.selectedPatientId} valueButtonSave={"Изменить"} />
                         }
 
                         {this.state.patientDelete && <PatientCRUD visibleModal={true} changeState={ changeState } valueForm={"Удаление пациента"} 
-                            operationInsert={false} operationEdit={false} operationDelete={true} selectCountPatients={ selectCountPatients } 
+                            operationDelete={true} selectCountPatients={ selectCountPatients } 
                             selectPatients={ selectPatients } selectedPatientId={this.state.selectedPatientId} valueButtonSave={"Удалить"} />
                         }
-
-                    </div>                        
-
+                    </div>                       
                     <div style={{position: "relative", width: "200px"}}>
                         <Button
                             //variant="contained"
@@ -167,16 +153,13 @@ export default class Patients extends Component{
                         <Error /> ) :
                         (
                             (this.state.patients.length === 0) ? (
-                                //<NotInfo /> ) : 
-                                <div className="d-flex justify-content-center">
-                                    <h1 style={{ color: "red" }}>Нет информации для отображения</h1>
-                                </div> 
-                                ) :
+                                <NotInfo /> ) :                                
                                 (<Table className='table' aria-labelledby="tabelLabel">
                                     <thead>
                                         <tr>
                                             <th>№ п.п.</th>
                                             <th>ФИО пациента</th>
+                                            <th></th>
                                             <th>Город</th>
                                             <th>Улица</th>
                                             <th>Телефон</th>
@@ -193,6 +176,9 @@ export default class Patients extends Component{
                                                 <tr key={index} >
                                                     <td>{index + 1}</td>
                                                     <td>{patient.name}</td>
+                                                    <td>
+                                                        <ViewCardPatient />
+                                                    </td>
                                                     <td>{patient.city}</td> 
                                                     <td>{patient.street}</td> 
                                                     <td>{patient.phone}</td> 

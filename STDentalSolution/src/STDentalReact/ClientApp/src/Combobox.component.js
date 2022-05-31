@@ -6,26 +6,19 @@ export default function ComboBox(props) {
   return (
     <div>
         <Autocomplete
-          //onChange={(event, value) => props.patientid = value.id}
-          onChange={(value) => { console.log(value); props.onSelected(value); }}
-          clearOnBlur={true}
-          clearOnEscape={true}
-          //disableCloseOnSelectid={props.nameid}
+          onChange={( event, value, reason ) => { 
+            if (reason === "select-option") props.onSelected(value) }}
           options={props.lists}
-          getOptionLabel={(option) => option.name}
+          noOptionsText='Нет данных для отображения'
+          getOptionLabel={option => option.name ? option.name : ""}
           style={{ width: props.widthValue }}          
-          getOptionSelected={(option, value) => {return option.id === value.id}}
+          getOptionSelected={(option, value) => (option.id === value.id)}          
           value={props.selectedValue}
-          //inputValue={props.selectedLabel}
-          renderInput={(params) => <TextField {...params} label={props.labelvalue} variant="outlined" />}
-        />
-        {/*<Autocomplete
-          onChange={(event, value) => { props.onSelected(value) }}
-          options={props.lists}
-          getOptionLabel={(option) => option.name}
-          style={{ width: props.widthValue }}
-          renderInput={(params) => <TextField {...params} label={props.labelvalue} variant="outlined" />}
-        />*/}
+          renderInput={(params) => <TextField {...params} 
+                                    label={props.labelvalue} 
+                                    variant="outlined" 
+                                    error={props.errorTrue ? props.errorTrue : false}/>}
+          />
     </div>
   );
 }

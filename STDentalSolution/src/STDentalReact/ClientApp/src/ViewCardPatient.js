@@ -8,10 +8,18 @@ import MuiDialogActions from '@material-ui/core/DialogActions';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import Typography from '@material-ui/core/Typography';
-import AssignmentOutlinedIcon from '@material-ui/icons/AssignmentOutlined';
-import { yellow } from '@material-ui/core/colors';
+import AssignmentIndOutlinedIcon from '@material-ui/icons/AssignmentIndOutlined';
+import { purple } from '@material-ui/core/colors';
 import { Component } from 'react';
-import { Table } from 'reactstrap';
+//import Table from '@material-ui/core/Table';
+//import TableBody from '@material-ui/core/TableBody';
+//import TableCell from '@material-ui/core/TableCell';
+//import TableContainer from '@material-ui/core/TableContainer';
+//import TableHead from '@material-ui/core/TableHead';
+//import TableRow from '@material-ui/core/TableRow';
+//import Paper from '@material-ui/core/Paper';
+//import { ApiClient } from './APIClient';
+import cardPatientImage from './Images/cardpatient.png';
 
 const styles = (theme) => ({
   root: {
@@ -25,6 +33,7 @@ const styles = (theme) => ({
     color: theme.palette.grey[500],
   },
 });
+
 
 const DialogTitle = withStyles(styles)((props) => {
   const { children, classes, onClose, ...other } = props;
@@ -53,6 +62,7 @@ const DialogActions = withStyles((theme) => ({
   },
 }))(MuiDialogActions);
 
+
 export default class ViewTalonServices extends Component {
   
   constructor(props){
@@ -60,51 +70,36 @@ export default class ViewTalonServices extends Component {
 
     this.state = {
     open: false,
-    services: []
+    //services: []
   }
+
+  //this.apiClient = new ApiClient();
 }
 
   render() {
+
     return (
       <div>
         <IconButton 
             aria-label="view" 
-            style={{ color: yellow[900] }}
-            onClick={() => (this.populateTalonServices(this.props.talonNumber), this.setState({ open: true }))}>
-            <AssignmentOutlinedIcon fontSize="small" />
+            style={{ color: purple[500] }}
+            onClick={() => this.setState({ open: true })}>
+            <AssignmentIndOutlinedIcon fontSize="small" />
         </IconButton>
-        <Dialog onClose={() => this.setState({ open: false })} aria-labelledby="customized-dialog-title" open={this.state.open}>
-          <DialogTitle id="customized-dialog-title" 
+        <Dialog onClose={() => this.setState({ open: false })}  
+          open={this.state.open} 
+          maxWidth="xl"
+          aria-labelledby="customized-dialog-title">
+          <DialogTitle 
+            id="customized-dialog-title" 
             onClose={() => this.setState({ open: false })} 
             style={{ fontSize: "5px" }}>
-              Услуги используемые в талоне № {this.props.talonNumber}. Пациент - {this.props.patinetN}
+              Разделе «Электронная карта пациента»  
           </DialogTitle>
           <DialogContent dividers>
-            <Table className='table' aria-labelledby="tabelLabel">
-              <thead>
-                  <tr>
-                    <th>№ п.п.</th>
-                    <th>Шифр</th>
-                    <th>Наименование</th>
-                    <th>Стоимость</th>
-                    <th>Количество</th>
-                    <th>Сумма</th>
-                  </tr>
-              </thead>           
-                  <tbody>
-                      {this.state.services.map((service, index) =>
-                        <tr key={service.Id}  >
-                              <td>{index + 1}</td>
-                              <td>{service.shifr}</td>
-                              <td>{service.serviceName}</td> 
-                              <td>{service.price.toFixed(2)}</td>
-                              <td>{service.amount}</td>  
-                              <td>{service.cost.toFixed(2)}</td>                                                                                
-                          </tr>
-                      )}
-                  </tbody>                  
-          </Table> 
-
+            <div style={{display: "flex", alignItems: "center", flexDirection: 'column' }}>
+                <img src={cardPatientImage} alt="cardPatientImage" style={{ width: "80%", margin: "20px" }}/>
+            </div>           
           </DialogContent>
           <DialogActions>
             <Button onClick={() => this.setState({ open: false })} color="primary">
@@ -115,11 +110,14 @@ export default class ViewTalonServices extends Component {
       </div>
     )
   }
-
-  async populateTalonServices(talonId) {  
-    console.log(`populateTalonServices`);      
+/*
+  async populateTalonServices(talonId) {       
     const response = await fetch(`talons/services?talonid=${talonId}`);
-    const data = await response.json();   
-    this.setState({ services: data });
-}
+    const res = await response.json();   
+
+    //const res = this.apiClient.GetTalonServices(talonId);
+
+    this.setState({ services: res });
+  }
+  */
 }

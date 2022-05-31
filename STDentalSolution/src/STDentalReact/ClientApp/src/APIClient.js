@@ -76,6 +76,11 @@ export class ApiClient {
         return await response.json(); 
     };
 
+    async getDoctors() {
+        const response = await fetch('staffs/doctors');
+        return await response.json(); 
+    };
+
 
     //------talons-------------------
     async getCountTalons(filter) {
@@ -151,6 +156,34 @@ export class ApiClient {
     async getServiceNames() {
         const response = await fetch('services/serviceNames');
         return await response.json();
+    };
+
+    async getActualServices() {
+        const response = await fetch('services/actualServices');
+        return await response.json();
+    };
+
+    //----options------------------------
+    async getOptions() {
+        const response = await fetch('options');
+        return await response.json();
+    };
+
+    async editOption(jsonTalon) {
+        const response = await fetch(`options`, 
+        {
+            method: 'PUT',
+            mode: 'cors',
+            cache: 'no-cache',
+            credentials: 'same-origin',
+            headers: {
+                'Content-type': 'application/json'
+            },
+            redirect: 'follow',
+            referrerPolicy: 'no-referrer',
+            body: jsonTalon
+        });
+        return response.status;
     };
 
 }

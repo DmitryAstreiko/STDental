@@ -4,6 +4,8 @@ import AuthService from "./Authorization/auth.service";
 import { Talons } from './Talons';
 import { Services } from './Services';
 import { Reports } from './Reports';
+import { Materials } from './Materials';
+import { Units } from './Units';
 
 export default class RoleAccountant extends Component {
     constructor(props) {
@@ -14,7 +16,9 @@ export default class RoleAccountant extends Component {
             showServices: false,
             userNameDental: false,
             userIdDental: false,
-            showReports: false
+            showReports: false,
+            showMaterials: false,
+            showUnits: false
         };
     }
 
@@ -22,18 +26,40 @@ export default class RoleAccountant extends Component {
         this.setState({ showTalons: true });
         this.setState({ showServices: false });
         this.setState({ showReports: false });
+        this.setState({ showMaterials: false });
+        this.setState({ showUnits: false });
     }
 
     setFlagServices() {
         this.setState({ showTalons: false });
         this.setState({ showServices: true });
         this.setState({ showReports: false });
+        this.setState({ showMaterials: false });
+        this.setState({ showUnits: false });
     }
 
     setFlagReports() {
         this.setState({ showTalons: false });
         this.setState({ showServices: false });
         this.setState({ showReports: true });
+        this.setState({ showMaterials: false });
+        this.setState({ showUnits: false });
+    }
+
+    setFlagMaterials() {
+        this.setState({ showTalons: false });
+        this.setState({ showServices: false });
+        this.setState({ showReports: false });
+        this.setState({ showMaterials: true });
+        this.setState({ showUnits: false });
+    }
+
+    setFlagUnits() {
+        this.setState({ showTalons: false });
+        this.setState({ showServices: false });
+        this.setState({ showReports: false });
+        this.setState({ showMaterials: false });
+        this.setState({ showUnits: true });
     }
 
     componentDidMount() {
@@ -44,20 +70,20 @@ export default class RoleAccountant extends Component {
     }
 
     render() {
-        const logOutInput = () => {this.props.funcLogOut()};
-        const setFlagTalons = () => {this.setFlagTalons()};
-        const setFlagServices = () => {this.setFlagServices()};
-        const setFlagReports = () => {this.setFlagReports()};
+
         return(
         <div>
             <div style={{ marginBottom: "10px" }}>
             <MenuRoleAccountant
-                logOutInput={ logOutInput } setFlagTalons={setFlagTalons} setFlagServices={setFlagServices} setFlagReports={setFlagReports} 
-                userNameDental={ this.state.userNameDental }/>
+                logOutInput={ () => this.props.funcLogOut() } setFlagTalons={() => this.setFlagTalons()} setFlagServices={() => this.setFlagServices()} 
+                setFlagReports={() => this.setFlagReports()} userNameDental={ this.state.userNameDental } setFlagMaterials={() => this.setFlagMaterials()} 
+                setFlagUnits={() => this.setFlagUnits()}/>
             </div>
             {this.state.showTalons && <Talons roleAccountant={true}/>}
-            {this.state.showServices && <Services />}
-            {this.state.showReports && <Reports />}
+            {this.state.showServices && <Services roleAccountant={true}/>}
+            {this.state.showReports && <Reports roleAccountant={true}/>}
+            {this.state.showMaterials && <Materials />}
+            {this.state.showUnits && <Units />}
         </div>
         );
     }

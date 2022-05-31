@@ -3,6 +3,9 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import 'bootstrap/dist/css/bootstrap.css';
 import AuthService from "./Authorization/auth.service";
 import Button from '@material-ui/core/Button';
+import "./App.css";
+import IconButton from '@material-ui/core/IconButton';
+import AppsOutlinedIcon from '@material-ui/icons/AppsOutlined';
 
 export class MenuRoleAdministrator extends Component{
   constructor(props) {
@@ -15,7 +18,6 @@ export class MenuRoleAdministrator extends Component{
 
   componentDidMount() {
     const user = AuthService.getCurrentUser();
-    console.log(`user = ${user}`);
     if (user) {
       this.setState({ userNameDental: user });
     };
@@ -26,47 +28,33 @@ export class MenuRoleAdministrator extends Component{
   }
 
     render() {
-      const { userNameDental } = this.state;
         return(
-          <div style={{ backgroundColor: "#343a40", height: "50px" }}>
-            <div class="d-flex justify-content-between">
+          <div className="menu-roles">
+            <div className="d-flex justify-content-between">
                 <div>
-                  <Button onClick={ () => this.props.setFlagTalons() } 
-                      style={{textTransform: "none", padding: ".375rem .75rem", fontSize: "1rem", marginTop: "5px", 
-                        letterSpacing: "0px", color: "rgb(255 255 255 / 50%)", fontWeight: "400"}}
-                  >Талоны</Button>
-                  <Button onClick={ () => this.props.setFlagAddTalon() } 
-                      variant="text" 
-                      style={{textTransform: "none", padding: ".375rem .75rem", fontSize: "1rem", marginTop: "5px", 
-                        letterSpacing: "0px", color: "rgb(255 255 255 / 50%)", fontWeight: "400" }} 
-                  >Добавить талон</Button>
-                  <Button 
-                      style={{textTransform: "none", fontWeight: "400", padding: ".375rem .75rem", fontSize: "1rem", marginTop: "5px", letterSpacing: "0px", color: "rgb(255 255 255 / 50%)"}}
-                  >Отчеты</Button>
-                  <Button 
-                      style={{textTransform: "none", fontWeight: "400", padding: ".375rem .75rem", fontSize: "1rem", marginTop: "5px", letterSpacing: "0px", color: "rgb(255 255 255 / 50%)"}}
-                  >Прейскурант</Button>
-                  <Button 
-                      style={{textTransform: "none", fontWeight: "400", padding: ".375rem .75rem", fontSize: "1rem", marginTop: "5px", letterSpacing: "0px", color: "rgb(255 255 255 / 50%)"}}
-                  >Справочники</Button>
-                  <Button onClick={ () => this.props.setFlagReception() } 
-                      style={{textTransform: "none", fontWeight: "400", padding: ".375rem .75rem", fontSize: "1rem", marginTop: "5px", letterSpacing: "0px", color: "rgb(255 255 255 / 50%)"}}
-                  >Прием пациентов</Button>
-                  <Button  
-                      style={{textTransform: "none", fontWeight: "400", padding: ".375rem .75rem", fontSize: "1rem", marginTop: "5px", letterSpacing: "0px", color: "rgb(255 255 255 / 50%)"}}
-                  >Загрузка врачей</Button>
+                  <Button onClick={ () => this.props.setFlagTalons() } >Талоны</Button>
+                  <Button onClick={ () => this.props.setFlagAddTalon() } >Добавить талон</Button>
+                  <Button onClick={ () => this.props.setFlagGroupServices() }>Группировка услуг</Button>
+                  <Button onClick={ () => this.props.setFlagReports() }>Отчеты</Button>
+                  <Button onClick={ () => this.props.setFlagServices() }>Прейскурант</Button>
+                  <Button onClick={ () => this.props.setFlagPatients() } >Пациенты</Button>
+                  <Button onClick={ () => this.props.setFlagDoctors() }>Врачи</Button>
+                  <Button onClick={ () => this.props.setFlagCallPatients() }>Список обзвона</Button>
+                  <Button onClick={ () => this.props.setFlagReception() } >Запись на прием</Button>
                 </div>
-                <div>
-                  <Button className="button-menu-role" 
-                      style={{textTransform: "none", fontWeight: "400", padding: ".375rem .75rem", fontSize: "1rem", marginTop: "5px", letterSpacing: "0px", color: "rgb(255 255 255 / 50%)"}} 
-                  >{this.props.userNameDental} </Button>
-                  
-                  <Button outline  href="/" onClick={ () => this.props.logOutInput() } className="button-menu-role"
-                      style={{textTransform: "none", fontWeight: "400", padding: ".375rem .75rem", fontSize: "1rem", marginTop: "5px", letterSpacing: "0px", color: "rgb(255 255 255 / 50%)"}}
-                  >Выйти</Button>
+
+                <div >
+                  <IconButton 
+                      aria-label="params" 
+                      style={{ color: "rgb(255, 255, 255, 0.5)" }}
+                      onClick={ () => this.props.setFlagOptions() }>
+                      <AppsOutlinedIcon fontSize="small" />
+                  </IconButton>
+                  <Button >{this.props.userNameDental} </Button>                  
+                  <Button href="/" onClick={ () => this.props.logOutInput() } >Выйти</Button>
                 </div>
             </div>
           </div>
-        );
+        )
     }
 }

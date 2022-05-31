@@ -12,13 +12,14 @@ import { green, purple} from '@material-ui/core/colors';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import IconButton from '@material-ui/core/IconButton';
-import ContactlessOutlinedIcon from '@material-ui/icons/ContactlessOutlined';
 import ContactsOutlinedIcon from '@material-ui/icons/ContactsOutlined';
 import SearchOutlinedIcon from '@material-ui/icons/SearchOutlined';
 import ViewTalonServices from './ViewTalonServices';
 import {ApiClient} from './APIClient';
 import {TalonCUD} from './TalonCUD';
-
+import { NotInfo } from './NotInfo';
+import Payment from './Payment';
+ 
 export class Talons extends Component{
 
     constructor(props){
@@ -47,6 +48,8 @@ export class Talons extends Component{
             roleDoctor: false,
             roleAccountant: false,
             roleAdministrator: false,
+            roleHead: false,
+            selectedDoctor: []
         }
 
         this.apiClient = new ApiClient();
@@ -59,10 +62,11 @@ export class Talons extends Component{
     componentDidMount() {        
         this.populatePatients();
         this.populateDoctors();
-        if (this.props.doctorId) 
+        if (this.props.roleDoctor) 
         {
-            const doctorId = this.props.doctorId;
+            const doctorId = this.props.selectedDoctor.id;
             this.setState({ selectedDoctorId: doctorId});
+            this.setState({ selectedDoctor: this.props.selectedDoctor });
 
             let filter = `doctorid=${doctorId}`;
             this.populateTalons(1, `&${filter}`);   
@@ -77,6 +81,7 @@ export class Talons extends Component{
         (this.props.roleDoctor) && this.setState({ roleDoctor: true });
         (this.props.roleAdministrator) && this.setState({ roleAdministrator: true });
         (this.props.roleAccountant) && this.setState({ roleAccountant: true });
+        (this.props.roleHead) && this.setState({ roleHead: true });
     } 
 
     onRowSelect = row => (
@@ -114,7 +119,6 @@ export class Talons extends Component{
         let filterEndDate = this.state.selectedEndDate && `&enddate=${this.state.selectedEndDate}`;
 
         let filter = `${filterPatient}${filterDoctor}${filterStartDate}${filterEndDate}`.replace('null','').replace('null','');
-
         this.setState({ filterTalons:  filter });
 
         this.populateCountTalons(filter);
@@ -122,11 +126,16 @@ export class Talons extends Component{
     }
 
     onCancelFilter() {     
-        //clear combobox and state current date to datepicker
-        this.setState({ filterTalons: null });
-            
+        if (this.props.roleDoctor) {
+            let filter = `doctorid=${this.state.selectedDoctorId}`;
+            this.populateTalons(1, `&${filter}`);   
+            this.populateCountTalons(filter);
+        } 
+        else {
+        this.setState({ filterTalons: null });            
         this.populateCountTalons();
         this.populateTalons(1);
+        }
     }
 
     onCreateTalon() {
@@ -153,15 +162,17 @@ export class Talons extends Component{
         this.setState({ selectedTalonId: talonId });
     }
 
-    payTalonServices(talonId) {
-
-    }
-
     closePatientCUD(){
         this.setState({ talonCreate: false });
         this.setState({ talonList: true });
         this.setState({ talonEdit: false });
         this.setState({ talonDelete: false });
+
+        if (this.state.roleDoctor) {
+            let filter = `doctorid=${this.state.selectedDoctorId}`;
+            this.populateTalons(1, `&${filter}`);   
+            this.populateCountTalons(filter);
+        }
     }
 
     renderTalonsTable() {      
@@ -183,10 +194,14 @@ export class Talons extends Component{
                         </div>
                         }
                         <div className="col">
-                            <DatePicker labelvalue={"Начало периода"} onSelected={ (value) => this.onDateStartSelect(value) } />
+                            <DatePicker labelvalue={"Начало периода"} 
+                                onSelected={ (value) => this.onDateStartSelect(value) } 
+                                selectedDate={this.state.selectedStartDate}/>
                         </div>
                         <div className="col">
-                            <DatePicker labelvalue={"Окончание периода"} onSelected={ (value) => this.onDateEndSelect(value) } />
+                            <DatePicker labelvalue={"Окончание периода"} 
+                                onSelected={ (value) => this.onDateEndSelect(value) } 
+                                selectedDate={this.state.selectedEndDate}/>
                         </div>
                         <div className={"col"} style={{position: "relative"}}>
                             <Button 
@@ -207,17 +222,32 @@ export class Talons extends Component{
                                 startIcon={<ContactsOutlinedIcon />}
                                 onClick={ () => this.onCancelFilter()}>Сбросить</Button>                            
                         </div>
-                        <div className={"col"} style={{position: "relative"}}> 
-                        <Button
-                            //variant="contained"
-                            variant="outlined"
-                            color="secondary"
-                            size="medium"
-                            style={{position: "absolute", top: "50%", transform: "translate(0, -50%)"}} 
-                            startIcon={<ContactsOutlinedIcon />}
-                            onClick={ () => (this.onCreateTalon()) }
-                        >Создать талон</Button>
-                    </div>
+                        {this.state.roleAdministrator && (
+                            <div className={"col"} style={{position: "relative"}}> 
+                            <Button
+                                //variant="contained"
+                                variant="outlined"
+                                color="secondary"
+                                size="medium"
+                                style={{position: "absolute", top: "50%", transform: "translate(0, -50%)"}} 
+                                startIcon={<ContactsOutlinedIcon />}
+                                onClick={ () => (this.onCreateTalon()) }
+                            >Создать талон</Button>
+                            </div>)
+                        }
+                        {this.state.roleDoctor && (
+                            <div className={"col"} style={{position: "relative"}}> 
+                            <Button
+                                //variant="contained"
+                                variant="outlined"
+                                color="secondary"
+                                size="medium"
+                                style={{position: "absolute", top: "50%", transform: "translate(0, -50%)"}} 
+                                startIcon={<ContactsOutlinedIcon />}
+                                onClick={ () => (this.onCreateTalon()) }
+                            >Создать талон</Button>
+                            </div>)
+                        }
                     </div>                                
                     </div>
                 <div>
@@ -230,11 +260,7 @@ export class Talons extends Component{
                         <Error /> ) :
                         (
                             (this.state.talons.length === 0) ? (
-                                //<NotInfo /> ) : 
-                                <div className="d-flex justify-content-center">
-                                    <h1 style={{ color: "red" }}>Нет информации для отображения</h1>
-                                </div> 
-                                ) :
+                                <NotInfo /> ) : 
                                 (<Table className='table' aria-labelledby="tabelLabel">
                                     <thead>
                                         <tr>
@@ -247,8 +273,10 @@ export class Talons extends Component{
                                             {this.state.roleAdministrator &&  <th></th>}
                                             <th>Дата талона</th>
                                             <th>Комментарий</th>
-                                            {!this.state.roleAccountant && <th></th>}
                                             {this.state.roleAdministrator && <th></th>}
+                                            {this.state.roleAdministrator && <th></th>}
+                                            {this.state.roleDoctor && <th></th>}
+                                            {this.state.roleDoctor && <th></th>}
                                         </tr>
                                     </thead>           
                                         <tbody>
@@ -265,17 +293,12 @@ export class Talons extends Component{
                                                     <td>{talon.summa.toFixed(2)}</td>   
                                                     <td>{talon.cost.toFixed(2)}</td>
                                                     {this.state.roleAdministrator && <td>
-                                                        <IconButton 
-                                                            aria-label="pay" 
-                                                            style={{ color: purple[500] }}
-                                                            onClick={ () => (this.payTalonServices(talon.talonId)) }>
-                                                            <ContactlessOutlinedIcon fontSize="small" />
-                                                        </IconButton>
+                                                        <Payment />
                                                     </td>
                                                     }
                                                     <td>{moment(talon.createDate).format('DD.MM.YYYY')}</td>
                                                     <td>{talon.description}</td> 
-                                                    {!this.state.roleAccountant && 
+                                                    {this.state.roleAdministrator && 
                                                         <td>
                                                             {/*<IconButton aria-label="delete" className={classes.margin}>*/}
                                                             <IconButton 
@@ -285,7 +308,18 @@ export class Talons extends Component{
                                                                 <EditIcon fontSize="small" />
                                                             </IconButton>
                                                         </td>  
-                                                    }                                                
+                                                    }    
+                                                    {this.state.roleDoctor && 
+                                                        <td>
+                                                            {/*<IconButton aria-label="delete" className={classes.margin}>*/}
+                                                            <IconButton 
+                                                                aria-label="edit" 
+                                                                style={{ color: green[500] }}
+                                                                onClick={ () => (this.onEditTalon(talon.talonId)) }>
+                                                                <EditIcon fontSize="small" />
+                                                            </IconButton>
+                                                        </td>  
+                                                    }                                      
                                                     {this.state.roleAdministrator && 
                                                         <td>                                                        
                                                             <IconButton 
@@ -295,7 +329,17 @@ export class Talons extends Component{
                                                                 <DeleteIcon fontSize="small" />
                                                             </IconButton>
                                                         </td>  
-                                                    }                                         
+                                                    }    
+                                                    {this.state.roleDoctor && 
+                                                        <td>                                                        
+                                                            <IconButton 
+                                                                aria-label="delete" 
+                                                                color="secondary"
+                                                                onClick={ () => (this.onDeleteTalon(talon.talonId)) }>
+                                                                <DeleteIcon fontSize="small" />
+                                                            </IconButton>
+                                                        </td>  
+                                                    }                                      
                                                 </tr>
                                             )}
                                         </tbody>                  
@@ -331,15 +375,21 @@ export class Talons extends Component{
         return (
         <div>
             {this.state.talonList && this.renderTalonsTable()}
+            
             {this.state.talonCreate && <TalonCUD flagTalonCreate={true} flagTalonEdit={false} flagTalonDelete={false} 
                 closingPatient={ closingPatient } countTalon={ countTalon } getTalons={ getTalons } 
-                vabelButtonSave={"Сохранить талон"} labelAction={"Добавление нового талона"} />}
+                vabelButtonSave={"Сохранить талон"} labelAction={"Добавление нового талона"} 
+                roleDoctor={this.state.roleDoctor} selectedDoctor={this.state.selectedDoctor}/>}
+
             {this.state.talonEdit && <TalonCUD flagTalonCreate={false} flagTalonEdit={true} flagTalonDelete={false} 
                 talonId={this.state.selectedTalonId} closingPatient={ closingPatient } countTalon={ countTalon } getTalons={ getTalons }
-                vabelButtonSave={"Изменить талон"} labelAction={`Редактирование талона № ${this.state.selectedTalonId}`} />}
+                vabelButtonSave={"Изменить талон"} labelAction={`Редактирование талона № ${this.state.selectedTalonId}`} 
+                roleDoctor={this.state.roleDoctor} />}
+
             {this.state.talonDelete && <TalonCUD flagTalonCreate={false} flagTalonEdit={false} flagTalonDelete={true} 
                 talonId={this.state.selectedTalonId} closingPatient={ closingPatient } countTalon={ countTalon } getTalons={ getTalons }
-                vabelButtonSave={"Удалить талон"} labelAction={`Удаление талона № ${this.state.selectedTalonId}`}/>}
+                vabelButtonSave={"Удалить талон"} labelAction={`Удаление талона № ${this.state.selectedTalonId}`} 
+                roleDoctor={this.state.roleDoctor}/>}
         </div>
         )
     }
@@ -366,7 +416,7 @@ export class Talons extends Component{
         this.setState({ doctors: res });
     }
 
-    async populateCountTalons(filter=null) {       
+    async populateCountTalons(filter=null) {     
         const res = await this.apiClient.getCountTalons(filter);
         this.setState({ talonsCount: res });
     }    

@@ -53,9 +53,24 @@ namespace STDentalReact.Controllers
 
             return services.Select(service => new ServiceNames()
             {
-                Id = service.ServiceId.ToString(),
+                Id = service.ServiceId,
                 Name = $"{service.Shifr} {service.Name}"
             })
+                .ToArray();
+        }
+
+        [HttpGet("actualServices")]
+        public async Task<IEnumerable<ServicesActual>> GetActualServicesAsync()
+        {
+            var services = await _serviceRepository.GetActualServicesAsync();
+
+            return services.Select(service => new ServicesActual()
+                {
+                    Id = service.ServiceId,
+                    Name = service.Name,
+                    Shifr = service.Shifr,
+                    FullName = service.Shifr + " " + service.Name
+                })
                 .ToArray();
         }
 

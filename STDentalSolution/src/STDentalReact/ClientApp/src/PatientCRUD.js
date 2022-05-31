@@ -76,21 +76,20 @@ export default class PatientCRUD extends Component {
     this.state = {
     //open: false,
     open: this.props.visibleModal,
-    selectedName: null,
-    selectedCity: null,
-    selectedStreet: null,
-    selectedPhone: null,
-    selectedEmail: null,
+    selectedName: '',
+    selectedCity: '',
+    selectedStreet: '',
+    selectedPhone: '',
+    selectedEmail: '',
     selectedId: null,
     selectedBornDate: moment(new Date()).format('YYYY-MM-DD'),
-    selectedNationality: "1",
-    selectedDescription: null,
+    selectedNationality: '1',
+    selectedDescription: '',
     errorName: false,
     errorDateBorn: false,
     errorCity: false,
     errorStreet: false,
-    errorPhone: false,
-    errorNationality: false,
+    errorPhone: false
   }
 
   this.apiClient = new ApiClient();
@@ -148,12 +147,10 @@ onDescriptionInput(event) {
   this.setState({ selectedDescription: event.target.value})
 }
 
-onNationalityInput(event) {
-  this.setState({ selectedNationality: event.target.value, errorNationality: !event.target.value})
-}
-
 componentDidMount(){
- (this.props.selectedPatientId) && this.fillFields(this.props.selectedPatientId);
+  if (!this.props.operationInsert) {
+    (this.props.selectedPatientId) && this.fillFields(this.props.selectedPatientId);
+  }
 }
 
 async onAddPatient(newjson) {   
@@ -265,12 +262,12 @@ async fillFields(patientId) {
   this.setState({ selectedName: selectedPatient.name });
   this.setState({ selectedCity: selectedPatient.city });
   this.setState({ selectedStreet: selectedPatient.street });
-  this.setState({ selectedEmail: selectedPatient.email });
+  this.setState({ selectedEmail: selectedPatient.email ? selectedPatient.email : ''});
   //this.setState({ selectedBornDate: moment(selectedPatient.dateBorn).format('YYYY-MM-DD') });
   this.setState({ selectedBornDate: selectedPatient.dateBorn});
   this.setState({ selectedPhone: selectedPatient.phone });
-  this.setState({ selectedNationality: (selectedPatient.nationality === 'BY') ? "1" : "0" });
-  this.setState({ selectedDescription: selectedPatient.description });
+  this.setState({ selectedNationality: (selectedPatient.nationality === 'BY') ? '1' : '0' });
+  this.setState({ selectedDescription: selectedPatient.description ? selectedPatient.description : ''});
 }
 
   render() {
@@ -330,10 +327,9 @@ async fillFields(patientId) {
               <div>
               <FormLabel component="legend">Национальность</FormLabel>
               <RadioGroup aria-label="gender" name="gender1" 
-                  //value={this.state.selectedNationality} 
-                  value={this.state.selectedNationality}
+                  value={this.state.selectedNationality} 
                   onChange={(event) => this.onNationalityInput(event)} 
-                  error={this.state.errorNationality}>
+                  >
                 <FormControlLabel value="1" control={<Radio style={{ color: "green" }} />} label="Республика Беларусь" />
                 <FormControlLabel value="0" control={<Radio style={{ color: "green" }} />} label="Иностранное государство" />
               </RadioGroup>

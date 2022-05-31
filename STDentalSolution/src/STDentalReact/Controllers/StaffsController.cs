@@ -36,13 +36,32 @@ namespace STDentalReact.Controllers
                 .ToArray();
         }
 
+        [HttpGet("doctors")]
+        public async Task<IEnumerable<Doctors>> GetDoctorsAsync()
+        {
+            var doctors = await _staffRepository.GetDoctorsAsync();
+
+            return doctors.Select(doctor => new Doctors()
+                {
+                    Id = doctor.StaffId,
+                    Name = doctor.Name,
+                    Post = doctor.Post.Name
+                })
+                .ToArray();
+        }
+
         [HttpPost("signin")]
         public async Task<UserInfo> SignInAsync([FromBody] AuthorizationDental authorizationDental)
         {
 
             var staff = await _staffRepository.Authorization(authorizationDental);
 
-            if (staff == null) return null;
+            if (staff == null) return new UserInfo()
+            {
+                Id = 0,
+                Role = null,
+                User = null
+            };
 
             return new UserInfo()
             {

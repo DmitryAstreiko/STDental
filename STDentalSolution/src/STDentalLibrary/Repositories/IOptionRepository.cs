@@ -9,8 +9,8 @@ namespace STDentalLibrary.Repositories
 {
     public interface IOptionRepository
     {
-        Task<IEnumerable<Option>> GetOptionsAsync();
-        
-        Task<bool> SaveOptionsAsync(List<Option> options);
+        Task<IEnumerable<Option>> GetAsync();
+
+        Task UpdateOptionAsync(Option option);
     }
 }
